@@ -23,4 +23,5 @@ path = "tests/standard.rs"
 
 [dependencies]
 bson = ">=2.3.0"
+config = "0.13.1"
 serde = { features = ["derive"], version = ">=1.0.137" }
