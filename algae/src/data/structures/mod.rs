@@ -6,4 +6,4 @@
 */
 pub(crate) mod trees;
 
-pub use trees::*;
+pub use crate::data::structures::trees::*;

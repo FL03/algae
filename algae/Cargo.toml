@@ -7,7 +7,7 @@ license = "MIT"
 name = "algae"
 readme = "README.md"
 repository = "https://github.com/FL03/algae"
-version = "0.1.1"
+version = "0.1.2" # TODO - Update the cargo package version
 
 [features]
 default = []
