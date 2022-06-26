@@ -1,10 +1,10 @@
 /*
-    Appellation: actor
-    Context:
-    Creator: FL03 <jo3mccain@icloud.com>
-    Description:
-        ... Summary ...
- */
+   Appellation: actor
+   Context:
+   Creator: FL03 <jo3mccain@icloud.com>
+   Description:
+       ... Summary ...
+*/
 
 type ActorError = Box<dyn std::error::Error + Send + Sync + 'static>;
 
@@ -15,7 +15,9 @@ pub trait TActor {
     type Data;
 
     fn configure(settings: Self::Config) -> Result<Self::Config, config::ConfigError>;
-    fn constructor(&self) -> Result<Self, ActorError> where Self: Sized;
+    fn constructor(&self) -> Result<Self, ActorError>
+    where
+        Self: Sized;
 }
 
 #[cfg(test)]
