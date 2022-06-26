@@ -2,16 +2,13 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+Checkout the current and supported packages below
 
-| Package      | Current | Supported |
-|--------------|---------|-----------|
-| acme         | 0.1.22  | <=0.1.21  |
-| acme-core    | 0.1.8   | <=0.1.7   |
-| acme-macros  | 0.1.8   | <=0.1.7   |
-| acme-network | 0.1.8   | <=0.1.7   |
+| Package | Current | Supported |
+|---------|---------|-----------|
+| algae   | 0.1.2   | <=0.1.0   |
 
 ## Reporting a Vulnerability
+Email me at j3mccain@gmail.com to report any vulnerabilities.
 
 [Website](https://pzzld.eth.link/)

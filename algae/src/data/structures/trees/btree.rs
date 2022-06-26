@@ -1,21 +1,30 @@
+/*
+   Appellation: btree
+   Context: module
+   Creator: FL03 <jo3mccain@icloud.com>
+   Description:
+*/
 use std::convert::TryFrom;
 
 struct Node<T> {
     keys: Vec<T>,
-    children: Vec<Node<T>>
+    children: Vec<Node<T>>,
 }
 
-impl<T> Node<T> where T: Ord {
+impl<T> Node<T>
+where
+    T: Ord,
+{
     fn new(degree: usize, _keys: Option<Vec<T>>, _children: Option<Vec<Node<T>>>) -> Self {
         Node {
             keys: match _keys {
                 Some(_keys) => _keys,
-                None => Vec::with_capacity(degree - 1)
+                None => Vec::with_capacity(degree - 1),
             },
             children: match _children {
                 Some(_children) => _children,
-                None => Vec::with_capacity(degree)
-            }
+                None => Vec::with_capacity(degree),
+            },
         }
     }
 
@@ -26,15 +35,18 @@ impl<T> Node<T> where T: Ord {
 
 pub struct BTree<T> {
     root: Node<T>,
-    props: BTreeProps
+    props: BTreeProps,
 }
 
-impl<T> BTree<T> where T: Ord + Copy + std::fmt::Debug + Default {
+impl<T> BTree<T>
+where
+    T: Ord + Copy + std::fmt::Debug + Default,
+{
     pub fn new(branch_factor: usize) -> Self {
         let degree = 2 * branch_factor;
         Self {
             root: Node::new(degree, None, None),
-            props: BTreeProps::new(degree)
+            props: BTreeProps::new(degree),
         }
     }
 
@@ -58,7 +70,7 @@ impl<T> BTree<T> where T: Ord + Copy + std::fmt::Debug + Default {
         let mut current_node = &self.root;
         let mut index: isize;
         loop {
-            index = isize::try_from(current_node.keys.len()).ok().unwrap() -1;
+            index = isize::try_from(current_node.keys.len()).ok().unwrap() - 1;
             while index >= 0 && current_node.keys[index as usize] > key {
                 index -= 1;
             }
@@ -78,13 +90,15 @@ impl<T> BTree<T> where T: Ord + Copy + std::fmt::Debug + Default {
 struct BTreeProps {
     degree: usize,
     max_keys: usize,
-    mid_key_index: usize
+    mid_key_index: usize,
 }
 
 impl BTreeProps {
     fn new(degree: usize) -> Self {
         Self {
-            degree, max_keys: degree -1, mid_key_index: (degree - 1) / 2
+            degree,
+            max_keys: degree - 1,
+            mid_key_index: (degree - 1) / 2,
         }
     }
 
@@ -96,10 +110,8 @@ impl BTreeProps {
         let child = &mut parent.children[child_index];
         let middle_key = child.keys[self.mid_key_index];
         let right_keys = match child.keys.split_off(self.mid_key_index).split_first() {
-            Some((_first, _others)) => {
-                _others.to_vec()
-            }
-            None => Vec::with_capacity(self.max_keys)
+            Some((_first, _others)) => _others.to_vec(),
+            None => Vec::with_capacity(self.max_keys),
         };
         let right_children = if !child.is_leaf() {
             Some(child.children.split_off(self.mid_key_index + 1))
@@ -113,7 +125,7 @@ impl BTreeProps {
     }
 
     fn insert_non_full<T: Ord + Copy + Default>(&mut self, node: &mut Node<T>, key: T) {
-        let mut index: isize = isize::try_from(node.keys.len()).ok().unwrap() -1;
+        let mut index: isize = isize::try_from(node.keys.len()).ok().unwrap() - 1;
         while index >= 0 && node.keys[index as usize] >= key {
             index -= 1;
         }
