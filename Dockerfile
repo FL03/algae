@@ -4,4 +4,5 @@ ADD . /project
 WORKDIR /project
 
 COPY . .
-RUN cargo test --workspace --all-features
+RUN cargo test --all-features && \
+    cargo package --all-features --allow-dirty

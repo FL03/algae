@@ -7,22 +7,20 @@ license = "MIT"
 name = "algae"
 readme = "README.md"
 repository = "https://github.com/FL03/algae"
-version = "0.1.0"
+version = "0.1.1"
 
 [features]
 default = []
 
 [lib]
+bench = false
 crate-type = ["cdylib", "rlib"]
-name = "lib"
-path = "src/lib.rs"
 test = true
 
 [[test]]
-name = "test"
-path = "tests/test.rs"
-
+name = "standard"
+path = "tests/standard.rs"
 
 [dependencies]
-
-
+bson = ">=2.3.0"
+serde = { features = ["derive"], version = ">=1.0.137" }
