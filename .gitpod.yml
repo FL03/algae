@@ -1,0 +1,3 @@
+tasks:
+  - init: cargo package
+    command: cargo test --workspace

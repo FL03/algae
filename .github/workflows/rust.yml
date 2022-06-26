@@ -1,0 +1,24 @@
+name: Rust
+
+on:
+  push:
+    branches: [ "main", "master", "latest" ]
+  pull_request:
+    branches: [ "main", "master", "latest" ]
+
+env:
+  PROJECT_SLUG: template-rust-library
+  CARGO_TERM_COLOR: always
+  CARGO_PKG_VERSION: 0.1.0
+
+jobs:
+  acme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Login
+        run: cargo login ${{ secrets.CARGO_REGISTRY_TOKEN }}
+      - name: Test
+        run: cargo test -p $PROJECT_SLUG -v --color $CARGO_TERM_COLOR
+      - name: Build and Push
+        run: cargo publish -p $PROJECT_SLUG --all-features -v --color $CARGO_TERM_COLOR
