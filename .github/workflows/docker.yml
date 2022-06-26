@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "master", "latest" ]
   pull_request:
-    branches: [ "master", "latest" ]
+    branches: [ "latest" ]
 
 jobs:
   acme:
@@ -25,4 +25,4 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/acme:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/algae:latest
