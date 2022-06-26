@@ -8,5 +8,4 @@
 
 ### Getting Started
     git clone https://github.com/FL03/algae
-    git checkout --branch latest
     cargo test --workspace --all-features
