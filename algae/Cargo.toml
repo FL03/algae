@@ -1,6 +1,6 @@
 [package]
 authors = ["FL03 <jo3mccain@icloud.com>"]
-description = "Algae is a collection of algorithms "
+description = "Algae is a collection of algorithms and data structures optimized for building decentralize systems..."
 edition = "2021"
 keywords = ["algorithims"]
 license = "MIT"
