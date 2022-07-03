@@ -7,7 +7,7 @@ license = "MIT"
 name = "algae"
 readme = "README.md"
 repository = "https://github.com/FL03/algae"
-version = "0.1.4" # TODO - Update the cargo package version
+version = "0.1.5" # TODO - Update the cargo package version
 
 [features]
 default = []
@@ -19,10 +19,6 @@ macros = ["algae-macros"]
 bench = false
 crate-type = ["cdylib", "rlib"]
 test = true
-
-[[test]]
-name = "standard"
-path = "tests/standard.rs"
 
 [dependencies]
 blake2 = "0.10.4"
