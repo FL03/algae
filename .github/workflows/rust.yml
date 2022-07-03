@@ -2,23 +2,49 @@ name: Rust
 
 on:
   push:
-    branches: [ "master", "latest" ]
+    branches: [ "master" ]
+    tags: [ "latest" ]
   pull_request:
-    branches: [ "latest" ]
+    branches: [ "master" ]
+    tags: [ "latest" ]
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  crate:
-    env:
-      CARGO_PKG_NAME: algae
+  login:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Login
         run: cargo login ${{ secrets.CARGO_REGISTRY_TOKEN }}
+  tests:
+    runs-on: ubuntu-latest
+    steps:
       - name: Test
-        run: cargo test -p $CARGO_PKG_NAME --all-features -v --color $CARGO_TERM_COLOR
+        run: cargo test --workspace --verbose --color $CARGO_TERM_COLOR
+  crate:
+    env:
+      CARGO_PKG_NAME: algae
+    runs-on: ubuntu-latest
+    needs: [ derive, macros, login, test ]
+    steps:
       - name: Build and Push
-        run: cargo publish -p $CARGO_PKG_NAME --all-features -v --color $CARGO_TERM_COLOR
+        run: cargo publish -p $CARGO_PKG_NAME --all-features --token ${{ secrets.CARGO_REGISTRY_TOKEN }}
+  derive:
+    env:
+      CARGO_PKG_NAME: algae
+    runs-on: ubuntu-latest
+    needs: [ login, test ]
+
+    steps:
+      - name: Build and Push
+        run: cargo publish -p $CARGO_PKG_NAME --all-features --token ${{ secrets.CARGO_REGISTRY_TOKEN }}
+  macros:
+    env:
+      CARGO_PKG_NAME: algae
+    runs-on: ubuntu-latest
+    needs: [ login, test ]
+    steps:
+      - name: Build and Push
+        run: cargo publish -p $CARGO_PKG_NAME --all-features --token ${{ secrets.CARGO_REGISTRY_TOKEN }}

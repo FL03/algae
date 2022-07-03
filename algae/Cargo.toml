@@ -11,6 +11,9 @@ version = "0.1.4" # TODO - Update the cargo package version
 
 [features]
 default = []
+derive = ["algae-derive"]
+full = ["default", "derive", "macros"]
+macros = ["algae-macros"]
 
 [lib]
 bench = false
@@ -31,3 +34,7 @@ hex = "0.4.3"
 log = "0.4.17"
 sha2 = "0.10.2"
 serde = { features = ["derive"], version = ">=1.0.137" }
+
+[build-dependencies]
+algae-derive = { optional = true, path = "../derive", version = "0.1.4" }
+algae-macros = { optional = true, path = "../macros", version = "0.1.4" }

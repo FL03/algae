@@ -8,3 +8,11 @@ updates:
     directory: /algae
     schedule:
       interval: daily
+  - package-ecosystem: cargo
+    directory: /derive
+    schedule:
+      interval: daily
+  - package-ecosystem: cargo
+    directory: /macros
+    schedule:
+      interval: daily
