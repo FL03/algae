@@ -25,7 +25,7 @@ jobs:
         run: cargo test --workspace --verbose --color $CARGO_TERM_COLOR
   derive:
     env:
-      CARGO_PKG_NAME: algae
+      CARGO_PKG_NAME: algae-derive
     runs-on: ubuntu-latest
     needs: [ login, test ]
 
@@ -34,7 +34,7 @@ jobs:
         run: cargo publish -p $CARGO_PKG_NAME --all-features --token ${{ secrets.CARGO_REGISTRY_TOKEN }}
   macros:
     env:
-      CARGO_PKG_NAME: algae
+      CARGO_PKG_NAME: algae-macros
     runs-on: ubuntu-latest
     needs: [ login, test ]
     steps:
