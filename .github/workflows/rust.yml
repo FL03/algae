@@ -23,14 +23,6 @@ jobs:
     steps:
       - name: Test
         run: cargo test --workspace --verbose --color $CARGO_TERM_COLOR
-  crate:
-    env:
-      CARGO_PKG_NAME: algae
-    runs-on: ubuntu-latest
-    needs: [ derive, macros, login, test ]
-    steps:
-      - name: Build and Push
-        run: cargo publish -p $CARGO_PKG_NAME --all-features --token ${{ secrets.CARGO_REGISTRY_TOKEN }}
   derive:
     env:
       CARGO_PKG_NAME: algae
@@ -45,6 +37,14 @@ jobs:
       CARGO_PKG_NAME: algae
     runs-on: ubuntu-latest
     needs: [ login, test ]
+    steps:
+      - name: Build and Push
+        run: cargo publish -p $CARGO_PKG_NAME --all-features --token ${{ secrets.CARGO_REGISTRY_TOKEN }}
+  crate:
+    env:
+      CARGO_PKG_NAME: algae
+    runs-on: ubuntu-latest
+    needs: [ derive, macros, login, test ]
     steps:
       - name: Build and Push
         run: cargo publish -p $CARGO_PKG_NAME --all-features --token ${{ secrets.CARGO_REGISTRY_TOKEN }}
