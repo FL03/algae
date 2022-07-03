@@ -11,7 +11,7 @@ version = "0.1.6" # TODO - Update the cargo package version
 
 [lib]
 bench = false
-crate-type = ["proc_macro"]
+crate-type = ["proc-macro"]
 test = true
 
 [dependencies]
