@@ -1,6 +1,5 @@
 /*
-   Appellation: algae-macros
-   Context: library
+   Appellation: algae-macros <library>
    Creator: FL03 <jo3mccain@icloud.com>
    Description:
 */
