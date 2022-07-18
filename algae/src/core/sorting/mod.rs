@@ -7,4 +7,4 @@
 */
 pub(crate) mod quick_sort;
 
-pub use crate::utils::sorting::quick_sort::*;
+pub use crate::core::sorting::quick_sort::*;

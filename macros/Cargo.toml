@@ -1,14 +1,14 @@
 [package]
 authors = ["FL03 <jo3mccain@icloud.com>"]
-description = "Algae is a collection of algorithms and data structures optimized for building decentralize systems..."
+description = "Procedural macros for Algae, a collection of algorithms and data-structures"
 edition = "2021"
 homepage = "https://scattered-systems.github.io/algae"
-keywords = ["algorithims", "data-structures", "macros"]
+keywords = ["algorithms", "data-structures", "macros"]
 license = "MIT"
 name = "algae-macros"
 readme = "README.md"
 repository = "https://github.com/scattered-systems/algae"
-version = "0.1.7" # TODO - Update the cargo package version
+version = "0.1.8" # TODO - Update the cargo package version
 
 [lib]
 proc-macro = true

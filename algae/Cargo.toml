@@ -1,15 +1,15 @@
 [package]
 authors = ["FL03 <jo3mccain@icloud.com>"]
 categories = []
-description = "Algae is a collection of core algorithims and data-structures, written in Rust"
+description = "Algae is a collection of core algorithms and data-structures, written in Rust"
 edition = "2021"
 homepage = "https://scattered-systems.github.io/algae"
-keywords = ["algorithims"]
+keywords = ["algorithms", "data-structures"]
 license = "MIT"
 name = "algae"
 readme = "README.md"
 repository = "https://github.com/scattered-systems/algae"
-version = "0.1.7" # TODO - Update the cargo package version
+version = "0.1.8" # TODO - Update the cargo package version
 
 [features]
 default = []

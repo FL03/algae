@@ -1,15 +1,15 @@
 [package]
 authors = ["FL03 <jo3mccain@icloud.com>"]
 categories = []
-description = "Derive macros created for Algae, a collection of useful algorithims and data-structures"
+description = "Derive macros created for Algae, a collection of useful algorithms and data-structures"
 edition = "2021"
 homepage = "https://scattered-systems.github.io/algae"
-keywords = ["algorithims", "data-structures", "derive"]
+keywords = ["algorithms", "data-structures", "derive"]
 license = "MIT"
 name = "algae-derive"
 readme = "README.md"
 repository = "https://github.com/scattered-systems/algae"
-version = "0.1.7" # TODO - Update the cargo package version
+version = "0.1.8" # TODO - Update the cargo package version
 
 [lib]
 proc-macro = true
