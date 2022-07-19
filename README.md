@@ -1,6 +1,6 @@
 # algae
 
-[![Clippy Analysis](https://github.com/scattered-systems/algae/actions/workflows/rust-clippy.yml/badge.svg)](https://github.com/scattered-systems/algae/actions/workflows/rust-clippy.yml)
+[![Analysis](https://github.com/scattered-systems/algae/actions/workflows/rust-clippy.yml/badge.svg)](https://github.com/scattered-systems/algae/actions/workflows/rust-clippy.yml)
 [![Rust](https://github.com/scattered-systems/algae/actions/workflows/rust.yml/badge.svg)](https://github.com/scattered-systems/algae/actions/workflows/rust.yml)
 
 ## Developers

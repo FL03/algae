@@ -4,9 +4,7 @@ default-members = [
 ]
 
 members = [
-    "algae",
-    "derive",
-    "macros"
+    "algae"
 ]
 
 [profile.dev]

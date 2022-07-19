@@ -2,7 +2,7 @@
    Appellation: algae <library>
    Creator: FL03 <jo3mccain@icloud.com>
    Description:
-       Algae is intended to be a collection of optimized algorithms
+       Algae is a comprehensive collection of algorithms and data-structures
 */
 #[doc(inline)]
 #[cfg(feature = "default")]

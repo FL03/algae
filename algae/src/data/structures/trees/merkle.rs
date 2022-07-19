@@ -12,7 +12,10 @@ struct Node<T> {
     children: Vec<Node<T>>,
 }
 
-impl<T> Node<T> where T: Ord {
+impl<T> Node<T>
+    where
+        T: Ord,
+{
     fn constructor(keys: Vec<T>, children: Vec<Node<T>>) -> Self {
         Self { keys, children }
     }
@@ -20,7 +23,6 @@ impl<T> Node<T> where T: Ord {
 
 #[derive(Clone, Debug, Hash, PartialEq, serde::Deserialize, serde::Serialize)]
 pub struct MerkleTree;
-
 
 #[cfg(test)]
 mod tests {
