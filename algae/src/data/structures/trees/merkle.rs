@@ -13,8 +13,8 @@ struct Node<T> {
 }
 
 impl<T> Node<T>
-    where
-        T: Ord,
+where
+    T: Ord,
 {
     fn constructor(keys: Vec<T>, children: Vec<Node<T>>) -> Self {
         Self { keys, children }
