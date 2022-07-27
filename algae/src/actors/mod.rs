@@ -8,6 +8,5 @@ pub use actor::*;
 pub use coin_change::*;
 pub use edit_distance::*;
 
-mod actor;
 mod coin_change;
 mod edit_distance;

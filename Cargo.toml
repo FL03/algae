@@ -4,7 +4,8 @@ default-members = [
 ]
 
 members = [
-    "algae"
+    "algae",
+    "trees"
 ]
 
 [profile.dev]

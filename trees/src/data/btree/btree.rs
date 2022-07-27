@@ -12,8 +12,8 @@ struct Node<T> {
 }
 
 impl<T> Node<T>
-where
-    T: Ord,
+    where
+        T: Ord,
 {
     fn new(degree: usize, _keys: Option<Vec<T>>, _children: Option<Vec<Node<T>>>) -> Self {
         Node {
@@ -40,8 +40,8 @@ pub struct BTree<T> {
 }
 
 impl<T> BTree<T>
-where
-    T: Ord + Copy + std::fmt::Debug + Default,
+    where
+        T: Ord + Copy + std::fmt::Debug + Default,
 {
     pub fn new(branch_factor: usize) -> Self {
         let degree = 2 * branch_factor;
