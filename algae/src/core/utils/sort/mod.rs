@@ -1,8 +1,9 @@
 /*
-    Appellation: mod <module>
+    Appellation: sort <module>
     Creator: FL03 <jo3mccain@icloud.com>
     Description:
         ... Summary ...
 */
-pub mod btree;
-pub mod merkle;
+pub use quick_sort::*;
+
+mod quick_sort;

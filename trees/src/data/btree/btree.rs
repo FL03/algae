@@ -12,8 +12,8 @@ struct Node<T> {
 }
 
 impl<T> Node<T>
-    where
-        T: Ord,
+where
+    T: Ord,
 {
     fn new(degree: usize, _keys: Option<Vec<T>>, _children: Option<Vec<Node<T>>>) -> Self {
         Node {
@@ -32,7 +32,6 @@ impl<T> Node<T>
         self.children.is_empty()
     }
 }
-
 
 pub struct BTree<T> {
     root: Node<T>,
