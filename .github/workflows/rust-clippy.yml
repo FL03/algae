@@ -1,4 +1,4 @@
-name: Clippy Analysis
+name: Analysis
 
 on:
   push:

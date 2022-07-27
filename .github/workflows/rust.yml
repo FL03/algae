@@ -2,50 +2,44 @@ name: Rust
 
 on:
   push:
-    branches: [ "master" ]
-    tags: [ "latest" ]
+    branches:
+      - master
+    tags:
+      - latest
   pull_request:
-    branches: [ "master" ]
-    tags: [ "latest" ]
+    tags:
+      - latest
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  login:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Login
-        run: cargo login ${{ secrets.CARGO_REGISTRY_TOKEN }}
-  tests:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Test
         run: cargo test --workspace --verbose --color $CARGO_TERM_COLOR
-  derive:
+  trees:
     env:
-      CARGO_PKG_NAME: algae-derive
+      CARGO_PKG_NAME: algae-trees
     runs-on: ubuntu-latest
-    needs: [ login, tests ]
+    needs: [ test ]
     steps:
       - uses: actions/checkout@v3
+      - name: Login
+        run: cargo login ${{ secrets.CARGO_REGISTRY_TOKEN }}
       - name: Build and Push
-        run: cargo publish --package $CARGO_PKG_NAME --token ${{ secrets.CARGO_REGISTRY_TOKEN }}
-  macros:
-    env:
-      CARGO_PKG_NAME: algae-macros
-    runs-on: ubuntu-latest
-    needs: [ login, tests ]
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build and Push
-        run: cargo publish --package $CARGO_PKG_NAME --token ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        run: cargo publish --all-features --package $CARGO_PKG_NAME --token ${{ secrets.CARGO_REGISTRY_TOKEN }}
   crate:
+    env:
+      CARGO_PKG_NAME: algae
+    if: ${{ always() }}
     runs-on: ubuntu-latest
-    needs: [ derive, macros, login, tests ]
+    needs: [ test, trees ]
     steps:
       - uses: actions/checkout@v3
+      - name: Login
+        run: cargo login ${{ secrets.CARGO_REGISTRY_TOKEN }}
       - name: Build and Push
-        run: cargo publish --all-features --token ${{ secrets.CARGO_REGISTRY_TOKEN }}
+        run: cargo publish --all-features --package $CARGO_PKG_NAME --token ${{ secrets.CARGO_REGISTRY_TOKEN }}

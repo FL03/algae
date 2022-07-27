@@ -1,6 +1,5 @@
 /*
-   Appellation: edit_distance
-   Context:
+   Appellation: edit_distance <module>
    Creator: FL03 <jo3mccain@icloud.com>
    Description:
        ... Summary ...
