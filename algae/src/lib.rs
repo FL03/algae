@@ -5,7 +5,6 @@
        Algae is a comprehensive collection of algorithms and data-structures
 */
 #[doc(inline)]
-#[cfg(feature = "default")]
 pub use crate::{actors::*, core::*, data::*};
 
 mod actors;

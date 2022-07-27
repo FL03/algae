@@ -14,15 +14,32 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  crate:
-    env:
-      CARGO_PKG_NAME: algae
+  test:
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Test
+        run: cargo test --workspace --verbose --color $CARGO_TERM_COLOR
+  trees:
+    env:
+      CARGO_PKG_NAME: algae-trees
+    runs-on: ubuntu-latest
+    needs: [ test ]
     steps:
       - uses: actions/checkout@v3
       - name: Login
         run: cargo login ${{ secrets.CARGO_REGISTRY_TOKEN }}
-      - name: Test
-        run: cargo test --workspace --verbose --color $CARGO_TERM_COLOR
+      - name: Build and Push
+        run: cargo publish --all-features --package $CARGO_PKG_NAME --token ${{ secrets.CARGO_REGISTRY_TOKEN }}
+  crate:
+    env:
+      CARGO_PKG_NAME: algae
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    needs: [ test, trees ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Login
+        run: cargo login ${{ secrets.CARGO_REGISTRY_TOKEN }}
       - name: Build and Push
         run: cargo publish --all-features --package $CARGO_PKG_NAME --token ${{ secrets.CARGO_REGISTRY_TOKEN }}

@@ -3,9 +3,9 @@
    Creator: FL03 <jo3mccain@icloud.com>
    Description:
 */
-pub use key_value::KeyValue;
+pub use utils::*;
 
 pub mod proofs;
 pub mod structures;
 
-mod key_value;
+mod utils {}

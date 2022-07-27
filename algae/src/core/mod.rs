@@ -6,6 +6,8 @@
 */
 pub use searching::*;
 pub use sorting::*;
+pub use primitives::*;
 
 mod searching;
 mod sorting;
+mod primitives;

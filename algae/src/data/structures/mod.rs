@@ -3,12 +3,10 @@
    Creator: FL03 <jo3mccain@icloud.com>
    Description:
 */
-pub use graphs::*;
-pub use queues::*;
-pub use stacks::*;
-pub use trees::*;
+#[doc(inline)]
+#[cfg(feature = "trees")]
+pub use algae_trees as trees;
 
-mod graphs;
-mod queues;
-mod stacks;
-mod trees;
+pub mod graphs;
+pub mod queues;
+pub mod stacks;
