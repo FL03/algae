@@ -1,3 +1,0 @@
-tasks:
-  - init: cargo build --workspace --release
-    command: cargo watch test --all-features --release

@@ -1,8 +1,9 @@
 /*
-    Appellation: mod <module>
+    Appellation: utils <module>
     Creator: FL03 <jo3mccain@icloud.com>
     Description:
         ... Summary ...
 */
-pub mod btree;
-pub mod merkle;
+
+pub mod search;
+pub mod sort;

@@ -4,10 +4,8 @@
    Description:
        ... Summary ...
 */
-pub use searching::*;
-pub use sorting::*;
 pub use primitives::*;
+pub use utils::*;
 
-mod searching;
-mod sorting;
 mod primitives;
+mod utils;

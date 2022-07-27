@@ -1,5 +1,5 @@
 /*
-    Appellation: stacks <module>
+    Appellation: hash <module>
     Creator: FL03 <jo3mccain@icloud.com>
     Description:
         ... Summary ...

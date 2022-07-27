@@ -6,21 +6,32 @@
        ... Summary ...
 */
 
-pub fn coin_change(coins: &[usize], amount: usize) -> Option<usize> {
-    let mut dp = vec![std::usize::MAX; amount + 1];
-    dp[0] = 0;
+#[derive(Clone, Debug, Hash, PartialEq, serde::Deserialize, serde::Serialize)]
+pub struct CoinChange {
+    pub amount: usize,
+    pub coins: Vec<usize>,
+}
 
-    for i in 0..=amount {
-        for j in 0..coins.len() {
-            if i >= coins[j] && dp[i - coins[j]] != std::usize::MAX {
-                dp[i] = dp[i].min(dp[i - coins[j]] + 1);
+impl CoinChange {
+    pub fn new(amount: usize, coins: Vec<usize>) -> Self {
+        Self { amount, coins }
+    }
+    pub fn change(&mut self) -> Option<usize> {
+        let mut dp = vec![std::usize::MAX; self.amount + 1];
+        dp[0] = 0;
+
+        for i in 0..=self.amount {
+            for j in 0..self.coins.len() {
+                if i >= self.coins[j] && dp[i - self.coins[j]] != std::usize::MAX {
+                    dp[i] = dp[i].min(dp[i - self.coins[j]] + 1);
+                }
             }
         }
-    }
 
-    match dp[amount] {
-        std::usize::MAX => None,
-        _ => Some(dp[amount]),
+        match dp[self.amount] {
+            std::usize::MAX => None,
+            _ => Some(dp[self.amount]),
+        }
     }
 }
 
@@ -31,32 +42,27 @@ mod tests {
     #[test]
     fn basic() {
         // 11 = 5 * 2 + 1 * 1
-        let coins = vec![1, 2, 5];
-        assert_eq!(Some(3), coin_change(&coins, 11));
-
+        assert_eq!(Some(3), CoinChange::new(11, vec![1, 2, 5]).change(), );
         // 119 = 11 * 10 + 7 * 1 + 2 * 1
-        let coins = vec![2, 3, 5, 7, 11];
-        assert_eq!(Some(12), coin_change(&coins, 119));
+        assert_eq!(
+            Some(12),
+            CoinChange::new(119, vec![2, 3, 5, 7, 11]).change()
+        )
     }
 
     #[test]
     fn coins_empty() {
-        let coins = vec![];
-        assert_eq!(None, coin_change(&coins, 1));
+        assert_eq!(None, CoinChange::new(1, Vec::<usize>::new()).change());
     }
 
     #[test]
     fn amount_zero() {
-        let coins = vec![1, 2, 3];
-        assert_eq!(Some(0), coin_change(&coins, 0));
+        assert_eq!(Some(0), CoinChange::new(0, vec![1, 2, 3]).change());
     }
 
     #[test]
     fn fail_change() {
-        // 3 can't be change by 2.
-        let coins = vec![2];
-        assert_eq!(None, coin_change(&coins, 3));
-        let coins = vec![10, 20, 50, 100];
-        assert_eq!(None, coin_change(&coins, 5));
+        assert_eq!(None, CoinChange::new(3, vec![2]).change());
+        assert_eq!(None, CoinChange::new(5, vec![10, 20, 50, 100]).change());
     }
 }

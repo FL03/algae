@@ -9,12 +9,14 @@ license = "MIT"
 name = "algae"
 readme = "README.md"
 repository = "https://github.com/scattered-systems/algae"
-version = "0.1.10" # TODO - Update the cargo package version
+version = "0.1.11" # TODO - Update the cargo package version
 
 [features]
 default = ["trees"]
-full = ["trees"]
+full = ["derive", "macros", "trees"]
 
+derive = ["algae-derive"]
+macros = ["algae-macros"]
 trees = ["algae-trees"]
 
 [lib]
@@ -32,10 +34,20 @@ log = "0.4.17"
 sha2 = "0.10.2"
 serde = { features = ["derive"], version = ">=1.0.137" }
 
+[dependencies.algae-derive]
+optional = true
+path = "../derive"
+version = "0.1.9"
+
+[dependencies.algae-macros]
+optional = true
+path = "../macros"
+version = "0.1.9"
+
 [dependencies.algae-trees]
 optional = true
 path = "../trees"
-version = "0.1.0"
+version = "0.1.1"
 
 [package.metadata.docs.rs]
 all-features = true
