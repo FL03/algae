@@ -1,53 +1,45 @@
 [package]
-authors = ["FL03 <jo3mccain@icloud.com>"]
+authors = ["FL03 <jo3mccain@icloud.com> (https://gitlab.com/FL03)", "Scattered-Systems (https://gitlab.com/scsys)"]
 categories = []
 description = "Algae is a collection of core algorithms and data-structures, written in Rust"
 edition = "2021"
-homepage = "https://scattered-systems.github.io/algae"
+homepage = "https://gitlab.com/scsys/lib/crates/algae/-/wiki"
 keywords = ["algorithms", "data-structures"]
 license = "MIT"
 name = "algae"
 readme = "README.md"
-repository = "https://github.com/scattered-systems/algae"
+repository = "https://gitlab.com/scsys/lib/crates/algae"
 version = "0.1.11" # TODO - Update the cargo package version
 
 [features]
-default = ["trees"]
-full = ["derive", "macros", "trees"]
+default = ["core"]
+full = ["core", "derive", "macros"]
 
+core = ["algae-core"]
 derive = ["algae-derive"]
 macros = ["algae-macros"]
-trees = ["algae-trees"]
 
 [lib]
 bench = false
 crate-type = ["cdylib", "rlib"]
 test = true
 
-[dependencies]
-bson = "2.3.0"
-config = "0.13.1"
-digest = "0.10.3"
-glob = "0.3.0"
-hex = "0.4.3"
-log = "0.4.17"
-sha2 = "0.10.2"
-serde = { features = ["derive"], version = ">=1.0.137" }
+[dependencies.algae-core]
+optional = true
+path = "../core"
+version = "0.1.0"
 
 [dependencies.algae-derive]
 optional = true
 path = "../derive"
-version = "0.1.9"
+version = "0.1.10"
 
 [dependencies.algae-macros]
 optional = true
 path = "../macros"
-version = "0.1.9"
+version = "0.1.10"
 
-[dependencies.algae-trees]
-optional = true
-path = "../trees"
-version = "0.1.1"
+
 
 [package.metadata.docs.rs]
 all-features = true

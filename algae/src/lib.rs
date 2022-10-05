@@ -4,15 +4,9 @@
    Description:
        Algae is a comprehensive collection of algorithms and data-structures
 */
-#[doc(inline)]
-pub use crate::{actors::*, core::*, data::*};
-#[doc(inline)]
+#[cfg(feature = "core")]
+pub use algae_core as core;
 #[cfg(feature = "derive")]
 pub use algae_derive::*;
-#[doc(inline)]
 #[cfg(feature = "macros")]
 pub use algae_macros::*;
-
-mod actors;
-mod core;
-mod data;

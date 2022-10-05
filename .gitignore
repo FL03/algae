@@ -1,48 +1,58 @@
-# Environments
-/**/.idea
-/**/.vscode/
+# Config
+**/config.*
+**/*.config.*
 
-# Files and File Extensions
-/**/config/local.*
+**/*.env
+**/*.env.*
 
-*.bk
-*.bk.*
+# Directories
+**/__pycache__/
+**/__sapper__/
 
-*.db
-*.db.*
+**/.DS_STORE/
+**/.artifacts/data/
+**/.docker/data/
+**/.idea/
+**/.pytest_cache/
+**/.svelte-kit/
+**/.vscode/
 
-*.lock
-*.lock.*
-*-lock.*
+**/build/
+**/debug/
+**/dist/
+**/env/
+**/node_modules/
+**/target/
+**/venv/
 
-*.log
-*.log.*
+# File Extensions
+**/*.bk
+**/*.bk.*
 
-*.env
-*.env.*
-!*.env.example
+**/*.csv
+**/*.csv.*
 
-*.whl
-*.whl.*
+**/*.db
+**/*.db.*
 
-*.zip
-*.zip.*
+**/*.db-*.*
 
+**/*.lock
+**/*.lock.*
 
-# Nodejs
-/**/build/
-/**/node_modules/
+**/*-lock.*
 
-# Python
-/**/__pycache__/
-/**/dist/
-/**/venv/
+**/*.log
+**/*.log.*
 
-# Rust
-/**/debug/
-/**/target/
+**/*.whl
+**/*.whl.*
 
-# Svelte
-/**/.DS_STORE/
-/**/__sapper__/
-/**/.svelte-kit/
+**/*.zip
+**/*.zip.*
+
+# Exceptions
+!**/default.config.*
+!**/*.env.example
+!**/*.config.js
+!**/*.config.cjs
