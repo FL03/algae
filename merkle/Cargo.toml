@@ -1,14 +1,17 @@
 [package]
-authors = ["FL03 <jo3mccain@icloud.com>"]
+authors = ["FL03 <jo3mccain@icloud.com> (https://gitlab.com/FL03)", "Scattered-Systems (https://gitlab.com/scsys)"]
 categories = []
 description = "Algae is a collection of core algorithms and data-structures, written in Rust"
 edition = "2021"
-homepage = "https://github.com/scattered-systems/algae/wiki"
+homepage = "https://github.com/scattered-systems/algae/-/wiki"
 keywords = ["algorithms", "data-structures"]
 license = "MIT"
-name = "algae-core"
+name = "algae-merkle"
+readme = "README.md"
 repository = "https://github.com/scattered-systems/algae"
 version = "0.1.0" # TODO - Update the cargo package version
+
+[features]
 
 
 [lib]
@@ -16,7 +19,11 @@ crate-type = ["cdylib", "rlib"]
 test = true
 
 [dependencies]
-serde = { features = ["derive"], version = "1.0.145" }
+itertools = "0.10.5"
+serde = { features = ["derive"], version = "1.0.147" }
+sha2 = "0.10.6"
+
+
 
 [package.metadata.docs.rs]
 all-features = true

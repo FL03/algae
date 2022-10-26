@@ -39,8 +39,8 @@ pub struct BTree<T> {
 }
 
 impl<T> BTree<T>
-    where
-        T: Ord + Copy + std::fmt::Debug + Default,
+where
+    T: Ord + Copy + std::fmt::Debug + Default,
 {
     pub fn new(branch_factor: usize) -> Self {
         let degree = 2 * branch_factor;
@@ -87,7 +87,7 @@ impl<T> BTree<T>
     }
 }
 
-struct BTreeProps {
+pub struct BTreeProps {
     degree: usize,
     max_keys: usize,
     mid_key_index: usize,

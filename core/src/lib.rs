@@ -5,7 +5,8 @@
        ... Summary ...
 */
 #[doc(inline)]
-pub use crate::{actors::*, core::*};
+pub use crate::{actors::*, core::*, data::*};
 
-mod actors;
-mod core;
+pub(crate) mod actors;
+pub(crate) mod core;
+pub(crate) mod data;

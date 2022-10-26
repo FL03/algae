@@ -1,6 +1,6 @@
 # algae
 
-[![Analysis](https://github.com/scattered-systems/algae/actions/workflows/rust-clippy.yml/badge.svg)](https://github.com/scattered-systems/algae/actions/workflows/rust-clippy.yml)
+[![Rust Clippy](https://github.com/scattered-systems/algae/actions/workflows/rust-clippy.yml/badge.svg)](https://github.com/scattered-systems/algae/actions/workflows/rust-clippy.yml)
 [![Rust](https://github.com/scattered-systems/algae/actions/workflows/rust.yml/badge.svg)](https://github.com/scattered-systems/algae/actions/workflows/rust.yml)
 
 ## Developers
@@ -14,6 +14,9 @@
     cargo build --release
     cargo test --all-features --release
 
-### References
+### Resources
 
+* [Crate.io](https://crates.io/crates/algae)
 * [Docs](https://docs.rs/algae)
+
+#### _References_
