@@ -3,11 +3,11 @@ authors = ["FL03 <jo3mccain@icloud.com>"]
 categories = []
 description = "Algae is a collection of core algorithms and data-structures, written in Rust"
 edition = "2021"
-homepage = "https://gitlab.com/scsys/lib/crates/algae/-/wiki"
+homepage = "https://github.com/scattered-systems/algaewiki"
 keywords = ["algorithms", "data-structures"]
 license = "MIT"
 name = "algae-macros"
-repository = "https://gitlab.com/scsys/lib/crates/algae"
+repository = "https://github.com/scattered-systems/algae"
 version = "0.1.10" # TODO - Update the cargo package version
 
 [lib]
