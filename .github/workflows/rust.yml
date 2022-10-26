@@ -36,7 +36,8 @@ jobs:
     - uses: actions/checkout@v3
     - name: Publish
       run: |
-        cargo publish -p algae-core --all-features --job 1
-        cargo publish -p algae-derive --all-features --job 1
-        cargo publish -p algae-macros --all-features --job 1
+        cargo publish -p algae-core --job 1
+        cargo publish -p algae-derive --job 1
+        cargo publish -p algae-macros --job 1
+        cargo publish -p algae-merkle --job 1
         cargo publish -p algae --all-features --job 1
