@@ -3,14 +3,14 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: ... Summary ...
 */
-use super::{combine, merkle_hash};
+use super::{combine, leaves::Leaf, merkle_hash};
 use scsys::crypto::hashes::H256;
 use serde::{Deserialize, Serialize};
 use std::string::ToString;
 
 #[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 pub enum MerklePayload<T: ToString> {
-    Leaf(T),
+    Leaf(Leaf<T>),
     Node(Box<MerkleNode<T>>, Box<MerkleNode<T>>),
 }
 
@@ -38,7 +38,7 @@ impl<T: ToString> std::convert::From<(MerkleNode<T>, MerkleNode<T>)> for MerkleN
 impl<T: ToString> std::convert::From<T> for MerkleNode<T> {
     fn from(data: T) -> Self {
         let hash = merkle_hash(data.to_string());
-        let data = MerklePayload::Leaf(data);
+        let data = MerklePayload::Leaf(Leaf::new(data));
         Self::new(data, hash)
     }
 }

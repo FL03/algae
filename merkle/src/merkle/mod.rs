@@ -12,9 +12,11 @@ pub(crate) mod nodes;
 pub(crate) mod tree;
 
 pub(crate) mod utils {
-    use super::nodes::{MerkleNode, MerklePayload};
+    use super::{
+        leaves::Leaf,
+        nodes::{MerkleNode, MerklePayload},
+    };
     use scsys::crypto::hashes::H256;
-    use serde::Serialize;
     use sha2::{Digest, Sha256};
     use std::string::ToString;
 
@@ -22,9 +24,21 @@ pub(crate) mod utils {
         format!("{}{}", a.to_string(), b.to_string())
     }
 
-    pub fn hasher<T: serde::Serialize>(data: T) -> Vec<u8> {
+    pub struct Hasher<T: Clone + ToString> {
+        pub data: T,
+        pub hash: Vec<u8>,
+    }
+
+    impl<T: Clone + ToString> Hasher<T> {
+        pub fn new(data: T) -> Self {
+            let hash = hasher(data.clone());
+            Self { data, hash }
+        }
+    }
+
+    pub fn hasher<T: ToString>(data: T) -> Vec<u8> {
         let mut hasher = Sha256::new();
-        hasher.update(serde_json::to_string(&data).unwrap().as_bytes());
+        hasher.update(data.to_string().as_bytes());
         hasher.finalize().as_slice().to_owned()
     }
 
@@ -37,15 +51,15 @@ pub(crate) mod utils {
 
     pub fn new_leaf<T>(val: T) -> MerkleNode<T>
     where
-        T: ToString,
+        T: Clone + ToString,
     {
         MerkleNode {
-            hash: merkle_hash(val.to_string()),
-            data: MerklePayload::Leaf(val),
+            hash: merkle_hash(val.clone()),
+            data: MerklePayload::Leaf(Leaf::new(val)),
         }
     }
 
-    pub fn merkle_hash<T: Serialize>(data: T) -> H256 {
-        hasher(hasher(data)).into()
+    pub fn merkle_hash<T: ToString>(data: T) -> H256 {
+        hasher(compute_hash(data)).into()
     }
 }
