@@ -4,6 +4,7 @@
     Description: ... Summary ...
 */
 use super::{combine, merkle_hash};
+use scsys::crypto::hashes::H256;
 use serde::{Deserialize, Serialize};
 use std::string::ToString;
 
@@ -16,11 +17,11 @@ pub enum MerklePayload<T: ToString> {
 #[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 pub struct MerkleNode<T: ToString> {
     pub data: MerklePayload<T>,
-    pub hash: String,
+    pub hash: H256,
 }
 
 impl<T: ToString> MerkleNode<T> {
-    pub fn new(data: MerklePayload<T>, hash: String) -> Self {
+    pub fn new(data: MerklePayload<T>, hash: H256) -> Self {
         Self { data, hash }
     }
 }
@@ -30,7 +31,7 @@ impl<T: ToString> std::convert::From<(MerkleNode<T>, MerkleNode<T>)> for MerkleN
         let concat = combine(&data.0.hash, &data.1.hash);
         let hash = merkle_hash(concat);
         let data = MerklePayload::Node(Box::new(data.0), Box::new(data.1));
-        Self::new(data, hash)
+        Self::new(data, H256::from(hash))
     }
 }
 
