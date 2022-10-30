@@ -16,8 +16,8 @@ mod tests {
         ];
 
         let content2 = content1.clone();
-        let tree1 = merkle::MerkleTree::<&str>::from(content1);
-        let tree2 = merkle::MerkleTree::<&str>::from(content2);
+        let tree1 = MerkleTree::<&str>::from(content1);
+        let tree2 = MerkleTree::<&str>::from(content2);
         assert_eq!(tree1.root_hash(), tree2.root_hash());
     }
 
@@ -45,8 +45,8 @@ mod tests {
             "TX:7194AB93AA95;SENDER:ACC3EEA3B4;RECIPIENT:28DB574BD0;AMOUNT:176.20",
         ];
 
-        let tree1 = merkle::MerkleTree::<&str>::from(content1);
-        let tree2 = merkle::MerkleTree::<&str>::from(content2);
+        let tree1 = MerkleTree::<&str>::from(content1);
+        let tree2 = MerkleTree::<&str>::from(content2);
         assert!(tree1.root_hash() != tree2.root_hash());
     }
 }
