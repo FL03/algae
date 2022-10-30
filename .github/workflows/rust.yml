@@ -23,15 +23,10 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build
       run: cargo build --release --verbose --workspace
-  test:
-    needs: [ build ]
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Run tests
+    - name: Test
       run: cargo test --all-features --release --verbose
   publish:
-    needs: [ build, login, test ]
+    needs: [ build, login ]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
