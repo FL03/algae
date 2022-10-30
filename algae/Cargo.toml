@@ -12,12 +12,10 @@ repository = "https://github.com/scattered-systems/algae"
 version = "0.1.12" # TODO - Update the cargo package version
 
 [features]
-default = ["core"]
-full = ["core", "derive", "macros"]
+default = ["core", "merkle"]
+full = ["core", "merkle"]
 
-core = ["algae-core"]
-derive = ["algae-derive"]
-macros = ["algae-macros"]
+core = []
 merkle = ["algae-merkle"]
 
 [lib]
@@ -25,25 +23,10 @@ bench = false
 crate-type = ["cdylib", "rlib"]
 test = true
 
-[dependencies.algae-core]
-optional = true
-path = "../core"
-version = "0.1.0"
-
-[dependencies.algae-derive]
-optional = true
-path = "../derive"
-version = "0.1.10"
-
-[dependencies.algae-macros]
-optional = true
-path = "../macros"
-version = "0.1.10"
-
 [dependencies.algae-merkle]
 optional = true
 path = "../merkle"
-version = "0.1.0"
+version = "0.1.12"
 
 [package.metadata.docs.rs]
 all-features = true

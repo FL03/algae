@@ -1,5 +1,5 @@
 /*
-    Appellation: merkle <module>
+    Appellation: leaves <module>
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: Implements the expected leaf element for composing merkle trees
 */

@@ -4,7 +4,7 @@ Contrib: FL03 <jo3mccain@icloud.com>
 Description:
     Merkle Tree def...
 */
-use super::{Layer, Leaf, Node};
+use super::components::{Layer, Leaf, Node};
 use serde::{Deserialize, Serialize};
 use std::string::ToString;
 
