@@ -7,6 +7,7 @@ pub use self::{merkle::MerkleTree, utils::*};
 
 pub mod components;
 pub(crate) mod merkle;
+pub mod mmr;
 pub mod proofs;
 
 pub(crate) mod utils {
