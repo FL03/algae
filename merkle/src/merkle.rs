@@ -5,6 +5,7 @@ Description:
     Merkle Tree def...
 */
 use super::components::{Layer, Leaf, Node};
+use scsys::prelude::{H256, Hashable};
 use serde::{Deserialize, Serialize};
 use std::string::ToString;
 
@@ -19,8 +20,8 @@ impl<T: ToString> MerkleTree<T> {
     pub fn new(leaves: Vec<Leaf<T>>, root: Node<T>) -> Self {
         Self { leaves, root }
     }
-    pub fn root_hash(&self) -> String {
-        self.root.hash.clone()
+    pub fn root_hash(&self) -> H256 {
+        self.root.hash()
     }
 }
 

@@ -12,3 +12,10 @@ pub enum Payload<T: ToString> {
     Leaf(Leaf<T>),
     Node(Box<Node<T>>, Box<Node<T>>),
 }
+
+impl<T: ToString> std::fmt::Display for Payload<T> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}", self)
+    }
+}
+

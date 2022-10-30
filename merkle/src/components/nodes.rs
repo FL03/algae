@@ -8,18 +8,25 @@ use crate::{
     components::{Leaf, Payload},
     merkle_hash,
 };
+use scsys::crypto::hash::{H256, Hashable};
 use serde::{Deserialize, Serialize};
 use std::string::ToString;
 
 #[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 pub struct Node<T: ToString> {
     pub data: Payload<T>,
-    pub hash: String,
+    pub hash: H256,
 }
 
 impl<T: ToString> Node<T> {
-    pub fn new(data: Payload<T>, hash: String) -> Self {
+    pub fn new(data: Payload<T>, hash: H256) -> Self {
         Self { data, hash }
+    }
+}
+
+impl<T: ToString> Hashable for Node<T> {
+    fn hash(&self) -> H256 {
+        merkle_hash(&self.data)
     }
 }
 
