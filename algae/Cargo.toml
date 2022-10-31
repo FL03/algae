@@ -12,11 +12,12 @@ repository = "https://github.com/scattered-systems/algae"
 version = "0.1.13" # TODO - Update the cargo package version
 
 [features]
-default = ["core", "merkle"]
-full = ["core", "merkle"]
+default = ["core"]
+full = ["core"]
 
-core = []
+core = ["merkle", "mmr"]
 merkle = ["algae-merkle"]
+mmr = ["algae-mmr"]
 
 [lib]
 bench = false
@@ -35,7 +36,7 @@ version = "0.1.13"
 
 [dependencies.algae-mmr]
 optional = true
-path = "../merkle"
+path = "../mmr"
 version = "0.1.13"
 
 
