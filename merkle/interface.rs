@@ -1,10 +1,10 @@
 /*
-Appellation: tree <merkle>
-Contrib: FL03 <jo3mccain@icloud.com>
-Description:
-    Merkle Tree def...
+    Appellation: tree <merkle>
+    Contrib: FL03 <jo3mccain@icloud.com>
+    Description:
+        Merkle Tree def...
 */
-use crate::cmps::{layers::Layer, leaves::Leaf, nodes::Node};
+use crate::components::{layers::Layer, leaves::Leaf, nodes::Node};
 use scsys::prelude::{Hashable, H256};
 use serde::{Deserialize, Serialize};
 use std::string::ToString;
