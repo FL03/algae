@@ -3,9 +3,8 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: ... Summary ...
 */
-use super::{leaves::Leaf, payloads::Payload};
-use crate::{combine, merkle_hash};
-use scsys::crypto::hash::{H256, Hashable};
+use crate::{cmps::{leaves::Leaf, payloads::Payload}, combine, merkle_hash};
+use scsys::crypto::hash::{Hashable, H256};
 use serde::{Deserialize, Serialize};
 use std::string::ToString;
 

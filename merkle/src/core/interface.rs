@@ -4,8 +4,8 @@ Contrib: FL03 <jo3mccain@icloud.com>
 Description:
     Merkle Tree def...
 */
-use super::misc::{Layer, Leaf, Node};
-use scsys::prelude::{H256, Hashable};
+use crate::cmps::{layers::Layer, leaves::Leaf, nodes::Node};
+use scsys::prelude::{Hashable, H256};
 use serde::{Deserialize, Serialize};
 use std::string::ToString;
 

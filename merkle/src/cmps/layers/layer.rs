@@ -4,7 +4,7 @@
     Description:
         Merkle Tree def...
 */
-use super::Node;
+use crate::cmps::nodes::Node;
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
 use std::string::ToString;
