@@ -3,7 +3,10 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: ... Summary ...
 */
-use crate::{cmps::{leaves::Leaf, payloads::Payload}, combine, merkle_hash};
+use crate::{
+    cmps::{leaves::Leaf, payloads::Payload},
+    combine, merkle_hash,
+};
 use scsys::crypto::hash::{Hashable, H256};
 use serde::{Deserialize, Serialize};
 use std::string::ToString;
