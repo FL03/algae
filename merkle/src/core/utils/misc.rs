@@ -3,7 +3,8 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description:
 */
-use scsys::prelude::{ring, Hash, H256};
+use blake3::hash;
+use scsys::prelude::{ring, H256};
 use std::string::ToString;
 
 ///
@@ -20,6 +21,6 @@ pub fn combine<T: ToString>(a: &T, b: &T) -> String {
 
 /// Takes the hash of the given information to the second degree
 pub fn merkle_hash<T: ToString>(data: T) -> H256 {
-    let res: Vec<u8> = Hash::from(Hash::new(data)).into();
-    res.into()
+    let res = hash(hash(data.to_string().as_bytes()).as_bytes());
+    res.as_bytes().into()
 }
