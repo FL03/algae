@@ -3,12 +3,8 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: ... Summary ...
 */
-use crate::{
-    combine,
-    components::{Leaf, Payload},
-    merkle_hash,
-};
-use scsys::crypto::hash::{H256, Hashable};
+use crate::{combine, merkle_hash, Leaf, Payload};
+use scsys::crypto::hash::{Hashable, H256};
 use serde::{Deserialize, Serialize};
 use std::string::ToString;
 

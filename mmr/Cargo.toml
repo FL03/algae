@@ -1,44 +1,37 @@
 [package]
 authors = ["FL03 <jo3mccain@icloud.com> (https://gitlab.com/FL03)", "Scattered-Systems (https://gitlab.com/scsys)"]
 categories = []
-description = "Algae is a collection of core algorithms and data-structures, written in Rust"
+description = "algae-mmr implements a general merkle mountain range intended for use in blockchain environments"
 edition = "2021"
 homepage = "https://github.com/scattered-systems/algae/wiki"
 keywords = ["algorithms", "data-structures"]
 license = "MIT"
-name = "algae"
+name = "algae-mmr"
 readme = "README.md"
 repository = "https://github.com/scattered-systems/algae"
 version = "0.1.13" # TODO - Update the cargo package version
 
 [features]
-default = ["core"]
-full = ["core"]
 
-core = ["merkle", "mmr"]
-merkle = ["algae-merkle"]
-mmr = ["algae-mmr"]
 
 [lib]
-bench = false
 crate-type = ["cdylib", "rlib"]
 test = true
 
 [dependencies]
-scsys = { features = ["full"], git = "https://github.com/scattered-systems/scsys", version = "0.1.23"}
+blake3 = "1.3.1"
+itertools = "0.10.5"
+generic-array = "0.14.6"
+hex = "0.4.3"
+scsys = { git = "https://github.com/scattered-systems/scsys", version = "0.1.23" }
 serde = { features = ["derive"], version = "1.0.147" }
 serde_json = "1.0.87"
+sha2 = "0.10.6"
+typenum = "1.15.0"
 
-[dependencies.algae-merkle]
-optional = true
-path = "../merkle"
-version = "0.1.13"
-
-[dependencies.algae-mmr]
-optional = true
-path = "../mmr"
-version = "0.1.13"
-
+[dev-dependencies]
+hex-literal = "0.3.4"
+vrf = "0.2.4"
 
 [package.metadata.docs.rs]
 all-features = true

@@ -1,4 +1,4 @@
-# algae-merkle
+# algae-mmr
 
 
 
@@ -7,10 +7,10 @@
 
 ### Examples
 
-    use algae::merkle::MerkleTree;
+    use algae::mmr::*;
 
     fn main() {
-        let merkle = MerkleTree:new();
+
     }
 
 ## References

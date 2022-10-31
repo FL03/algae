@@ -1,11 +1,12 @@
 /*
-    Appellation: cmps <module>
+    Appellation: node <module>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description: Implements the components of a merkle tree
+    Description: ... summary ...
 */
-pub use self::{layers::*, leaves::*, nodes::*, payloads::*};
+pub use self::{layers::*, leafs::*, nodes::*, payloads::*, trees::*};
 
 pub(crate) mod layers;
-pub(crate) mod leaves;
+pub(crate) mod leafs;
 pub(crate) mod nodes;
 pub(crate) mod payloads;
+pub(crate) mod trees;

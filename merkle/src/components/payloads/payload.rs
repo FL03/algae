@@ -3,7 +3,7 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: ... Summary ...
 */
-use super::{Leaf, Node};
+use crate::{Leaf, Node};
 use serde::{Deserialize, Serialize};
 use std::string::ToString;
 
@@ -18,4 +18,3 @@ impl<T: ToString> std::fmt::Display for Payload<T> {
         write!(f, "{}", self)
     }
 }
-

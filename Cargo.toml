@@ -5,7 +5,8 @@ default-members = [
 
 members = [
     "algae",
-    "merkle"
+    "merkle",
+    "mmr"
 ]
 
 [profile.dev]

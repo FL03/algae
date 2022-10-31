@@ -14,5 +14,5 @@ pub use algae_merkle as merkle;
 pub mod prelude {
 
     #[cfg(feature = "merkle")]
-    pub use super::merkle::{components::*, proofs::*};
+    pub use super::merkle::{};
 }

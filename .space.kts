@@ -4,11 +4,10 @@ job("Build and Publish Crates") {
             interpreter = "/bin/bash"
             content = """
                 cargo build --release
-                cargo publish --all-features -p algae-core  --jobs 1 --token ${'$'}CARGO_REGISTRY_TOKEN
-                cargo publish --all-features -p algae-derive  --jobs 1 --token ${'$'}CARGO_REGISTRY_TOKEN
-                cargo publish --all-features -p algae-macros  --jobs 1 --token ${'$'}CARGO_REGISTRY_TOKEN
-                cargo publish --all-features -p algae-merkle  --jobs 1 --token ${'$'}CARGO_REGISTRY_TOKEN
-                cargo publish --all-features -p algae  --jobs 1 --token ${'$'}CARGO_REGISTRY_TOKEN
+                cargo publish --all-features --jobs 1 --token ${'$'}CARGO_REGISTRY_TOKEN -p algae-merkle
+                cargo publish --all-features --jobs 1 --token ${'$'}CARGO_REGISTRY_TOKEN -p algae-mmr
+                cargo publish --all-features --jobs 1 --token ${'$'}CARGO_REGISTRY_TOKEN -p algae
+
             """
         }
     }
