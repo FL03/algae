@@ -1,12 +1,12 @@
 /*
-   Appellation: algae-merkle <library>
+   Appellation: algae-mmr <library>
    Creator: FL03 <jo3mccain@icloud.com>
    Description:
 */
-pub use self::{tree::*, utils::*};
+pub use self::{core::*, utils::*};
 
+pub(crate) mod core;
 pub mod proofs;
-pub(crate) mod tree;
 
 pub(crate) mod utils {
     use scsys::crypto::hash::{H256, Hashable, Hash};

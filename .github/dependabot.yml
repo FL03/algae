@@ -12,3 +12,7 @@ updates:
     directory: /merkle
     schedule:
       interval: daily
+  - package-ecosystem: cargo
+    directory: /mmr
+    schedule:
+      interval: daily
