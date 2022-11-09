@@ -4,20 +4,20 @@
     Description:
         Merkle Tree def...
 */
-use crate::components::{layers::Layer, leaves::Leaf, nodes::Node};
+use crate::components::{layers::Layer, nodes::Node};
 use scsys::prelude::{Hashable, H256};
 use serde::{Deserialize, Serialize};
 use std::string::ToString;
 
 /// Implements a complete merkle tree
 #[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
-pub struct MerkleTree<T: ToString> {
-    pub leaves: Vec<Leaf<T>>,
+pub struct Tree<T: ToString> {
+    pub leaves: Vec<T>,
     pub root: Node<T>,
 }
 
-impl<T: ToString> MerkleTree<T> {
-    pub fn new(leaves: Vec<Leaf<T>>, root: Node<T>) -> Self {
+impl<T: ToString> Tree<T> {
+    pub fn new(leaves: Vec<T>, root: Node<T>) -> Self {
         Self { leaves, root }
     }
     pub fn root_hash(&self) -> H256 {
@@ -25,12 +25,12 @@ impl<T: ToString> MerkleTree<T> {
     }
 }
 
-impl<II: IntoIterator> std::convert::From<II> for MerkleTree<II::Item>
+impl<II: IntoIterator> std::convert::From<II> for Tree<II::Item>
 where
     <II as IntoIterator>::Item: Clone + ToString,
 {
     fn from(data: II) -> Self {
-        let leaves = data.into_iter().map(Leaf::new).collect::<Vec<Leaf<_>>>();
+        let leaves = data.into_iter().collect::<Vec<_>>();
 
         let mut layer: Vec<_> = leaves.iter().cloned().map(Node::from).collect();
 

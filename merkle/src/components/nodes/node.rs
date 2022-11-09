@@ -3,7 +3,7 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: ... Summary ...
 */
-use crate::{combine, merkle_hash, Leaf, Payload};
+use crate::{combine, merkle_hash, Payload};
 use scsys::crypto::hash::{Hashable, H256};
 use serde::{Deserialize, Serialize};
 use std::string::ToString;
@@ -34,14 +34,9 @@ impl<T: ToString> std::convert::From<(Node<T>, Node<T>)> for Node<T> {
     }
 }
 
-impl<T: Clone + ToString> std::convert::From<Leaf<T>> for Node<T> {
-    fn from(data: Leaf<T>) -> Self {
-        Self::new(Payload::Leaf(Leaf::from(&data)), merkle_hash(data))
+impl<T: Clone + ToString> std::convert::From<T> for Node<T> {
+    fn from(data: T) -> Self {
+        Self::new(Payload::from(data.clone()), merkle_hash(data))
     }
 }
 
-impl<T: Clone + ToString> std::convert::From<T> for Node<T> {
-    fn from(data: T) -> Self {
-        Self::new(Payload::Leaf(Leaf::new(data.clone())), merkle_hash(data))
-    }
-}

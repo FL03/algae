@@ -40,9 +40,8 @@ mod tests {
         let data: Vec<H256> = gen_merkle_tree_data!();
         let expected =
             (hex!("6b787718210e0b3b608814e04e61fde06d0df794319a12162f287412df3ec920")).into();
-        let a = MerkleTree::from(data);
-        let root = a.root();
-        assert_eq!(&root, &expected);
+        let a = MerkleTree::from(data.clone());
+        assert_eq!(&a.root(), &expected);
     }
 
     /*
