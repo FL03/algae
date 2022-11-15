@@ -1,5 +1,5 @@
 /*
-   Appellation: graph <module>
+   Appellation: graph <module> [directed]
    Contrib: FL03 <jo3mccain@icloud.com>
    Description:
 */
