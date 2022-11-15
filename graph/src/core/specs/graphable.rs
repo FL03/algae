@@ -18,8 +18,9 @@ pub trait Graphable: Clone + Default {
             });
     }
     fn add_node(&mut self, node: &str) -> bool {
-        if self.contains(node) == false {
-            self.adjacency_table_mutable().insert((*node).to_string(), Vec::new());
+        if !self.contains(node) {
+            self.adjacency_table_mutable()
+                .insert((*node).to_string(), Vec::new());
             return true;
         }
         false

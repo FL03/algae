@@ -7,15 +7,18 @@ pub use self::graph::*;
 
 pub(crate) mod graph;
 
-
 #[cfg(test)]
 mod tests {
     use crate::{directed::DirectedGraph, Graphable};
 
     #[test]
     fn test_add_node() {
-        let tmp = ["a", "b", "c"].iter().cloned().map(String::from).collect::<Vec<_>>();
-        
+        let tmp = ["a", "b", "c"]
+            .iter()
+            .cloned()
+            .map(String::from)
+            .collect::<Vec<_>>();
+
         let mut graph = DirectedGraph::default();
         graph.add_node("a");
         graph.add_node("b");

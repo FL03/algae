@@ -11,9 +11,7 @@ pub use algae_merkle as merkle;
 #[cfg(feature = "mmr")]
 pub use algae_mmr as mmr;
 
-
 pub mod trees;
-
 
 pub mod prelude {
     #[cfg(feature = "graph")]

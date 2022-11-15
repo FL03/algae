@@ -9,11 +9,11 @@ pub(crate) mod core;
 pub mod proofs;
 
 pub(crate) mod utils {
-    use scsys::crypto::hash::{Hash, Hashable, H256};
+    use scsys::crypto::hash::{Hash, H256};
     use std::string::ToString;
 
     pub fn merkle_hash<T: ToString>(data: T) -> H256 {
-        let res: Vec<u8> = Hash::from(Hash::new(data)).into();
+        let res: Vec<u8> = Hash::new(data).into();
         res.into()
     }
 

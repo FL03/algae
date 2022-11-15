@@ -39,4 +39,3 @@ impl<T: Clone + ToString> std::convert::From<T> for Node<T> {
         Self::new(Payload::from(data.clone()), merkle_hash(data))
     }
 }
-

@@ -24,4 +24,3 @@ impl<T: Clone + ToString> std::convert::From<T> for Payload<T> {
         Self::Leaf(data)
     }
 }
-

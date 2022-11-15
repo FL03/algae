@@ -8,7 +8,7 @@ pub use self::{nullnode::*, types::*};
 pub(crate) mod nullnode;
 
 pub(crate) mod types {
-   use std::collections::HashMap;
+    use std::collections::HashMap;
 
-   pub type AdjacencyHashTable<T = String> = HashMap<T, Vec<(T, i32)>>;
+    pub type AdjacencyHashTable<T = String> = HashMap<T, Vec<(T, i32)>>;
 }

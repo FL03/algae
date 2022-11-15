@@ -20,5 +20,5 @@ pub fn proof_path(index: usize, size: usize) -> Vec<usize> {
         pos /= 2;
         leaf_size /= 2;
     }
-    return ans;
+    ans
 }

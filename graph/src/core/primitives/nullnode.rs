@@ -5,7 +5,9 @@
 */
 use serde::{Deserialize, Serialize};
 
-#[derive(Copy, Clone, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(
+    Copy, Clone, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
+)]
 pub struct NodeNotInGraph;
 
 impl std::fmt::Display for NodeNotInGraph {

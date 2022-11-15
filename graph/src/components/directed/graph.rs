@@ -19,4 +19,3 @@ impl Graphable for DirectedGraph {
         &self.adjacency_table
     }
 }
-
