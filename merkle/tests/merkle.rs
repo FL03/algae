@@ -77,8 +77,6 @@ mod tests {
             index,
             data.len()
         ));
-        //  is the hash of
-        //
     }
 
     #[test]
