@@ -20,7 +20,7 @@ impl<T: ToString> Node<T> {
     }
 }
 
-impl<T: ToString> Hashable for Node<T> {
+impl<T: Serialize + ToString> Hashable for Node<T> {
     fn hash(&self) -> H256 {
         merkle_hash(&self.data)
     }
@@ -34,7 +34,7 @@ impl<T: ToString> std::convert::From<(Node<T>, Node<T>)> for Node<T> {
     }
 }
 
-impl<T: Clone + ToString> std::convert::From<T> for Node<T> {
+impl<T: Clone + Serialize + ToString> std::convert::From<T> for Node<T> {
     fn from(data: T) -> Self {
         Self::new(Payload::from(data.clone()), merkle_hash(data))
     }

@@ -11,12 +11,12 @@ use std::string::ToString;
 
 /// Implements a complete merkle tree
 #[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
-pub struct Tree<T: ToString> {
+pub struct Tree<T: Serialize + ToString> {
     pub leaves: Vec<T>,
     pub root: Node<T>,
 }
 
-impl<T: ToString> Tree<T> {
+impl<T: Serialize + ToString> Tree<T> {
     pub fn new(leaves: Vec<T>, root: Node<T>) -> Self {
         Self { leaves, root }
     }
@@ -27,7 +27,7 @@ impl<T: ToString> Tree<T> {
 
 impl<II: IntoIterator> std::convert::From<II> for Tree<II::Item>
 where
-    <II as IntoIterator>::Item: Clone + ToString,
+    <II as IntoIterator>::Item: Clone + Serialize + ToString,
 {
     fn from(data: II) -> Self {
         let leaves = data.into_iter().collect::<Vec<_>>();
@@ -35,7 +35,7 @@ where
         let mut layer: Vec<_> = leaves.iter().cloned().map(Node::from).collect();
 
         while layer.len() != 1 {
-            layer = Layer::new(layer).into();
+            layer = Layer::from(layer).layer().clone();
         }
 
         match layer.pop() {

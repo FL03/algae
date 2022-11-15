@@ -13,9 +13,9 @@ pub enum Payload<T: ToString> {
     Node(Box<Node<T>>, Box<Node<T>>),
 }
 
-impl<T: ToString> std::fmt::Display for Payload<T> {
+impl<T: Serialize + ToString> std::fmt::Display for Payload<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self)
+        write!(f, "{}", serde_json::to_string(&self).unwrap())
     }
 }
 

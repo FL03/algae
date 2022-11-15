@@ -3,9 +3,8 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description:
 */
-use blake3::hash;
-use scsys::prelude::{ring, H256};
-use std::string::ToString;
+use scsys::prelude::{hasher, ring, H256};
+use serde::Serialize;
 
 ///
 pub fn add_hash(a: &H256, b: &H256) -> H256 {
@@ -20,7 +19,10 @@ pub fn combine<T: ToString>(a: &T, b: &T) -> String {
 }
 
 /// Takes the hash of the given information to the second degree
-pub fn merkle_hash<T: ToString>(data: T) -> H256 {
-    let res = hash(hash(data.to_string().as_bytes()).as_bytes());
-    res.as_bytes().into()
+pub fn merkle_hash<T: Serialize + ToString>(data: T) -> H256 {
+    let res: H256 = {
+        let tmp: H256 = hasher(&data).as_slice().to_owned().into();
+        hasher(&tmp).as_slice().to_owned().into()
+    };
+    res
 }

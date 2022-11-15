@@ -25,10 +25,13 @@ impl<T: ToString> Layer<T> {
 
         Self(layer.collect::<Vec<_>>())
     }
+    pub fn layer(&self) -> &Vec<Node<T>> {
+        &self.0
+    }
 }
 
-impl<T: ToString> std::convert::Into<Vec<Node<T>>> for Layer<T> {
-    fn into(self) -> Vec<Node<T>> {
-        self.0
+impl<T: ToString> std::convert::From<Vec<Node<T>>> for Layer<T> {
+    fn from(data: Vec<Node<T>>) -> Self {
+        Self::new(data)
     }
 }
