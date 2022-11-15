@@ -66,7 +66,7 @@ mod tests {
             assert!(!graph.contains("d"));
         }
     }
-    
+
     mod undirected_graph_tests {
         use algae::graphs::{undirected::UndirectedGraph, Graphable};
         #[test]
