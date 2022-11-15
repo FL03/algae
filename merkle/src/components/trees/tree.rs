@@ -19,11 +19,6 @@ impl MerkleTree {
     pub fn new(dim: MerkleDimension, nodes: Vec<H256>) -> Self {
         Self { dim, nodes }
     }
-    pub fn create<T: Hashable>(data: &[T]) -> Self {
-        let (dim, nodes) = create_merkle_tree(data);
-
-        Self::new(dim.into(), nodes)
-    }
     // Returns the proof for the given index
     pub fn proof(&self, index: usize) -> Vec<H256> {
         merkle_proof(self.dim.clone(), self.nodes.clone(), index)
