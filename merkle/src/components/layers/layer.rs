@@ -35,3 +35,9 @@ impl<T: ToString> std::convert::From<Vec<Node<T>>> for Layer<T> {
         Self::new(data)
     }
 }
+
+impl<T: ToString> std::convert::From<(Node<T>, Node<T>)> for Layer<T> {
+    fn from(data: (Node<T>, Node<T>)) -> Self {
+        Self::new(vec![data.0, data.1])
+    }
+}
