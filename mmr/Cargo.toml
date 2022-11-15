@@ -19,6 +19,7 @@ crate-type = ["cdylib", "rlib"]
 test = true
 
 [dependencies]
+digest = "0.10.5"
 hex = "0.4.3"
 itertools = "0.10.5"
 scsys = { git = "https://github.com/scattered-systems/scsys", version = "0.1.26" }
