@@ -9,7 +9,7 @@ license = "MIT"
 name = "algae-merkle"
 readme = "README.md"
 repository = "https://github.com/scattered-systems/algae"
-version = "0.1.13" # TODO - Update the cargo package version
+version = "0.1.15" # TODO - Update the cargo package version
 
 [features]
 
