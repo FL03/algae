@@ -1,8 +1,7 @@
-job("Login & Test (crates)") {
+job("(algae) Rust: Build and test workspace") {
     startOn {
         gitPush { 
             branchFilter {
-                +"refs/heads/main"
                 +"refs/tags/v*.*.*"
             }
         }
@@ -20,7 +19,7 @@ job("Login & Test (crates)") {
     }
 }
 
-job("Publish (crates)") {
+job("(algae) Rust: Publish crates") {
     startOn {
         gitPush { 
             branchFilter {
@@ -35,6 +34,7 @@ job("Publish (crates)") {
             interpreter = "/bin/bash"
             content = """
                 cargo build --release
+                cargo publish --all-features --jobs 1 --token ${'$'}CARGO_REGISTRY_TOKEN -p algae-graph
                 cargo publish --all-features --jobs 1 --token ${'$'}CARGO_REGISTRY_TOKEN -p algae-merkle
                 cargo publish --all-features --jobs 1 --token ${'$'}CARGO_REGISTRY_TOKEN -p algae-mmr
                 cargo publish --all-features --jobs 1 --token ${'$'}CARGO_REGISTRY_TOKEN -p algae
