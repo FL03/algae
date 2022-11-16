@@ -9,16 +9,16 @@
 /// This function is an iterative function as we might have to subtract the largest left_most tree.
 pub fn is_node_right(index: usize) -> bool {
     let mut height_counter = 0;
-    while index >= ((1 << height_counter + 2) - 2) {
+    while index >= ((1 << (height_counter + 2)) - 2) {
         // find the height of the tree by finding if we can subtract the  height +1
         height_counter += 1;
     }
-    let height_index = (1 << height_counter + 1) - 2;
+    let height_index = (1 << (height_counter + 1)) - 2;
     if index == height_index {
         // If this is the first peak then subtracting the height of first peak will be 0
         return false;
     };
-    if index == (height_index + ((1 << height_counter + 1) - 1)) {
+    if index == (height_index + ((1 << (height_counter + 1)) - 1)) {
         // we are looking if its the right sibling
         return true;
     };
@@ -31,16 +31,16 @@ pub fn is_node_right(index: usize) -> bool {
 /// This function is an iterative function as we might have to subtract the largest left_most tree.
 pub fn get_node_height(index: usize) -> usize {
     let mut height_counter = 0;
-    while index >= ((1 << height_counter + 2) - 2) {
+    while index >= ((1 << (height_counter + 2)) - 2) {
         // find the height of the tree by finding if we can subtract the  height +1
         height_counter += 1;
     }
-    let height_index = (1 << height_counter + 1) - 2;
+    let height_index = (1 << (height_counter + 1)) - 2;
     if index == height_index {
         // If this is the first peak then subtracting the height of first peak will be 0
         return height_counter;
     };
-    if index == (height_index + ((1 << height_counter + 1) - 1)) {
+    if index == (height_index + ((1 << (height_counter + 1)) - 1)) {
         // we are looking if its the right sibling
         return height_counter;
     };
@@ -52,7 +52,7 @@ pub fn get_node_height(index: usize) -> usize {
 /// This function takes in the index and calculates the index of the sibling.
 pub fn sibling_index(index: usize) -> usize {
     let height = get_node_height(index);
-    let index_count = (1 << height + 1) - 1;
+    let index_count = (1 << (height + 1)) - 1;
     if is_node_right(index) {
         index - index_count
     } else {

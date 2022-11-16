@@ -1,7 +1,7 @@
 /*
-Appellation: cmps <module>
-Contrib: FL03 <jo3mccain@icloud.com>
-Description:
+    Appellation: cmps <module>
+    Contrib: FL03 <jo3mccain@icloud.com>
+    Description: ... summary ...
 */
 
 use scsys::prelude::H256;

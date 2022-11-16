@@ -1,65 +1,56 @@
 /*
     Appellation: mmr <module>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description:
+    Description: ... summary ...
 */
-use crate::{nodes::MerkleNode, is_node_right, sibling_index};
+use crate::{
+    is_node_right, nodes::MerkleNode, payloads::RangeMap, positions::Position, sibling_index,
+};
 use digest::Digest;
-use scsys::prelude::{H256, Hashable};
-use std::{collections::HashMap, marker::PhantomData};
+use scsys::prelude::{hasher, Hashable, H256};
+use serde::{Deserialize, Serialize};
+use std::convert::From;
 
-
-pub struct MerkleMountainRange<T, D>
-where
-    T: Hashable,
-    D: Digest,
-{
-    // todo convert these to a bitmap
-    mmr: Vec<MerkleNode>,
-    data: HashMap<H256, T>,
-    hasher: PhantomData<D>,
-    current_peak_height: (usize, usize), // we store a tuple of peak height,index
+#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+pub struct MerkleMountainRange<T: Hashable> {
+    data: RangeMap<T>,
+    mmr: Vec<MerkleNode>, // todo convert these to a bitmap
+    position: Position,
 }
 
-impl<T, D> MerkleMountainRange<T, D>
-where
-    T: Hashable,
-    D: Digest,
-{
-    /// This function creates a new empty Merkle Mountain Range
-    pub fn new() -> MerkleMountainRange<T, D> {
-        MerkleMountainRange {
-            mmr: Vec::new(),
-            data: HashMap::new(),
-            hasher: PhantomData,
-            current_peak_height: (0, 0),
+impl<T: Hashable> MerkleMountainRange<T> {
+    pub fn new(mmr: Vec<MerkleNode>, data: RangeMap<T>, position: Position) -> Self {
+        Self {
+            mmr,
+            data,
+            position,
         }
     }
 
     /// This function returns a reference to the data stored in the mmr
     /// It will return none if the hash does not exist
     pub fn get_object(&self, hash: &H256) -> Option<&T> {
-        self.data.get(hash)
+        self.data.0.get(hash)
     }
 
     /// This function returns a mut reference to the data stored in the MMR
     /// It will return none if the hash does not exist
     pub fn get_mut_object(&mut self, hash: &H256) -> Option<&mut T> {
-        self.data.get_mut(hash)
+        self.data.0.get_mut(hash)
     }
 
     pub fn get_hash(&self, index: usize) -> Option<H256> {
         if index > self.get_last_added_index() {
             return None;
         };
-        Some(self.mmr[index].hash.clone())
+        Some(self.mmr[index].hash)
     }
 
     /// This function returns the hash proof tree of a given hash.
     /// If the given hash is not in the tree, the vec will be empty.
     /// The Vec will be created in form of the Lchild-Rchild-parent(Lchild)-Rchild-parent-..
     /// This pattern will be repeated until the parent is the root of the MMR
-    pub fn get_hash_proof(&self, hash: &H256) -> Vec<H256> {
+    pub fn get_hash_proof<D: Digest>(&self, hash: &H256) -> Vec<H256> {
         let mut result = Vec::new();
         let mut i = self.mmr.len();
         for counter in 0..self.mmr.len() {
@@ -73,7 +64,7 @@ where
         };
         self.get_ordered_hash_proof(i, &mut result);
 
-        if self.current_peak_height.1 == self.get_last_added_index() {
+        if self.position.index == self.get_last_added_index() {
             // we know there is no bagging as the mmr is a balanced binary tree
             return result;
         }
@@ -86,32 +77,32 @@ where
             // siblings. This loop tracks from bottom of the peaks, so we keep going up until we hit a known
             // point, we then add the missing sibling from that point
             if was_on_correct_height {
-                result.push(peaks[i - 2].clone());
-                result.push(peaks[i - 1].clone());
+                result.push(peaks[i - 2]);
+                result.push(peaks[i - 1]);
             } else if peaks[i - 1] == result[result.len() - 1] {
-                result.insert(result.len() - 1, peaks[i - 2].clone());
+                result.insert(result.len() - 1, peaks[i - 2]);
                 was_on_correct_height = true;
             } else if peaks[i - 2] == result[result.len() - 1] {
-                result.push(peaks[i - 1].clone());
+                result.push(peaks[i - 1]);
                 was_on_correct_height = true;
             }
 
             let mut hasher = D::new();
-            hasher.input(&peaks[i - 2]);
-            hasher.input(&peaks[i - 1]);
-            peaks[i - 2] = hasher.result().to_vec();
+            hasher.update(peaks[i - 2]);
+            hasher.update(peaks[i - 1]);
+            peaks[i - 2] = hasher.finalize().to_vec().into();
             i -= 1;
         }
         // lets calculate the final new peak
         let mut hasher = D::new();
-        hasher.input(&self.mmr[self.current_peak_height.1].hash);
-        hasher.input(&peaks[0]);
+        hasher.update(self.mmr[self.position.index].hash);
+        hasher.update(peaks[0]);
         if was_on_correct_height {
             // edge case, our node is in the largest peak, we have already added it
-            result.push(self.mmr[self.current_peak_height.1].hash.clone());
+            result.push(self.mmr[self.position.index].hash);
         }
-        result.push(peaks[0].clone());
-        result.push(hasher.result().to_vec());
+        result.push(peaks[0]);
+        result.push(hasher.finalize().to_vec().into());
 
         result
     }
@@ -124,15 +115,15 @@ where
         let mut next_index = index + 1;
         if sibling >= self.mmr.len() {
             // we are at a peak
-            results.push(self.mmr[index].hash.clone());
+            results.push(self.mmr[index].hash);
             return;
         }
         if sibling < index {
-            results.push(self.mmr[sibling].hash.clone());
-            results.push(self.mmr[index].hash.clone());
+            results.push(self.mmr[sibling].hash);
+            results.push(self.mmr[index].hash);
         } else {
-            results.push(self.mmr[index].hash.clone());
-            results.push(self.mmr[sibling].hash.clone());
+            results.push(self.mmr[index].hash);
+            results.push(self.mmr[sibling].hash);
             next_index = sibling + 1;
         }
         self.get_ordered_hash_proof(next_index, results);
@@ -142,15 +133,15 @@ where
     /// similar proof. This function will return true if the proof is valid
     /// If the order does not match Lchild-Rchild-parent(Lchild)-Rchild-parent-.. the validation will fail
     /// This function will only succeed if the given hash is of height 0
-    pub fn verify_proof(&self, hashes: &Vec<H256>) -> bool {
-        if hashes.len() == 0 {
+    pub fn verify_proof<D: Digest>(&self, hashes: &Vec<H256>) -> bool {
+        if hashes.is_empty() {
             return false;
         }
         if self.get_object(&hashes[0]).is_none() && self.get_object(&hashes[1]).is_none() {
             // we only want to search for valid object's proofs, either 0 or 1 must be a valid object
             return false;
         }
-        let proof = self.get_hash_proof(&hashes[0]);
+        let proof = self.get_hash_proof::<D>(&hashes[0]);
         hashes.eq(&proof)
     }
 
@@ -158,76 +149,76 @@ where
     fn calc_peak_height(&self) -> (usize, usize) {
         let mut height_counter = 0;
         let mmr_len = self.get_last_added_index();
-        let mut index: usize = (1 << height_counter + 2) - 2;
+        let mut index: usize = (1 << (height_counter + 2)) - 2;
         let mut actual_height_index = 0;
         while mmr_len >= index {
             // find the height of the tree by finding if we can subtract the  height +1
             height_counter += 1;
             actual_height_index = index;
-            index = (1 << height_counter + 2) - 2;
+            index = (1 << (height_counter + 2)) - 2;
         }
         (height_counter, actual_height_index)
     }
 
     /// This function returns the peak height of the mmr
     pub fn get_peak_height(&self) -> usize {
-        self.current_peak_height.0
+        self.position.height
     }
 
     /// This function will return the single merkle root of the MMR.
-    pub fn get_merkle_root(&self) -> H256 {
+    pub fn get_merkle_root<D: Digest>(&self) -> H256 {
         let mut peaks = self.bag_mmr();
         let mut i = peaks.len();
         while i > 1 {
             // lets bag all the other peaks
             let mut hasher = D::new();
-            hasher.input(&peaks[i - 2]);
-            hasher.input(&peaks[i - 1]);
-            peaks[i - 2] = hasher.result().to_vec();
+            hasher.update(peaks[i - 2]);
+            hasher.update(peaks[i - 1]);
+            peaks[i - 2] = hasher.finalize().to_vec().into();
             i -= 1;
         }
-        if peaks.len() > 0 {
+        if !peaks.is_empty() {
             // if there was other peaks, lets bag them with the highest peak
             let mut hasher = D::new();
-            hasher.input(&self.mmr[self.current_peak_height.1].hash);
-            hasher.input(&peaks[0]);
-            return hasher.result().to_vec();
+            hasher.update(self.mmr[self.position.index].hash);
+            hasher.update(peaks[0]);
+            return hasher.finalize().to_vec().into();
         }
         // there was no other peaks, return the highest peak
-        return self.mmr[self.current_peak_height.1].hash.clone();
+        self.mmr[self.position.index].hash
     }
 
     /// This function adds a vec of leaf nodes to the mmr.
-    pub fn add_vec(&mut self, objects: Vec<T>) {
+    pub fn add_vec<D: Digest>(&mut self, objects: Vec<T>) {
         for object in objects {
-            self.add_single(object);
+            self.add_single::<D>(object);
         }
     }
 
     /// This function adds a new leaf node to the mmr.
-    pub fn add_single(&mut self, object: T) {
+    pub fn add_single<D: Digest>(&mut self, object: T) {
         let node_hash = object.hash();
-        let node = MerkleNode::from(node_hash.clone());
-        self.data.insert(node_hash, object);
+        let node = MerkleNode::from(node_hash);
+        self.data.0.insert(node_hash, object);
         self.mmr.push(node);
         if is_node_right(self.get_last_added_index()) {
-            self.add_single_no_leaf(self.get_last_added_index())
+            self.add_single_no_leaf::<D>(self.get_last_added_index())
         }
     }
 
     // This function adds non leaf nodes, eg nodes that are not directly a hash of data
     // This is iterative and will continue to up and till it hits the top, will be a future left child
-    fn add_single_no_leaf(&mut self, index: usize) {
+    fn add_single_no_leaf<D: Digest>(&mut self, index: usize) {
         let mut hasher = D::new();
-        hasher.input(&self.mmr[sibling_index(index)].hash);
-        hasher.input(&self.mmr[index].hash);
-        let new_hash = hasher.result().to_vec();
+        hasher.update(self.mmr[sibling_index(index)].hash);
+        hasher.update(self.mmr[index].hash);
+        let new_hash: H256 = hasher.finalize().to_vec().into();
         let new_node = MerkleNode::from(new_hash);
         self.mmr.push(new_node);
         if is_node_right(self.get_last_added_index()) {
-            self.add_single_no_leaf(self.get_last_added_index())
+            self.add_single_no_leaf::<D>(self.get_last_added_index())
         } else {
-            self.current_peak_height = self.calc_peak_height(); // because we have now stopped adding right nodes, we need to update the height of the mmr
+            self.position = self.calc_peak_height().into(); // because we have now stopped adding right nodes, we need to update the height of the mmr
         }
     }
 
@@ -239,25 +230,33 @@ where
     fn bag_mmr(&self) -> Vec<H256> {
         // lets find all peaks of the mmr
         let mut peaks = Vec::new();
-        self.find_bagging_indexes(
-            self.current_peak_height.0 as i64,
-            self.current_peak_height.1,
-            &mut peaks,
-        );
+        self.find_bagging_indexes(self.position.height as i64, self.position.index, &mut peaks);
         peaks
     }
 
     fn find_bagging_indexes(&self, mut height: i64, index: usize, peaks: &mut Vec<H256>) {
-        let mut new_index = index + (1 << height + 1) - 1; // go the potential right sibling
+        let mut new_index = index + (1 << (height + 1)) - 1; // go the potential right sibling
         while (new_index > self.get_last_added_index()) && (height > 0) {
             // lets go down left child till we hit a valid node or we reach height 0
-            new_index = new_index - (1 << height);
+            new_index -= 1 << height;
             height -= 1;
         }
         if (new_index <= self.get_last_added_index()) && (height >= 0) {
             // is this a valid peak which needs to be bagged
-            peaks.push(self.mmr[new_index].hash.clone());
+            peaks.push(self.mmr[new_index].hash);
             self.find_bagging_indexes(height, new_index, peaks); // lets go look for more peaks
         }
+    }
+}
+
+impl<T: Hashable + ToString + Serialize> Hashable for MerkleMountainRange<T> {
+    fn hash(&self) -> H256 {
+        hasher(&self).as_slice().to_owned().into()
+    }
+}
+
+impl<T: Hashable + Serialize> std::fmt::Display for MerkleMountainRange<T> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", serde_json::to_string(&self).unwrap())
     }
 }
