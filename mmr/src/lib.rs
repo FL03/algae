@@ -3,10 +3,9 @@
    Contrib: FL03 <jo3mccain@icloud.com>
    Description:
 */
-pub use self::{builder::*, cmps::*, core::*};
+pub use self::{actors::*, cmps::*, core::*, data::*};
 
-pub(crate) mod builder;
+pub(crate) mod actors;
 pub(crate) mod cmps;
 pub(crate) mod core;
-pub mod mmr;
-pub mod proofs;
+pub(crate) mod data;
