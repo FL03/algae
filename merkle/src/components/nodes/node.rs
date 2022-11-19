@@ -4,11 +4,11 @@
     Description: ... Summary ...
 */
 use crate::{combine, merkle_hash, Payload};
-use scsys::crypto::hash::{Hashable, H256};
+use scsys::prelude::{H256, Hashable};
 use serde::{Deserialize, Serialize};
 use std::string::ToString;
 
-#[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Node<T: ToString> {
     pub data: Payload<T>,
     pub hash: H256,
