@@ -4,7 +4,7 @@
     Description: ... summary ...
 */
 use scsys::crypto::{hasher, H256};
-use scsys::prelude::{Hashable};
+use scsys::prelude::Hashable;
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, convert::From};
 

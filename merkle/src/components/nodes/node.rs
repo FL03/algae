@@ -4,7 +4,7 @@
     Description: ... Summary ...
 */
 use crate::{combine, merkle_hash, Payload};
-use scsys::prelude::{H256, Hashable};
+use scsys::prelude::{Hashable, H256};
 use serde::{Deserialize, Serialize};
 use std::string::ToString;
 
@@ -40,7 +40,10 @@ impl<T: Clone + Serialize + ToString> std::convert::From<T> for Node<T> {
     }
 }
 
-impl<T> std::fmt::Display for Node<T> where T: Serialize + ToString {
+impl<T> std::fmt::Display for Node<T>
+where
+    T: Serialize + ToString,
+{
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", serde_json::to_string(&self).unwrap())
     }

@@ -4,7 +4,7 @@
     Description: ... summary ...
 */
 use crate::MerkleMountainRange;
-use scsys::prelude::{Hashable};
+use scsys::prelude::Hashable;
 
 pub struct MerkleMountainRangeBuilder<T: Hashable> {
     pub mmr: MerkleMountainRange<T>,
