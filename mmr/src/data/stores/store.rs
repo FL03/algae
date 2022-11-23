@@ -54,7 +54,7 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use scsys::actors::generate::generate_random_string;
+    use scsys::gen::generate_random_string;
     use std::ops::Range;
     #[test]
     fn test_store_default() {

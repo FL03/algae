@@ -13,7 +13,17 @@ pub enum Payload<T: ToString> {
     Node(Box<Node<T>>, Box<Node<T>>),
 }
 
-impl<T: Serialize + ToString> std::fmt::Display for Payload<T> {
+impl<T> Payload<T> where T: ToString {
+    pub fn new_leaf(data: T) -> Self {
+        Self::Leaf(data)
+    }
+    pub fn new_node(left: Box<Node<T>>, right: Box<Node<T>>) -> Self {
+        Self::Node(left, right)
+    }
+}
+
+
+impl<T> std::fmt::Display for Payload<T> where T: Serialize + ToString {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "{}", serde_json::to_string(&self).unwrap())
     }
@@ -22,5 +32,11 @@ impl<T: Serialize + ToString> std::fmt::Display for Payload<T> {
 impl<T: Clone + ToString> std::convert::From<T> for Payload<T> {
     fn from(data: T) -> Self {
         Self::Leaf(data)
+    }
+}
+
+impl<T> std::convert::From<(Box<Node<T>>, Box<Node<T>>)> for Payload<T> where T: ToString {
+    fn from(data: (Box<Node<T>>, Box<Node<T>>)) -> Self {
+        Self::new_node(data.0, data.1)
     }
 }

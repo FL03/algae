@@ -4,11 +4,11 @@
     Description: ... Summary ...
 */
 use crate::{combine, merkle_hash, Payload};
-use scsys::prelude::{H256};
+use scsys::prelude::{H256, Hashable};
 use serde::{Deserialize, Serialize};
 use std::string::ToString;
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 pub struct Node<T: ToString> {
     pub data: Payload<T>,
     pub hash: H256,
@@ -37,5 +37,11 @@ impl<T: ToString> std::convert::From<(Node<T>, Node<T>)> for Node<T> {
 impl<T: Clone + Serialize + ToString> std::convert::From<T> for Node<T> {
     fn from(data: T) -> Self {
         Self::new(Payload::from(data.clone()), merkle_hash(data))
+    }
+}
+
+impl<T> std::fmt::Display for Node<T> where T: Serialize + ToString {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", serde_json::to_string(&self).unwrap())
     }
 }

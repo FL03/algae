@@ -10,7 +10,7 @@ mod tests {
     */
     use algae_merkle::{is_merkle_valid, MerkleTree, MerkleTreeWrapper};
     use hex_literal::hex;
-    use scsys::crypto::hash::{Hashable, H256};
+    use scsys::prelude::{Hashable, H256};
 
     macro_rules! gen_merkle_tree_data {
         () => {{

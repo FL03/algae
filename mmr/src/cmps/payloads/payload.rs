@@ -3,7 +3,7 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: ... summary ...
 */
-use scsys::crypto::hash::{hasher, H256};
+use scsys::crypto::{hasher, H256};
 use scsys::prelude::{Hashable};
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, convert::From};
