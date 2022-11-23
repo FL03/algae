@@ -22,8 +22,12 @@ test = true
 hex = "0.4.3"
 itertools = "0.10.5"
 log = "0.4.17"
+<<<<<<< Updated upstream
 ring = { features = ["wasm32_c"], version = "0.16.20" }
 scsys = { features = ["full"], version = "0.1.28" }
+=======
+scsys = { features = ["full"], version = "0.1.32" }
+>>>>>>> Stashed changes
 serde = { features = ["derive"], version = "1.0.147" }
 serde_json = "1.0.88"
 
