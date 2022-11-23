@@ -22,11 +22,7 @@ test = true
 digest = "0.10.5"
 hex = "0.4.3"
 itertools = "0.10.5"
-<<<<<<< Updated upstream
-scsys = { features = ["full"], version = "0.1.28" }
-=======
 scsys = { features = ["full"], version = "0.1.32" }
->>>>>>> Stashed changes
 serde = { features = ["derive"], version = "1.0.147" }
 serde_json = "1.0.88"
 

@@ -26,11 +26,7 @@ crate-type = ["cdylib", "rlib"]
 test = true
 
 [dependencies]
-<<<<<<< Updated upstream
-scsys = { features = [], version = "0.1.28" }
-=======
 scsys = { features = ["full"], version = "0.1.32" }
->>>>>>> Stashed changes
 serde = { features = ["derive"], version = "1.0.147" }
 serde_json = "1.0.88"
 
