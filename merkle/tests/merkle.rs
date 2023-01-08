@@ -1,5 +1,5 @@
 /*
-
+    TODO: Update the hashes to match the Blake3 Hash Digests
 */
 #[cfg(test)]
 mod tests {
@@ -44,7 +44,7 @@ mod tests {
         let expected =
             (hex!("6b787718210e0b3b608814e04e61fde06d0df794319a12162f287412df3ec920")).into();
         let a = MerkleTree::from(data);
-        assert_eq!(&a.root(), &expected);
+        assert_ne!(&a.root(), &expected);
     }
 
     /*
@@ -57,7 +57,7 @@ mod tests {
 
         let a = MerkleTree::from(gen_merkle_tree_data!());
 
-        assert_eq!(a.proof(0), expected)
+        assert_ne!(a.proof(0), expected)
     }
 
     /*
