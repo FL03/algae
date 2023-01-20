@@ -4,7 +4,7 @@
     Description: ... summary ...
 */
 
-use scsys::prelude::H256;
+use decanter::prelude::H256;
 use serde::{Deserialize, Serialize};
 use std::convert::From;
 

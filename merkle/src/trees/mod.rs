@@ -9,7 +9,7 @@ pub(crate) mod interface;
 pub(crate) mod tree;
 
 use crate::{proofs::merkle_proof, MerkleDimension, MerkleShape};
-use scsys::prelude::{Hashable, H256};
+use decanter::prelude::{Hashable, H256};
 
 pub trait MerkleTreeWrapper {
     fn new(dim: MerkleDimension, nodes: Vec<H256>) -> Self;
@@ -45,7 +45,7 @@ pub trait MerkleTreeWrapperExt: MerkleTreeWrapper {
 }
 pub(crate) mod utils {
     use crate::{add_hash, MerkleDimension, MerkleShape};
-    use scsys::prelude::{Hashable, H256};
+    use decanter::prelude::{Hashable, H256};
 
     pub fn create_merkle_tree<T>(data: &[T]) -> (Box<dyn MerkleShape>, Vec<H256>)
     where

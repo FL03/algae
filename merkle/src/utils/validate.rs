@@ -4,7 +4,7 @@
     Description:
 */
 use crate::{add_hash, proofs::proof_path};
-use scsys::prelude::H256;
+use decanter::prelude::H256;
 
 /// Verify that the datum hash with a vector of proofs will produce the Merkle root. Also need the
 /// index of datum and `leaf_size`, the total number of leaves.

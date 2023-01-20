@@ -9,21 +9,30 @@ license = "Apache-2.0"
 name = "algae-merkle"
 readme = "README.md"
 repository = "https://github.com/scattered-systems/algae"
-version = "0.1.16" # TODO - Update the cargo package version
+version = "0.1.17" # TODO - Update the cargo package version
 
 [features]
-
+default = [
+    "ring/default"
+]
+wasm = [
+    "decanter/wasm",
+    "ring/wasm32_c"
+]
 
 [lib]
 crate-type = ["cdylib", "rlib"]
 test = true
 
 [dependencies]
+decanter = { features = ["derive", "wasm"], version = "0.1.2" }
+# scsys = { features = ["full"], version = "0.1.40" }
+
+anyhow = "1"
 hex = "0.4"
 itertools = "0.10"
 log = "0.4"
-ring = { features = ["wasm32_c"], version = "0.16.20" }
-scsys = { features = ["full"], version = "0.1.40" }
+ring = { features = ["wasm32_c"], version = "0.16" }
 serde = { features = ["derive"], version = "1" }
 serde_json = "1"
 
