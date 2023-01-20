@@ -6,8 +6,14 @@
 #[cfg(test)]
 extern crate hex_literal;
 #[doc(inline)]
-pub use self::{components::*, core::*, data::*};
+pub use self::{layers::*, nodes::*, payloads::*, primitives::*, shape::*, trees::*, utils::*};
 
-pub(crate) mod components;
-pub(crate) mod core;
-pub(crate) mod data;
+pub(crate) mod layers;
+pub(crate) mod nodes;
+pub(crate) mod payloads;
+pub(crate) mod primitives;
+pub(crate) mod shape;
+pub(crate) mod trees;
+pub(crate) mod utils;
+
+pub mod proofs;

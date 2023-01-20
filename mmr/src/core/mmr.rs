@@ -6,8 +6,8 @@
 use crate::{
     is_node_right, nodes::MerkleNode, payloads::RangeMap, positions::Position, sibling_index,
 };
+use decanter::prelude::{hasher, Hashable, H256};
 use digest::Digest;
-use scsys::prelude::{hasher, Hashable, H256};
 use serde::{Deserialize, Serialize};
 use std::convert::From;
 

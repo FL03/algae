@@ -5,7 +5,7 @@
 */
 use super::path::proof_path;
 use crate::MerkleDimension;
-use scsys::prelude::H256;
+use decanter::prelude::H256;
 
 // Returns the proof for the given index
 pub fn merkle_proof(dim: MerkleDimension, nodes: Vec<H256>, index: usize) -> Vec<H256> {

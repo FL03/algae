@@ -3,7 +3,7 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description:
 */
-use scsys::prelude::{hasher, H256};
+use decanter::prelude::{hasher, H256};
 use serde::Serialize;
 
 ///

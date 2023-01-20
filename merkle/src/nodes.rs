@@ -4,7 +4,7 @@
     Description: ... Summary ...
 */
 use crate::{combine, merkle_hash, Payload};
-use scsys::prelude::{Hashable, H256};
+use decanter::prelude::{Hashable, H256};
 use serde::{Deserialize, Serialize};
 use std::string::ToString;
 

@@ -5,7 +5,6 @@
 */
 pub use self::{mmr::*, primitives::*, utils::*};
 
-pub mod errors;
 pub(crate) mod mmr;
 pub(crate) mod utils;
 

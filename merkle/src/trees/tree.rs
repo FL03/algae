@@ -7,7 +7,7 @@ use crate::{
     create_merkle_tree, proofs::merkle_proof, MerkleDimension, MerkleShape, MerkleTreeWrapper,
     MerkleTreeWrapperExt,
 };
-use scsys::prelude::{Hashable, H256};
+use decanter::prelude::{Hashable, H256};
 
 #[derive(Debug, Default)]
 pub struct MerkleTree {
