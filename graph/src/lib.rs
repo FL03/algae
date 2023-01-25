@@ -4,11 +4,10 @@
    Description:
 */
 #[doc(inline)]
-pub use self::{errors::*, graphable::*, nodes::*, primitives::*, utils::*};
+pub use self::{errors::*, graphable::*, primitives::*, utils::*};
 
 pub(crate) mod errors;
 pub(crate) mod graphable;
-pub(crate) mod nodes;
 pub(crate) mod primitives;
 pub(crate) mod utils;
 
