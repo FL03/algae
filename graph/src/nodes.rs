@@ -8,10 +8,15 @@ use serde::{Deserialize, Serialize};
 #[derive(
     Copy, Clone, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
 )]
-pub struct NodeNotInGraph;
+pub enum Nodes {
+    #[default]
+    NotInGraph,
+}
 
-impl std::fmt::Display for NodeNotInGraph {
+impl std::fmt::Display for Nodes {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "accessing a node that is not in the graph")
+        match self.clone() {
+            Self::NotInGraph => write!(f, "accessing a node that is not in the graph"),
+        }
     }
 }

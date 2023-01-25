@@ -3,7 +3,7 @@
    Contrib: FL03 <jo3mccain@icloud.com>
    Description:
 */
-use crate::{AdjacencyHashTable, NodeNotInGraph};
+use crate::{AdjacencyHashTable, Errors};
 use std::collections::HashSet;
 
 pub trait Graphable: Clone + Default {
@@ -39,9 +39,9 @@ pub trait Graphable: Clone + Default {
         }
         edges
     }
-    fn neighbours(&self, node: &str) -> Result<&Vec<(String, i32)>, NodeNotInGraph> {
+    fn neighbours(&self, node: &str) -> Result<&Vec<(String, i32)>, Errors> {
         match self.adjacency_table().get(node) {
-            None => Err(NodeNotInGraph),
+            None => Err(Errors::NodeNotInGraph),
             Some(i) => Ok(i),
         }
     }
