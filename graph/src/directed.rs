@@ -28,6 +28,14 @@ impl<N: Node, V: Clone> Graph<N, V> for DirectedGraph<N, V> {
     }
 }
 
+impl<N: Node, V: Clone> From<AdjacencyTable<N, V>> for DirectedGraph<N, V> {
+    fn from(adjacency_table: AdjacencyTable<N, V>) -> Self {
+        Self {
+            adjacency_table
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
