@@ -1,22 +1,33 @@
 /*
-   Appellation: errors <module>
-   Contrib: FL03 <jo3mccain@icloud.com>
-   Description:
+    Appellation: errors <module>
+    Contrib: FL03 <jo3mccain@icloud.com>
+    Description: ... Summary ...
 */
 use serde::{Deserialize, Serialize};
+use smart_default::SmartDefault;
+use strum::{Display, EnumString, EnumVariantNames};
 
 #[derive(
-    Copy, Clone, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
+    Clone,
+    Copy,
+    Debug,
+    Deserialize,
+    Display,
+    EnumString,
+    EnumVariantNames,
+    Eq,
+    Hash,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    Serialize,
+    SmartDefault,
 )]
-pub enum Errors {
+#[strum(serialize_all = "snake_case")]
+pub enum GraphError {
+    NodeInGraph,
     #[default]
     NodeNotInGraph,
 }
 
-impl std::fmt::Display for Errors {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        match self.clone() {
-            Self::NodeNotInGraph => write!(f, "accessing a node that is not in the graph"),
-        }
-    }
-}
+impl std::error::Error for GraphError {}
