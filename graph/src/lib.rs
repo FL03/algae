@@ -67,3 +67,9 @@ pub trait Graph<N: Node = String, V: Clone = i64>: Clone {
         self.adjacency_table().keys().cloned().collect()
     }
 }
+
+pub trait Subgraph<N: Node = String, V: Clone = i64>: Graph<N, V> {
+    fn is_subgraph(&self, graph: impl Graph<N, V>) -> bool {
+        self.nodes().is_subset(&graph.nodes())
+    }
+}
