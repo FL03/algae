@@ -40,6 +40,7 @@ impl<N: Node, V: Clone> Graph<N, V> for UndirectedGraph<N, V> {
 }
 
 impl<N: Node, V: Clone> Subgraph<N, V> for UndirectedGraph<N, V> {}
+
 impl<N: Node, V: Clone> From<AdjacencyTable<N, V>> for UndirectedGraph<N, V> {
     fn from(adjacency_table: AdjacencyTable<N, V>) -> Self {
         Self { adjacency_table }

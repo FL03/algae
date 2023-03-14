@@ -42,6 +42,9 @@ impl<N: Node, V> AdjacencyTable<N, V> {
     pub fn clear(&mut self) {
         self.0.clear()
     }
+    pub fn contains_key(&self, key: &N) -> bool {
+        self.0.contains_key(key)
+    }
     pub fn drain(&mut self) -> hash_map::Drain<'_, N, Vec<(N, V)>> {
         self.0.drain()
     }
@@ -54,11 +57,27 @@ impl<N: Node, V> AdjacencyTable<N, V> {
     pub fn get(&self, key: &N) -> Option<&Vec<(N, V)>> {
         self.0.get(key)
     }
+    pub fn get_key_value(&self, key: &N) -> Option<(&N, &Vec<(N, V)>)> {
+        self.0.get_key_value(key)
+    }
+    pub fn get_mut(&mut self, key: &N) -> Option<&mut Vec<(N, V)>> {
+        self.0.get_mut(key)
+    }
     pub fn keys(&self) -> hash_map::Keys<N, Vec<(N, V)>> {
         self.0.keys()
     }
+    pub fn len(&self) -> usize {
+        self.0.len()
+    }
+
     pub fn table(self) -> HashMap<N, Vec<(N, V)>> {
         self.0
+    }
+    pub fn values(&self) -> hash_map::Values<N, Vec<(N, V)>> {
+        self.0.values()
+    }
+    pub fn values_mut(&mut self) -> hash_map::ValuesMut<N, Vec<(N, V)>> {
+        self.0.values_mut()
     }
 }
 
