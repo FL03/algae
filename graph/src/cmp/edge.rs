@@ -28,3 +28,9 @@ impl<N: Node, V: Clone> From<(N, N, V)> for Edge<N, V> {
         Self(data.0, data.1, data.2)
     }
 }
+
+impl<N: Node, V: Clone> From<(Pair<N>, V)> for Edge<N, V> {
+    fn from(data: (Pair<N>, V)) -> Self {
+        Self(data.0.0, data.0.1, data.1)
+    }
+}
