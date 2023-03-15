@@ -15,7 +15,9 @@ pub trait HashMapLike<K: Eq + std::hash::Hash, V>:
 {
     fn new() -> Self;
     fn capacity(&self) -> usize;
-    fn clear(&mut self);
+    fn clear(&mut self) {
+        self.table_mut().clear()
+    }
     fn drain(&mut self) -> hash_map::Drain<'_, K, V>;
     fn entry(&mut self, key: K) -> hash_map::Entry<'_, K, V> {
         self.table_mut().entry(key)
@@ -29,12 +31,23 @@ pub trait HashMapLike<K: Eq + std::hash::Hash, V>:
     fn table_mut(&mut self) -> &mut HashMap<K, V>;
 }
 
+pub struct KeyValue<K, V>(Vec<(K, Vec<V>)>);
+
+impl<K, V> KeyValue<K, V> {
+    pub fn new() -> Self {
+        Self(Vec::new())
+    }
+}
+
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct AdjacencyTable<N: Node, V>(HashMap<N, Vec<(N, V)>>);
 
 impl<N: Node, V> AdjacencyTable<N, V> {
     pub fn new() -> Self {
         Self(HashMap::new())
+    }
+    pub fn with_capacity(capacity: usize) -> Self {
+        Self(HashMap::with_capacity(capacity))
     }
     pub fn capacity(&self) -> usize {
         self.0.capacity()

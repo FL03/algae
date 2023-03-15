@@ -10,11 +10,11 @@ use super::{
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
-pub struct DirectedGraph<N: Node = String, V: Clone = i64> {
+pub struct DirectedGraph<N: Node = String, V: Clone + PartialEq = i64> {
     adjacency_table: AdjacencyTable<N, V>,
 }
 
-impl<N: Node, V: Clone> Graph<N, V> for DirectedGraph<N, V> {
+impl<N: Node, V: Clone + PartialEq> Graph<N, V> for DirectedGraph<N, V> {
     fn new() -> Self {
         Self {
             adjacency_table: AdjacencyTable::new(),
@@ -26,11 +26,16 @@ impl<N: Node, V: Clone> Graph<N, V> for DirectedGraph<N, V> {
     fn adjacency_table(&self) -> &AdjacencyTable<N, V> {
         &self.adjacency_table
     }
+    fn with_capacity(capacity: usize) -> Self {
+        Self {
+            adjacency_table: AdjacencyTable::with_capacity(capacity),
+        }
+    }
 }
 
-impl<N: Node, V: Clone> Subgraph<N, V> for DirectedGraph<N, V> {}
+impl<N: Node, V: Clone + PartialEq> Subgraph<N, V> for DirectedGraph<N, V> {}
 
-impl<N: Node, V: Clone> From<AdjacencyTable<N, V>> for DirectedGraph<N, V> {
+impl<N: Node, V: Clone + PartialEq> From<AdjacencyTable<N, V>> for DirectedGraph<N, V> {
     fn from(adjacency_table: AdjacencyTable<N, V>) -> Self {
         Self { adjacency_table }
     }
@@ -39,6 +44,9 @@ impl<N: Node, V: Clone> From<AdjacencyTable<N, V>> for DirectedGraph<N, V> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::cmp::Edge;
+
+    const TEST_EDGES: [(&str, &str, usize); 3] = [("a", "b", 5), ("c", "a", 7), ("b", "c", 10)];
 
     #[test]
     fn test_add_node() {
@@ -53,13 +61,11 @@ mod tests {
     fn test_add_edge() {
         let mut graph = DirectedGraph::new();
 
-        graph.add_edge(("a", "b", 5));
-        graph.add_edge(("c", "a", 7));
-        graph.add_edge(("b", "c", 10));
-
-        let expected_edges = [("a", "b", 5), ("c", "a", 7), ("b", "c", 10)];
-        for edge in expected_edges.iter() {
-            assert_eq!(graph.edges().contains(edge), true);
+        for i in TEST_EDGES {
+            graph.add_edge(i.into());
+        }
+        for edge in TEST_EDGES {
+            assert!(graph.contains_edge(&Edge::from(edge)));
         }
     }
 
@@ -67,9 +73,9 @@ mod tests {
     fn test_neighbours() {
         let mut graph = DirectedGraph::new();
 
-        graph.add_edge(("a", "b", 5));
-        graph.add_edge(("b", "c", 10));
-        graph.add_edge(("c", "a", 7));
+        for i in TEST_EDGES {
+            graph.add_edge(i.into());
+        }
 
         assert_eq!(graph.neighbours("a").unwrap(), &vec![("b", 5)]);
     }
@@ -80,9 +86,9 @@ mod tests {
         graph.add_node("a");
         graph.add_node("b");
         graph.add_node("c");
-        assert_eq!(graph.contains("a"), true);
-        assert_eq!(graph.contains("b"), true);
-        assert_eq!(graph.contains("c"), true);
-        assert_eq!(graph.contains("d"), false);
+        assert!(graph.contains_node(&"a"));
+        assert!(graph.contains_node(&"b"));
+        assert!(graph.contains_node(&"c"));
+        assert!(!graph.contains_node(&"d"));
     }
 }
