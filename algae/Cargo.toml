@@ -34,9 +34,9 @@ test = true
 [build-dependencies]
 
 [dependencies]
-algae-graph = { features = [], optional = true, path = "../graph", version = "0.1.18" }
-algae-merkle = { features = [], optional = true, path = "../merkle", version = "0.1.18" }
-algae-mmr = { features = [], optional = true, path = "../mmr", version = "0.1.18" }
+algae-graph = { features = [], optional = true, path = "../graph", version = "0.1.19" }
+algae-merkle = { features = [], optional = true, path = "../merkle", version = "0.1.19" }
+algae-mmr = { features = [], optional = true, path = "../mmr", version = "0.1.19" }
 
 decanter.workspace = true
 itertools.workspace = true
