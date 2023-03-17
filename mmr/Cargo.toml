@@ -1,38 +1,49 @@
 [package]
-authors = ["FL03 <jo3mccain@icloud.com> (https://gitlab.com/FL03)", "Scattered-Systems (https://gitlab.com/scsys)"]
+authors.workspace = true
 categories = []
-description = "algae-mmr implements a general merkle mountain range intended for use in blockchain environments"
-edition = "2021"
-homepage = "https://github.com/scattered-systems/algae/wiki"
+description.workspace = true
+edition.workspace = true
+homepage.workspace = true
 keywords = ["algorithms", "data-structures"]
-license = "Apache-2.0"
+license.workspace = true
 name = "algae-mmr"
-readme = "README.md"
-repository = "https://github.com/scattered-systems/algae"
-version = "0.1.17" # TODO - Update the cargo package version
+readme.workspace = true
+repository.workspace = true
+version.workspace = true
 
 [features]
-
+default = [
+    "decanter/derive"
+]
+wasm = [
+    "decanter/wasm"
+]
 
 [lib]
 crate-type = ["cdylib", "rlib"]
 test = true
 
 [dependencies]
-decanter = { features = ["derive"], version = "0.1.2" }
+decanter.workspace = true
+itertools.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+smart-default.workspace = true
+strum.workspace = true
 
 anyhow = "1"
 digest = "0.10"
 hex = "0.4"
-itertools = "0.10"
-serde = { features = ["derive"], version = "1" }
-serde_json = "1"
 
 [dev-dependencies]
-scsys = { default-features = false, features = ["gen"], version = "0.1.40" }
+scsys.workspace = true
 hex-literal = "0.3.4"
 vrf = "0.2.4"
 
 [package.metadata.docs.rs]
 all-features = true
 rustc-args = ["--cfg", "docsrs"]
+
+[target.wasm32-unknown-unknown]
+
+[target.wasm32-wasi]

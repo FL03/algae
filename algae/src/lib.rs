@@ -1,6 +1,6 @@
 /*
    Appellation: algae <library>
-   Creator: FL03 <jo3mccain@icloud.com>
+   Contrib: FL03 <jo3mccain@icloud.com>
    Description:
        Algae is a comprehensive collection of algorithms and data-structures
 */
@@ -11,7 +11,7 @@ pub use algae_merkle as merkle;
 #[cfg(feature = "mmr")]
 pub use algae_mmr as mmr;
 
-pub mod trees;
+pub mod list;
 
 pub mod prelude {
     #[cfg(feature = "graph")]

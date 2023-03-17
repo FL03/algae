@@ -1,51 +1,60 @@
 [package]
-authors = ["FL03 <jo3mccain@icloud.com> (https://gitlab.com/FL03)", "Scattered-Systems (https://gitlab.com/scsys)"]
+authors.workspace = true
 categories = []
-description = "Algae is a collection of core algorithms and data-structures, written in Rust"
-edition = "2021"
-homepage = "https://github.com/scattered-systems/algae/wiki"
+description.workspace = true
+edition.workspace = true
+homepage.workspace = true
 keywords = ["algorithms", "data-structures"]
-license = "Apache-2.0"
+license.workspace = true
 name = "algae"
-readme = "README.md"
-repository = "https://github.com/scattered-systems/algae"
-version = "0.1.17" # TODO - Update the cargo package version
+readme.workspace = true
+repository.workspace = true
+version.workspace = true
 
 [features]
-default = ["core", "graph", "merkle", "mmr"]
-full = ["core", "graph", "merkle", "mmr"]
+default = ["core"]
 
-core = ["merkle", "mmr"]
+core = [
+    "merkle", 
+    "mmr", 
+    "graph"
+]
+
 graph = ["algae-graph"]
 merkle = ["algae-merkle"]
 mmr = ["algae-mmr"]
+
+wasm = []
 
 [lib]
 bench = false
 crate-type = ["cdylib", "rlib"]
 test = true
 
+[build-dependencies]
+
 [dependencies]
-scsys = { features = ["full"], version = "0.1.40" }
-serde = { features = ["derive"], version = "1" }
-serde_json = "1"
+algae-graph = { features = [], optional = true, path = "../graph", version = "0.1.18" }
+algae-merkle = { features = [], optional = true, path = "../merkle", version = "0.1.18" }
+algae-mmr = { features = [], optional = true, path = "../mmr", version = "0.1.18" }
 
-[dependencies.algae-graph]
-optional = true
-path = "../graph"
-version = "0.1.17"
+decanter.workspace = true
+itertools.workspace = true
+scsys.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+smart-default.workspace = true
+strum.workspace = true
 
-[dependencies.algae-merkle]
-optional = true
-path = "../merkle"
-version = "0.1.17"
-
-[dependencies.algae-mmr]
-optional = true
-path = "../mmr"
-version = "0.1.17"
-
+[dev-dependencies]
+decanter.workspace = true
+hex-literal = "0.3"
+vrf = "0.2"
 
 [package.metadata.docs.rs]
 all-features = true
 rustc-args = ["--cfg", "docsrs"]
+
+[target.wasm32-unknown-unknown]
+
+[target.wasm32-wasi]
