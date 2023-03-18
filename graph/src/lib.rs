@@ -30,6 +30,12 @@ pub trait Graph<N: Node = String, V: Clone + PartialEq = i64>: Clone {
                 e.push((pair.1, edge.value()));
             });
     }
+    /// [Graph::add_edges] insert several edges into the graph
+    fn add_edges(&mut self, iter: impl IntoIterator<Item = Edge<N, V>>) {
+        for i in iter {
+            self.add_edge(i)
+        }
+    }
     /// [Graph::add_node] if the given [Node] is not already in the [Graph], insert the [Node] and return true; else return false
     fn add_node(&mut self, node: N) -> bool {
         match self.adjacency_table().get(&node) {
@@ -38,6 +44,12 @@ pub trait Graph<N: Node = String, V: Clone + PartialEq = i64>: Clone {
                 true
             }
             _ => false,
+        }
+    }
+    /// [Graph::add_nodes] insert several nodes into the graph
+    fn add_nodes(&mut self, iter: impl IntoIterator<Item = N>) {
+        for i in iter {
+            self.add_node(i);
         }
     }
     /// [Graph::adjacency_table_mut] returns an owned, mutable instance of the [AdjacencyTable]
