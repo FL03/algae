@@ -82,7 +82,6 @@ impl<N: Node, V> AdjacencyTable<N, V> {
     pub fn len(&self) -> usize {
         self.0.len()
     }
-
     pub fn table(self) -> HashMap<N, Vec<(N, V)>> {
         self.0
     }
