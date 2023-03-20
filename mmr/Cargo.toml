@@ -24,6 +24,7 @@ crate-type = ["cdylib", "rlib"]
 test = true
 
 [dependencies]
+anyhow.workspace = true
 decanter.workspace = true
 itertools.workspace = true
 serde.workspace = true
@@ -31,12 +32,11 @@ serde_json.workspace = true
 smart-default.workspace = true
 strum.workspace = true
 
-anyhow = "1"
 digest = "0.10"
 hex = "0.4"
 
 [dev-dependencies]
-scsys.workspace = true
+scsys = { features = [], version = "0.1.41" }
 hex-literal = "0.3.4"
 vrf = "0.2.4"
 

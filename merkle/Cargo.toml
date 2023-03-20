@@ -25,14 +25,12 @@ crate-type = ["cdylib", "rlib"]
 test = true
 
 [dependencies]
-anyhow = "1"
 hex = "0.4"
-log = "0.4"
 ring = { features = ["wasm32_c"], version = "0.16" }
 
+anyhow.workspace = true
 decanter.workspace = true
 itertools.workspace = true
-# scsys.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 smart-default.workspace = true
@@ -40,6 +38,7 @@ strum.workspace = true
 
 [dev-dependencies]
 hex-literal = "0.3"
+log = "0.4"
 vrf = "0.2"
 
 [package.metadata.docs.rs]
