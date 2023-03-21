@@ -4,8 +4,43 @@
    Description: ... Summary ...
 */
 use super::path::proof_path;
-use crate::MerkleDimension;
+use crate::{MerkleDimension, MerkleTree, MerkleTreeSpec};
 use decanter::prelude::H256;
+
+pub struct Prover {
+    cursor: usize,
+    proof: Vec<H256>,
+    tree: MerkleTree,
+}
+
+impl Prover {
+    pub fn new(tree: MerkleTree) -> Self {
+        Self {
+            cursor: 0,
+            proof: Vec::new(),
+            tree,
+        }
+    }
+    /// Returns the proof for the given index
+    pub fn prove(&mut self, index: usize) -> Vec<H256> {
+        self.proof = self.tree.proof(index);
+        self.proof.clone()
+    }
+}
+
+impl Iterator for Prover {
+    type Item = Vec<H256>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.cursor < self.proof.len() {
+            let item = self.prove(self.cursor);
+            self.cursor += 1;
+            Some(item)
+        } else {
+            None
+        }
+    }
+}
 
 // Returns the proof for the given index
 pub fn merkle_proof(dim: MerkleDimension, nodes: Vec<H256>, index: usize) -> Vec<H256> {

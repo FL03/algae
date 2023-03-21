@@ -4,7 +4,8 @@
     Description:
 */
 use crate::proofs::proof_path;
-use decanter::prelude::{hasher, H256};
+use crate::{MerkleDimension, MerkleShape};
+use decanter::prelude::{hasher, Hashable, H256};
 use serde::Serialize;
 
 ///
@@ -17,6 +18,39 @@ pub fn add_hash(a: &H256, b: &H256) -> H256 {
 /// Merges two hashes into a string
 pub fn combine<T: ToString>(a: &T, b: &T) -> String {
     format!("{}{}", a.to_string(), b.to_string())
+}
+/// Creates a Merkle tree from a slice of data
+pub fn create_merkle_tree<T>(data: &[T]) -> (Box<dyn MerkleShape>, Vec<H256>)
+where
+    T: Hashable,
+{
+    let mut length = data.len();
+    let mut nodes = Vec::new();
+    let mut last_level = Vec::new();
+    for i in data {
+        let h: H256 = i.hash();
+        last_level.push(h);
+        nodes.push(h);
+    }
+    let mut depth = 1;
+    while length > 1 {
+        if length % 2 != 0 {
+            last_level.push(data[length - 1].hash());
+            nodes.push(data[length - 1].hash());
+            length += 1;
+        }
+        let mut temp = Vec::new();
+        for i in 0..length / 2 {
+            let h: H256 = add_hash(&last_level[2 * i], &last_level[2 * i + 1]);
+            temp.push(h);
+            nodes.push(h);
+        }
+        last_level = temp.clone();
+        length /= 2;
+        depth += 1;
+    }
+    let dim = MerkleDimension::new(depth, data.len(), nodes.len());
+    (Box::new(dim), nodes)
 }
 
 /// Takes the hash of the given information to the second degree
