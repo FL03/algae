@@ -3,33 +3,10 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: an adjacency table
 */
-use crate::cmp::Node;
+use crate::Node;
 use serde::{Deserialize, Serialize};
 use std::collections::{hash_map, HashMap};
 use std::iter::Extend;
-
-pub trait HashMapLike<K: Eq + std::hash::Hash, V>:
-    Extend<(K, V)>
-    + FromIterator<(K, V)>
-    + IntoIterator<Item = (K, V), IntoIter = hash_map::IntoIter<K, V>>
-{
-    fn new() -> Self;
-    fn capacity(&self) -> usize;
-    fn clear(&mut self) {
-        self.table_mut().clear()
-    }
-    fn drain(&mut self) -> hash_map::Drain<'_, K, V>;
-    fn entry(&mut self, key: K) -> hash_map::Entry<'_, K, V> {
-        self.table_mut().entry(key)
-    }
-    fn insert(&mut self, key: K, val: V) -> Option<V>;
-    fn get(&self, key: &K) -> Option<&V>;
-    fn keys(&self) -> hash_map::Keys<K, V> {
-        self.table().keys()
-    }
-    fn table(&self) -> &HashMap<K, V>;
-    fn table_mut(&mut self) -> &mut HashMap<K, V>;
-}
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct AdjacencyTable<N: Node, V>(HashMap<N, Vec<(N, V)>>);

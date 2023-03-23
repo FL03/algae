@@ -7,7 +7,7 @@
 pub mod bfs;
 pub mod dfs;
 
-use crate::{cmp::Node, Contain, Graph};
+use crate::{Contain, Graph, Node};
 
 pub trait BreadthFirstSearchable<N: Node, V: Clone + PartialEq> {
     fn breadth_first_search(&self, start: N) -> Vec<N>;

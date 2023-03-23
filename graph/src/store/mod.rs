@@ -8,7 +8,7 @@ pub use self::{matrix::*, table::*};
 pub(crate) mod matrix;
 pub(crate) mod table;
 
-use crate::cmp::Node;
+use crate::Node;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]

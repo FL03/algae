@@ -3,7 +3,7 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: an adjacency table
 */
-use crate::cmp::Node;
+use crate::Node;
 use serde::{Deserialize, Serialize};
 use std::iter::Extend;
 

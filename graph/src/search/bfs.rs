@@ -3,7 +3,7 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: ... Summary ...
 */
-use crate::cmp::Node;
+use crate::Node;
 use crate::{Contain, Graph};
 use std::collections::{HashSet, VecDeque};
 

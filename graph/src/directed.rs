@@ -3,11 +3,7 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: ... Summary ...
 */
-use crate::{
-    cmp::{Edge, Node},
-    store::AdjacencyTable,
-    Contain, Graph, Subgraph,
-};
+use crate::{cmp::Edge, store::AdjacencyTable, Contain, Graph, Node, Subgraph};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]

@@ -3,7 +3,8 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: an edge consists of two nodes and an optional edge value
 */
-use super::{Node, Pair};
+use super::Pair;
+use crate::Node;
 use serde::{Deserialize, Serialize};
 
 pub trait Related<N: Node, V> {}

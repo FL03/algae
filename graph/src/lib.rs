@@ -3,9 +3,10 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: This library is dedicated to graphs, explicitly implementing generic directed and undirected data-structures while providing the tools to create new ones.
 */
-pub use self::{directed::*, undirected::*};
+pub use self::{directed::*, specs::*, undirected::*};
 
 pub(crate) mod directed;
+pub(crate) mod specs;
 pub(crate) mod undirected;
 
 pub mod cmp;
@@ -13,23 +14,10 @@ pub mod errors;
 pub mod search;
 pub mod store;
 
-use cmp::{Edge, Node};
+use cmp::Edge;
 use errors::GraphError;
 use std::collections::HashSet;
 use store::AdjacencyTable;
-
-pub trait Contain<T> {
-    /// [Contain::contains] returns true if the given element is in the [Contain] instance
-    fn contains(&self, elem: &T) -> bool;
-    /// [Contain::contains_many] returns true if all elements in the given iterator are in the [Contain] instance
-    fn contains_many(&self, iter: impl IntoIterator<Item = T>) -> bool {
-        iter.into_iter().all(|i| self.contains(&i))
-    }
-    /// [Contain::contains_some] returns true if any element in the given iterator is in the [Contain] instance
-    fn contains_some(&self, iter: impl IntoIterator<Item = T>) -> bool {
-        iter.into_iter().any(|i| self.contains(&i))
-    }
-}
 
 /// [Graph] describes the basic operations of a graph data-structure
 pub trait Graph<N = String, V = i64>: Clone + Contain<N> + Contain<Edge<N, V>>
