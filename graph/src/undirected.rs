@@ -78,21 +78,19 @@ impl<N: Node, V: Clone + PartialEq> std::ops::Index<N> for UndirectedGraph<N, V>
     type Output = Vec<(N, V)>;
 
     fn index(&self, index: N) -> &Self::Output {
-        self.store.get(&index).unwrap()
+        &self.store[index]
     }
 }
 
 impl<N: Node, V: Clone + PartialEq> std::ops::IndexMut<N> for UndirectedGraph<N, V> {
     fn index_mut(&mut self, index: N) -> &mut Self::Output {
-        self.store.get_mut(&index).unwrap()
+        self.store.index_mut(index)
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::Graph;
-    use super::UndirectedGraph;
-    use crate::cmp::Edge;
+    use super::*;
 
     const TEST_EDGES: [(&str, &str, usize); 3] = [("a", "b", 5), ("c", "a", 7), ("b", "c", 10)];
 
@@ -112,10 +110,10 @@ mod tests {
         for i in TEST_EDGES {
             graph.add_edge(i.into());
         }
-
-        for edge in EXPECTED {
-            assert!(graph.edges().contains(&Edge::from(edge)));
-        }
+        // assert that the graph contains all the edges
+        assert!(graph.contains_all(EXPECTED.into_iter().map(Edge::from).collect::<Vec<_>>()));
+        // assert that the graph can be indexed
+        assert_eq!(graph["a"], vec![("b", 5), ("c", 7)]);
     }
 
     #[test]
@@ -126,6 +124,6 @@ mod tests {
             graph.add_edge(i.into());
         }
 
-        assert_eq!(graph.neighbors("a").unwrap(), &vec![("b", 5), ("c", 7)]);
+        assert_eq!(graph["a"], vec![("b", 5), ("c", 7)]);
     }
 }

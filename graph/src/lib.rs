@@ -16,15 +16,12 @@ pub mod store;
 
 use cmp::Edge;
 use errors::GraphError;
-use std::{
-    collections::HashSet,
-    ops::{Index, IndexMut},
-};
+use std::{collections::HashSet, ops::IndexMut};
 use store::AdjacencyTable;
 
 /// [Graph] describes the basic operations of a graph data-structure
 pub trait Graph<N = String, V = i64>:
-    Clone + Contain<N> + Contain<Edge<N, V>> + Index<N> + IndexMut<N>
+    Clone + Contain<N> + Contain<Edge<N, V>> + IndexMut<N, Output = Vec<(N, V)>>
 where
     N: Node,
     V: Clone + PartialEq,
@@ -78,9 +75,10 @@ where
     }
     /// [Graph::neighbors] attempts to return a [Vec] that contains all of the connected [Node] and their values
     fn neighbors(&self, node: N) -> Result<&Vec<(N, V)>, GraphError> {
-        match self.store().get(&node) {
-            None => Err(GraphError::NodeNotInGraph),
-            Some(i) => Ok(i),
+        if self.nodes().contains(&node) {
+            Ok(&self[node])
+        } else {
+            Err(GraphError::NodeNotInGraph)
         }
     }
     /// [Graph::nodes] returns a cloned [HashSet] of the graph's current [Node]s

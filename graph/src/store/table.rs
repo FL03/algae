@@ -85,3 +85,17 @@ impl<N: Node, V> IntoIterator for AdjacencyTable<N, V> {
         self.0.into_iter()
     }
 }
+
+impl<N: Node, V> std::ops::Index<N> for AdjacencyTable<N, V> {
+    type Output = Vec<(N, V)>;
+
+    fn index(&self, index: N) -> &Self::Output {
+        self.0.get(&index).unwrap()
+    }
+}
+
+impl<N: Node, V> std::ops::IndexMut<N> for AdjacencyTable<N, V> {
+    fn index_mut(&mut self, index: N) -> &mut Self::Output {
+        self.0.get_mut(&index).unwrap()
+    }
+}

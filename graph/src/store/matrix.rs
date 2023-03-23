@@ -75,3 +75,25 @@ impl<N: Node, V: Clone + PartialEq> Extend<(N, Vec<(N, V)>)> for AdjacencyMatrix
         self.store.extend(iter);
     }
 }
+
+impl<N, V> std::ops::Index<N> for AdjacencyMatrix<N, V>
+where
+    N: Node,
+    V: Clone + PartialEq,
+{
+    type Output = Vec<(N, V)>;
+
+    fn index(&self, index: N) -> &Self::Output {
+        self.get(&index).unwrap()
+    }
+}
+
+impl<N, V> std::ops::IndexMut<N> for AdjacencyMatrix<N, V>
+where
+    N: Node,
+    V: Clone + PartialEq,
+{
+    fn index_mut(&mut self, index: N) -> &mut Self::Output {
+        self.get_mut(&index).unwrap()
+    }
+}
