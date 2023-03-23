@@ -73,6 +73,6 @@ mod tests {
         //
         dfs.search(graph, "a");
         //
-        assert!(dfs.contains_many(["b", "c", "a"]));
+        assert!(dfs.contains_all(["b", "c", "a"]));
     }
 }

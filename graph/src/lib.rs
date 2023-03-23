@@ -16,11 +16,15 @@ pub mod store;
 
 use cmp::Edge;
 use errors::GraphError;
-use std::collections::HashSet;
+use std::{
+    collections::HashSet,
+    ops::{Index, IndexMut},
+};
 use store::AdjacencyTable;
 
 /// [Graph] describes the basic operations of a graph data-structure
-pub trait Graph<N = String, V = i64>: Clone + Contain<N> + Contain<Edge<N, V>>
+pub trait Graph<N = String, V = i64>:
+    Clone + Contain<N> + Contain<Edge<N, V>> + Index<N> + IndexMut<N>
 where
     N: Node,
     V: Clone + PartialEq,

@@ -69,10 +69,22 @@ impl<N: Node, V: Clone + PartialEq> Graph<N, V> for UndirectedGraph<N, V> {
 impl<N: Node, V: Clone + PartialEq> Subgraph<N, V> for UndirectedGraph<N, V> {}
 
 impl<N: Node, V: Clone + PartialEq> From<AdjacencyTable<N, V>> for UndirectedGraph<N, V> {
-    fn from(adjacency_table: AdjacencyTable<N, V>) -> Self {
-        Self {
-            store: adjacency_table,
-        }
+    fn from(store: AdjacencyTable<N, V>) -> Self {
+        Self { store }
+    }
+}
+
+impl<N: Node, V: Clone + PartialEq> std::ops::Index<N> for UndirectedGraph<N, V> {
+    type Output = Vec<(N, V)>;
+
+    fn index(&self, index: N) -> &Self::Output {
+        self.store.get(&index).unwrap()
+    }
+}
+
+impl<N: Node, V: Clone + PartialEq> std::ops::IndexMut<N> for UndirectedGraph<N, V> {
+    fn index_mut(&mut self, index: N) -> &mut Self::Output {
+        self.store.get_mut(&index).unwrap()
     }
 }
 

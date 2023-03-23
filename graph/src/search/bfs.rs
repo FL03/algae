@@ -74,6 +74,6 @@ mod tests {
         }
         let mut bfs = BreadthFirstSearch::new();
         bfs.search(graph, "a");
-        assert!(bfs.contains_many(["b", "c", "a"]));
+        assert!(bfs.contains_all(["b", "c", "a"]));
     }
 }
