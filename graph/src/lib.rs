@@ -10,13 +10,33 @@ pub(crate) mod undirected;
 
 pub mod cmp;
 pub mod errors;
+pub mod search;
+pub mod store;
 
-use cmp::{AdjacencyTable, Edge, Node};
+use cmp::{Edge, Node};
 use errors::GraphError;
 use std::collections::HashSet;
+use store::AdjacencyTable;
+
+pub trait Contain<T> {
+    /// [Contain::contains] returns true if the given element is in the [Contain] instance
+    fn contains(&self, elem: &T) -> bool;
+    /// [Contain::contains_many] returns true if all elements in the given iterator are in the [Contain] instance
+    fn contains_many(&self, iter: impl IntoIterator<Item = T>) -> bool {
+        iter.into_iter().all(|i| self.contains(&i))
+    }
+    /// [Contain::contains_some] returns true if any element in the given iterator is in the [Contain] instance
+    fn contains_some(&self, iter: impl IntoIterator<Item = T>) -> bool {
+        iter.into_iter().any(|i| self.contains(&i))
+    }
+}
 
 /// [Graph] describes the basic operations of a graph data-structure
-pub trait Graph<N: Node = String, V: Clone + PartialEq = i64>: Clone {
+pub trait Graph<N = String, V = i64>: Clone + Contain<N> + Contain<Edge<N, V>>
+where
+    N: Node,
+    V: Clone + PartialEq,
+{
     fn new() -> Self;
     /// [Graph::add_edge] inserts a new [Edge] into the graph
     fn add_edge(&mut self, edge: Edge<N, V>) {
@@ -24,11 +44,9 @@ pub trait Graph<N: Node = String, V: Clone + PartialEq = i64>: Clone {
         self.add_node(pair.0.clone());
         self.add_node(pair.1.clone());
 
-        self.adjacency_table_mut()
-            .entry(pair.0.clone())
-            .and_modify(|e| {
-                e.push((pair.1, edge.value()));
-            });
+        self.store_mut().entry(pair.0.clone()).and_modify(|e| {
+            e.push((pair.1, edge.value()));
+        });
     }
     /// [Graph::add_edges] insert several edges into the graph
     fn add_edges(&mut self, iter: impl IntoIterator<Item = Edge<N, V>>) {
@@ -38,9 +56,9 @@ pub trait Graph<N: Node = String, V: Clone + PartialEq = i64>: Clone {
     }
     /// [Graph::add_node] if the given [Node] is not already in the [Graph], insert the [Node] and return true; else return false
     fn add_node(&mut self, node: N) -> bool {
-        match self.adjacency_table().get(&node) {
+        match self.store().get(&node) {
             None => {
-                self.adjacency_table_mut().insert(node, Vec::new());
+                self.store_mut().insert(node, Vec::new());
                 true
             }
             _ => false,
@@ -52,38 +70,30 @@ pub trait Graph<N: Node = String, V: Clone + PartialEq = i64>: Clone {
             self.add_node(i);
         }
     }
-    /// [Graph::adjacency_table_mut] returns an owned, mutable instance of the [AdjacencyTable]
-    fn adjacency_table_mut(&mut self) -> &mut AdjacencyTable<N, V>;
-    /// [Graph::adjacency_table] returns an owned instance of the [AdjacencyTable]
-    fn adjacency_table(&self) -> &AdjacencyTable<N, V>;
-    /// [Graph::contains_edge] checks to see if a given [Edge] is found in the [Graph]
-    fn contains_edge(&self, edge: &Edge<N, V>) -> bool {
-        self.edges().contains(edge)
-    }
-    /// [Graph::contains_node] checks to see if a given [Node] is found in the [Graph]
-    fn contains_node(&self, node: &N) -> bool {
-        self.adjacency_table().get(node).is_some()
-    }
+    /// [Graph::store_mut] returns an owned, mutable instance of the [AdjacencyTable]
+    fn store_mut(&mut self) -> &mut AdjacencyTable<N, V>;
+    /// [Graph::store] returns an owned instance of the [AdjacencyTable]
+    fn store(&self) -> &AdjacencyTable<N, V>;
     /// [Graph::edges] returns all of the edges persisting within the graph
     fn edges(&self) -> Vec<Edge<N, V>> {
         let mut edges = Vec::new();
-        for (from_node, from_node_neighbours) in self.adjacency_table().clone() {
+        for (from_node, from_node_neighbours) in self.store().clone() {
             for (to_node, weight) in from_node_neighbours {
                 edges.push((from_node.clone(), to_node, weight).into());
             }
         }
         edges
     }
-    /// [Graph::neighbours] attempts to return a [Vec] that contains all of the connected [Node] and their values
-    fn neighbours(&self, node: N) -> Result<&Vec<(N, V)>, GraphError> {
-        match self.adjacency_table().get(&node) {
+    /// [Graph::neighbors] attempts to return a [Vec] that contains all of the connected [Node] and their values
+    fn neighbors(&self, node: N) -> Result<&Vec<(N, V)>, GraphError> {
+        match self.store().get(&node) {
             None => Err(GraphError::NodeNotInGraph),
             Some(i) => Ok(i),
         }
     }
     /// [Graph::nodes] returns a cloned [HashSet] of the graph's current [Node]s
     fn nodes(&self) -> HashSet<N> {
-        self.adjacency_table().keys().cloned().collect()
+        self.store().keys().cloned().collect()
     }
     /// [Graph::with_capacity] is a method for creating a graph with a set number of nodes
     fn with_capacity(capacity: usize) -> Self;

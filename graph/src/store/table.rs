@@ -3,7 +3,7 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: an adjacency table
 */
-use super::Node;
+use crate::cmp::Node;
 use serde::{Deserialize, Serialize};
 use std::collections::{hash_map, HashMap};
 use std::iter::Extend;
@@ -29,14 +29,6 @@ pub trait HashMapLike<K: Eq + std::hash::Hash, V>:
     }
     fn table(&self) -> &HashMap<K, V>;
     fn table_mut(&mut self) -> &mut HashMap<K, V>;
-}
-
-pub struct KeyValue<K, V>(Vec<(K, Vec<V>)>);
-
-impl<K, V> KeyValue<K, V> {
-    pub fn new() -> Self {
-        Self(Vec::new())
-    }
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]

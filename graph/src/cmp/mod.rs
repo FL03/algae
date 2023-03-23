@@ -3,11 +3,9 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: components (cmp) for building effecient graph data-structures
 */
-pub use self::{atable::*, edge::*, matrix::*, pair::*};
+pub use self::{edge::*, pair::*};
 
-pub(crate) mod atable;
 pub(crate) mod edge;
-pub(crate) mod matrix;
 pub(crate) mod pair;
 
 /// [Node] describes compatible vertices of the [super::Graph]

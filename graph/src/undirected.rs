@@ -3,21 +3,46 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: ... Summary ...
 */
-use super::{
-    cmp::{AdjacencyTable, Edge, Node},
-    Graph, Subgraph,
+use crate::{
+    cmp::{Edge, Node},
+    store::AdjacencyTable,
+    Contain, Graph, Subgraph,
 };
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct UndirectedGraph<N: Node = String, V: Clone + PartialEq = i64> {
-    adjacency_table: AdjacencyTable<N, V>,
+    store: AdjacencyTable<N, V>,
+}
+
+impl<N: Node, V: Clone + PartialEq> AsMut<AdjacencyTable<N, V>> for UndirectedGraph<N, V> {
+    fn as_mut(&mut self) -> &mut AdjacencyTable<N, V> {
+        &mut self.store
+    }
+}
+
+impl<N: Node, V: Clone + PartialEq> AsRef<AdjacencyTable<N, V>> for UndirectedGraph<N, V> {
+    fn as_ref(&self) -> &AdjacencyTable<N, V> {
+        &self.store
+    }
+}
+
+impl<N: Node, V: Clone + PartialEq> Contain<N> for UndirectedGraph<N, V> {
+    fn contains(&self, elem: &N) -> bool {
+        self.store.contains_key(elem)
+    }
+}
+
+impl<N: Node, V: Clone + PartialEq> Contain<Edge<N, V>> for UndirectedGraph<N, V> {
+    fn contains(&self, elem: &Edge<N, V>) -> bool {
+        self.edges().contains(elem)
+    }
 }
 
 impl<N: Node, V: Clone + PartialEq> Graph<N, V> for UndirectedGraph<N, V> {
     fn new() -> Self {
         Self {
-            adjacency_table: AdjacencyTable::new(),
+            store: AdjacencyTable::new(),
         }
     }
     fn add_edge(&mut self, edge: Edge<N, V>) {
@@ -25,22 +50,22 @@ impl<N: Node, V: Clone + PartialEq> Graph<N, V> for UndirectedGraph<N, V> {
         self.add_node(pair.0.clone());
         self.add_node(pair.1.clone());
 
-        self.adjacency_table.entry(pair.0.clone()).and_modify(|e| {
+        self.store.entry(pair.0.clone()).and_modify(|e| {
             e.push((pair.1.clone(), edge.value()));
         });
-        self.adjacency_table.entry(pair.1).and_modify(|e| {
+        self.store.entry(pair.1).and_modify(|e| {
             e.push((pair.0, edge.value()));
         });
     }
-    fn adjacency_table_mut(&mut self) -> &mut AdjacencyTable<N, V> {
-        &mut self.adjacency_table
+    fn store_mut(&mut self) -> &mut AdjacencyTable<N, V> {
+        &mut self.store
     }
-    fn adjacency_table(&self) -> &AdjacencyTable<N, V> {
-        &self.adjacency_table
+    fn store(&self) -> &AdjacencyTable<N, V> {
+        &self.store
     }
     fn with_capacity(capacity: usize) -> Self {
         Self {
-            adjacency_table: AdjacencyTable::with_capacity(capacity),
+            store: AdjacencyTable::with_capacity(capacity),
         }
     }
 }
@@ -49,7 +74,9 @@ impl<N: Node, V: Clone + PartialEq> Subgraph<N, V> for UndirectedGraph<N, V> {}
 
 impl<N: Node, V: Clone + PartialEq> From<AdjacencyTable<N, V>> for UndirectedGraph<N, V> {
     fn from(adjacency_table: AdjacencyTable<N, V>) -> Self {
-        Self { adjacency_table }
+        Self {
+            store: adjacency_table,
+        }
     }
 }
 
@@ -91,6 +118,6 @@ mod tests {
             graph.add_edge(i.into());
         }
 
-        assert_eq!(graph.neighbours("a").unwrap(), &vec![("b", 5), ("c", 7)]);
+        assert_eq!(graph.neighbors("a").unwrap(), &vec![("b", 5), ("c", 7)]);
     }
 }

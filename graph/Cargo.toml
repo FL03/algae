@@ -24,7 +24,6 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 decanter.workspace = true
 itertools.workspace = true
-ndarray = { features = [], version = "0.15" }
 serde.workspace = true
 serde_json.workspace = true
 smart-default.workspace = true
