@@ -25,3 +25,28 @@ impl Node for char {}
 impl Node for &str {}
 
 impl Node for String {}
+
+impl Node for usize {}
+
+impl Node for u8 {}
+
+impl Node for u16 {}
+
+impl Node for u32 {}
+
+impl Node for u64 {}
+
+impl Node for u128 {}
+
+impl Node for isize {}
+
+impl Node for i8 {}
+
+impl Node for i16 {}
+
+impl Node for i32 {}
+
+impl Node for i64 {}
+
+impl Node for i128 {}
+
