@@ -4,34 +4,59 @@
     Description: an edge consists of two nodes and an optional edge value
 */
 use super::Pair;
-use crate::Node;
+use crate::{Node, Weight};
 use serde::{Deserialize, Serialize};
 
 pub trait Related<N: Node, V> {}
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub struct Edge<N: Node, V: Clone>(N, N, V);
+pub struct Edge<N = String, V = i64>
+where
+    N: Node,
+    V: Weight,
+{
+    pair: Pair<N>,
+    weight: V,
+}
 
-impl<N: Node, V: Clone> Edge<N, V> {
-    pub fn new(a: N, b: N, v: V) -> Self {
-        Self(a, b, v)
+impl<N, V> Edge<N, V>
+where
+    N: Node,
+    V: Weight,
+{
+    pub fn new(pair: Pair<N>, weight: V) -> Self {
+        Self { pair, weight }
     }
     pub fn pair(&self) -> Pair<N> {
-        Pair::new(self.0.clone(), self.1.clone())
+        self.pair.clone()
     }
-    pub fn value(&self) -> V {
-        self.2.clone()
+    pub fn value(&self) -> &V {
+        &self.weight
     }
 }
 
-impl<N: Node, V: Clone> From<(N, N, V)> for Edge<N, V> {
+impl<N, V> From<(N, N, V)> for Edge<N, V>
+where
+    N: Node,
+    V: Weight,
+{
     fn from(data: (N, N, V)) -> Self {
-        Self(data.0, data.1, data.2)
+        Self {
+            pair: Pair::new(data.0, data.1),
+            weight: data.2,
+        }
     }
 }
 
-impl<N: Node, V: Clone> From<(Pair<N>, V)> for Edge<N, V> {
+impl<N, V> From<(Pair<N>, V)> for Edge<N, V>
+where
+    N: Node,
+    V: Weight,
+{
     fn from(data: (Pair<N>, V)) -> Self {
-        Self(data.0 .0, data.0 .1, data.1)
+        Self {
+            pair: data.0,
+            weight: data.1,
+        }
     }
 }

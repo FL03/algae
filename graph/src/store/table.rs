@@ -9,14 +9,17 @@ use std::collections::{hash_map, HashMap};
 use std::iter::Extend;
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
-pub struct AdjacencyTable<N, V> where N: Node {
-    store: HashMap<N, Vec<(N, V)>>
+pub struct AdjacencyTable<N, V>
+where
+    N: Node,
+{
+    store: HashMap<N, Vec<(N, V)>>,
 }
 
 impl<N: Node, V> AdjacencyTable<N, V> {
     pub fn new() -> Self {
         Self {
-            store: HashMap::new()
+            store: HashMap::new(),
         }
     }
     pub fn capacity(&self) -> usize {
@@ -63,7 +66,7 @@ impl<N: Node, V> AdjacencyTable<N, V> {
     }
     pub fn with_capacity(capacity: usize) -> Self {
         Self {
-            store: HashMap::with_capacity(capacity)
+            store: HashMap::with_capacity(capacity),
         }
     }
 }
@@ -76,9 +79,7 @@ impl<N: Node, V> Extend<(N, Vec<(N, V)>)> for AdjacencyTable<N, V> {
 
 impl<N: Node, V> From<HashMap<N, Vec<(N, V)>>> for AdjacencyTable<N, V> {
     fn from(store: HashMap<N, Vec<(N, V)>>) -> Self {
-        Self {
-            store
-        }
+        Self { store }
     }
 }
 

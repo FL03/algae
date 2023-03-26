@@ -18,7 +18,7 @@ pub trait Contain<T> {
 }
 
 /// [Node] describes compatible vertices of the [crate::Graph]
-pub trait Node: Clone + Eq + std::hash::Hash {}
+pub trait Node: Clone + Default + Eq + std::hash::Hash {}
 
 impl Node for char {}
 
@@ -50,3 +50,34 @@ impl Node for i64 {}
 
 impl Node for i128 {}
 
+pub trait Weight: Clone + PartialEq {}
+
+impl Weight for char {}
+
+impl Weight for &str {}
+
+impl Weight for String {}
+
+impl Weight for usize {}
+
+impl Weight for u8 {}
+
+impl Weight for u16 {}
+
+impl Weight for u32 {}
+
+impl Weight for u64 {}
+
+impl Weight for u128 {}
+
+impl Weight for isize {}
+
+impl Weight for i8 {}
+
+impl Weight for i16 {}
+
+impl Weight for i32 {}
+
+impl Weight for i64 {}
+
+impl Weight for i128 {}

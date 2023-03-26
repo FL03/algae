@@ -3,53 +3,81 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: ... Summary ...
 */
-use crate::{cmp::Edge, store::AdjacencyTable, Contain, Graph, Node, Subgraph};
+use crate::{cmp::Edge, store::AdjacencyTable};
+use crate::{Contain, Graph, GraphExt, Node, Subgraph, Weight};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
 pub struct DirectedGraph<N = String, V = i64>
 where
     N: Node,
-    V: Clone + PartialEq,
+    V: Weight,
 {
     store: AdjacencyTable<N, V>,
 }
 
-impl<N: Node, V: Clone + PartialEq> AsMut<AdjacencyTable<N, V>> for DirectedGraph<N, V> {
+impl<N, V> AsMut<AdjacencyTable<N, V>> for DirectedGraph<N, V>
+where
+    N: Node,
+    V: Weight,
+{
     fn as_mut(&mut self) -> &mut AdjacencyTable<N, V> {
         &mut self.store
     }
 }
 
-impl<N: Node, V: Clone + PartialEq> AsRef<AdjacencyTable<N, V>> for DirectedGraph<N, V> {
+impl<N, V> AsRef<AdjacencyTable<N, V>> for DirectedGraph<N, V>
+where
+    N: Node,
+    V: Weight,
+{
     fn as_ref(&self) -> &AdjacencyTable<N, V> {
         &self.store
     }
 }
 
-impl<N: Node, V: Clone + PartialEq> Contain<N> for DirectedGraph<N, V> {
+impl<N, V> Contain<N> for DirectedGraph<N, V>
+where
+    N: Node,
+    V: Weight,
+{
     fn contains(&self, elem: &N) -> bool {
         self.store.contains_key(elem)
     }
 }
 
-impl<N: Node, V: Clone + PartialEq> Contain<Edge<N, V>> for DirectedGraph<N, V> {
+impl<N, V> Contain<Edge<N, V>> for DirectedGraph<N, V>
+where
+    N: Node,
+    V: Weight,
+{
     fn contains(&self, elem: &Edge<N, V>) -> bool {
         self.edges().contains(elem)
     }
 }
 
-impl<N: Node, V: Clone + PartialEq> Graph<N, V> for DirectedGraph<N, V> {
-    fn new() -> Self {
-        Self {
-            store: AdjacencyTable::new(),
-        }
-    }
+impl<N, V> Graph<N, V> for DirectedGraph<N, V>
+where
+    N: Node,
+    V: Weight,
+{
     fn store_mut(&mut self) -> &mut AdjacencyTable<N, V> {
         &mut self.store
     }
     fn store(&self) -> &AdjacencyTable<N, V> {
         &self.store
+    }
+}
+
+impl<N, V> GraphExt<N, V> for DirectedGraph<N, V>
+where
+    N: Node,
+    V: Weight,
+{
+    fn new() -> Self {
+        Self {
+            store: AdjacencyTable::new(),
+        }
     }
     fn with_capacity(capacity: usize) -> Self {
         Self {
@@ -58,15 +86,28 @@ impl<N: Node, V: Clone + PartialEq> Graph<N, V> for DirectedGraph<N, V> {
     }
 }
 
-impl<N: Node, V: Clone + PartialEq> Subgraph<N, V> for DirectedGraph<N, V> {}
+impl<N, V> Subgraph<N, V> for DirectedGraph<N, V>
+where
+    N: Node,
+    V: Weight,
+{
+}
 
-impl<N: Node, V: Clone + PartialEq> From<AdjacencyTable<N, V>> for DirectedGraph<N, V> {
+impl<N, V> From<AdjacencyTable<N, V>> for DirectedGraph<N, V>
+where
+    N: Node,
+    V: Weight,
+{
     fn from(store: AdjacencyTable<N, V>) -> Self {
         Self { store }
     }
 }
 
-impl<N: Node, V: Clone + PartialEq> std::ops::Index<N> for DirectedGraph<N, V> {
+impl<N, V> std::ops::Index<N> for DirectedGraph<N, V>
+where
+    N: Node,
+    V: Weight,
+{
     type Output = Vec<(N, V)>;
 
     fn index(&self, index: N) -> &Self::Output {
@@ -74,7 +115,11 @@ impl<N: Node, V: Clone + PartialEq> std::ops::Index<N> for DirectedGraph<N, V> {
     }
 }
 
-impl<N: Node, V: Clone + PartialEq> std::ops::IndexMut<N> for DirectedGraph<N, V> {
+impl<N, V> std::ops::IndexMut<N> for DirectedGraph<N, V>
+where
+    N: Node,
+    V: Weight,
+{
     fn index_mut(&mut self, index: N) -> &mut Self::Output {
         self.store.get_mut(&index).unwrap()
     }

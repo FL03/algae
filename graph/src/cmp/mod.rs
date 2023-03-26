@@ -5,6 +5,6 @@
 */
 pub use self::{edge::*, neighbors::*, pair::*};
 
-pub(crate) mod edge;
-pub(crate) mod neighbors;
-pub(crate) mod pair;
+mod edge;
+mod neighbors;
+mod pair;
