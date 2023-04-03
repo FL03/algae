@@ -13,11 +13,11 @@ pub(crate) mod nodes;
 pub(crate) mod payloads;
 pub(crate) mod shape;
 pub(crate) mod tree;
-pub(crate) mod utils;
+mod utils;
 
 pub mod proofs;
 
-use decanter::prelude::{Hashable, H256};
+use decanter::prelude::H256;
 use proofs::merkle_proof;
 
 pub trait MerkleTreeSpec: Clone {

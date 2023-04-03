@@ -4,47 +4,73 @@
     Description: ... Summary ...
 */
 use crate::Node;
+use decanter::prelude::Hashable;
 use serde::{Deserialize, Serialize};
+use smart_default::SmartDefault;
 use std::string::ToString;
+use strum::Display;
 
-#[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
-pub enum Payload<T: ToString> {
+#[derive(
+    Clone,
+    Debug,
+    Deserialize,
+    Display,
+    Eq,
+    Hash,
+    Hashable,
+    Ord,
+    PartialEq,
+    PartialOrd,
+    Serialize,
+    SmartDefault,
+)]
+pub enum Payload<T = String>
+where
+    T: Default + ToString,
+{
+    #[default]
     Leaf(T),
     Node(Box<Node<T>>, Box<Node<T>>),
 }
 
 impl<T> Payload<T>
 where
-    T: ToString,
+    T: Default + ToString,
 {
-    pub fn new_leaf(data: T) -> Self {
+    pub fn leaf(data: T) -> Self {
         Self::Leaf(data)
     }
-    pub fn new_node(left: Box<Node<T>>, right: Box<Node<T>>) -> Self {
+    pub fn node(left: Box<Node<T>>, right: Box<Node<T>>) -> Self {
         Self::Node(left, right)
     }
-}
-
-impl<T> std::fmt::Display for Payload<T>
-where
-    T: Serialize + ToString,
-{
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", serde_json::to_string(&self).unwrap())
+    pub fn is_leaf(&self) -> bool {
+        match self {
+            Self::Leaf(_) => true,
+            _ => false,
+        }
+    }
+    pub fn is_node(&self) -> bool {
+        match self {
+            Self::Node(_, _) => true,
+            _ => false,
+        }
     }
 }
 
-impl<T: Clone + ToString> std::convert::From<T> for Payload<T> {
+impl<T> From<T> for Payload<T>
+where
+    T: Default + ToString,
+{
     fn from(data: T) -> Self {
         Self::Leaf(data)
     }
 }
 
-impl<T> std::convert::From<(Box<Node<T>>, Box<Node<T>>)> for Payload<T>
+impl<T> From<(Box<Node<T>>, Box<Node<T>>)> for Payload<T>
 where
-    T: ToString,
+    T: Default + ToString,
 {
     fn from(data: (Box<Node<T>>, Box<Node<T>>)) -> Self {
-        Self::new_node(data.0, data.1)
+        Self::node(data.0, data.1)
     }
 }

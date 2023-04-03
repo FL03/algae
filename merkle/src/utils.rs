@@ -12,7 +12,7 @@ use serde::Serialize;
 pub fn add_hash(a: &H256, b: &H256) -> H256 {
     let c = [a.as_ref(), b.as_ref()].concat();
     let combined = ring::digest::digest(&ring::digest::SHA256, &c);
-    <H256>::from(combined)
+    hasher(combined).into()
 }
 
 /// Merges two hashes into a string
@@ -54,12 +54,9 @@ where
 }
 
 /// Takes the hash of the given information to the second degree
-pub fn merkle_hash<T: Serialize + ToString>(data: T) -> H256 {
-    let res: H256 = {
-        let tmp: H256 = hasher(&data).as_slice().to_owned().into();
-        hasher(&tmp).as_slice().to_owned().into()
-    };
-    res
+pub fn merkle_hash(data: impl AsRef<[u8]>) -> H256 {
+    let tmp: H256 = hasher(data).into();
+    hasher(&tmp).into()
 }
 
 /// Verify that the datum hash with a vector of proofs will produce the Merkle root. Also need the

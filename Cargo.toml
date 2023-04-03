@@ -11,7 +11,7 @@ repository = "https://github.com/scattered-systems/algae"
 version = "0.1.19"
 
 [workspace.dependencies]
-decanter = { features = ["derive", "wasm"], version = "0.1.3" }
+decanter = { features = ["derive", "wasm"], git = "https://github.com/FL03/decanter", branch = "v0.1.5", version = "0.1.5" }
 
 anyhow = "1"
 itertools = "0.10"

@@ -8,25 +8,37 @@ use decanter::prelude::{Hashable, H256};
 use serde::{Deserialize, Serialize};
 use std::string::ToString;
 
-#[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
-pub struct Node<T: ToString> {
+#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+pub struct Node<T = String>
+where
+    T: Default + ToString,
+{
     pub data: Payload<T>,
     pub hash: H256,
 }
 
-impl<T: ToString> Node<T> {
+impl<T> Node<T>
+where
+    T: Default + ToString,
+{
     pub fn new(data: Payload<T>, hash: H256) -> Self {
         Self { data, hash }
     }
 }
 
-impl<T: Serialize + ToString> Hashable for Node<T> {
+impl<T> Hashable for Node<T>
+where
+    T: Default + ToString,
+{
     fn hash(&self) -> H256 {
-        merkle_hash(&self.data)
+        merkle_hash(self.data.to_string())
     }
 }
 
-impl<T: ToString> std::convert::From<(Node<T>, Node<T>)> for Node<T> {
+impl<T> From<(Node<T>, Node<T>)> for Node<T>
+where
+    T: Default + ToString,
+{
     fn from(data: (Node<T>, Node<T>)) -> Self {
         let hash = merkle_hash(combine(&data.0.hash, &data.1.hash));
         let data = Payload::Node(Box::new(data.0), Box::new(data.1));
@@ -34,17 +46,15 @@ impl<T: ToString> std::convert::From<(Node<T>, Node<T>)> for Node<T> {
     }
 }
 
-impl<T: Clone + Serialize + ToString> std::convert::From<T> for Node<T> {
-    fn from(data: T) -> Self {
-        Self::new(Payload::from(data.clone()), merkle_hash(data))
-    }
-}
-
 impl<T> std::fmt::Display for Node<T>
 where
-    T: Serialize + ToString,
+    T: Default + ToString,
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", serde_json::to_string(&self).unwrap())
+        let msg = serde_json::json!({
+            "data": self.data.to_string(),
+            "hash": self.hash,
+        });
+        write!(f, "{}", msg)
     }
 }
