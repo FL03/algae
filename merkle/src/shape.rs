@@ -14,7 +14,9 @@ pub trait MerkleShape {
     fn size(&self) -> usize;
 }
 
-#[derive(Clone, Debug, Default, Deserialize, Eq, Hash, PartialEq, Serialize)]
+#[derive(
+    Clone, Copy, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
+)]
 pub struct MerkleDimension {
     pub depth: usize,
     pub leafs: usize,
@@ -40,20 +42,20 @@ impl MerkleShape for MerkleDimension {
     }
 }
 
-impl std::convert::From<Box<dyn MerkleShape>> for MerkleDimension {
+impl std::fmt::Display for MerkleDimension {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "({}, {}, {})", self.depth, self.leafs, self.size)
+    }
+}
+
+impl From<Box<dyn MerkleShape>> for MerkleDimension {
     fn from(data: Box<dyn MerkleShape>) -> Self {
         Self::from(data.shape())
     }
 }
 
-impl std::convert::From<(usize, usize, usize)> for MerkleDimension {
+impl From<(usize, usize, usize)> for MerkleDimension {
     fn from(data: (usize, usize, usize)) -> Self {
         Self::new(data.0, data.1, data.2)
-    }
-}
-
-impl std::fmt::Display for MerkleDimension {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "({}, {}, {})", self.depth, self.leafs, self.size)
     }
 }

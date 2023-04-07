@@ -3,10 +3,12 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: ... summary ...
 */
-use decanter::prelude::{hasher, Hashable, H256};
+use decanter::prelude::Hashable;
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(
+    Clone, Debug, Default, Deserialize, Eq, Hash, Hashable, Ord, PartialEq, PartialOrd, Serialize,
+)]
 pub struct Position {
     pub height: usize,
     pub index: usize,
@@ -16,17 +18,17 @@ impl Position {
     pub fn new(height: usize, index: usize) -> Self {
         Self { height, index }
     }
+    pub fn height(&self) -> usize {
+        self.height
+    }
+    pub fn index(&self) -> usize {
+        self.index
+    }
 }
 
 impl From<(usize, usize)> for Position {
     fn from(data: (usize, usize)) -> Self {
         Self::new(data.0, data.1)
-    }
-}
-
-impl Hashable for Position {
-    fn hash(&self) -> H256 {
-        hasher(&self).as_slice().to_owned().into()
     }
 }
 

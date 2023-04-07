@@ -11,9 +11,14 @@ use std::string::ToString;
 
 // pub fn build_new_merkle_layer<T: ToString>(left: MerkleNode<T>, right: MerkleNode)
 #[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
-pub struct Layer<T: ToString>(Vec<Node<T>>);
+pub struct Layer<T = String>(Vec<Node<T>>)
+where
+    T: Default + ToString;
 
-impl<T: ToString> Layer<T> {
+impl<T> Layer<T>
+where
+    T: Default + ToString,
+{
     pub fn new(data: Vec<Node<T>>) -> Self {
         let layer = data.into_iter().batching(|it| match it.next() {
             Some(l) => match it.next() {
@@ -30,13 +35,19 @@ impl<T: ToString> Layer<T> {
     }
 }
 
-impl<T: ToString> std::convert::From<Vec<Node<T>>> for Layer<T> {
+impl<T> From<Vec<Node<T>>> for Layer<T>
+where
+    T: Default + ToString,
+{
     fn from(data: Vec<Node<T>>) -> Self {
         Self::new(data)
     }
 }
 
-impl<T: ToString> std::convert::From<(Node<T>, Node<T>)> for Layer<T> {
+impl<T> From<(Node<T>, Node<T>)> for Layer<T>
+where
+    T: Default + ToString,
+{
     fn from(data: (Node<T>, Node<T>)) -> Self {
         Self::new(vec![data.0, data.1])
     }

@@ -5,10 +5,10 @@ env:
 
 on:
   pull_request:
-    branches: [ "main", "master", "prod" ]
+    branches-ignore: [ "dev*" ]
     tags: [ "v*.*.*" ]
   push:
-    branches: [ "main", "master", "prod" ]
+    branches-ignore: [ "dev*" ]
     tags: [ "v*.*.*" ]
   schedule:
     - cron: "30 9 * * *"

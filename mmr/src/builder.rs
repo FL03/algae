@@ -6,6 +6,9 @@
 use crate::MerkleMountainRange;
 use decanter::prelude::Hashable;
 
-pub struct MerkleMountainRangeBuilder<T: Hashable> {
+pub struct MerkleMountainRangeBuilder<T>
+where
+    T: ToString,
+{
     pub mmr: MerkleMountainRange<T>,
 }

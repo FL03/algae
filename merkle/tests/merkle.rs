@@ -7,7 +7,7 @@
         def.
             This notation abbreviates a is the hash of A; more formally, (A) maps to the hash (a) by the hashing function H
 */
-use algae_merkle::{is_merkle_valid, MerkleTree, MerkleTreeWrapper};
+use algae_merkle::{is_merkle_valid, MerkleTree, MerkleTreeSpec};
 use decanter::prelude::{Hashable, H256};
 use hex_literal::hex;
 

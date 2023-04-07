@@ -3,41 +3,125 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: ... Summary ...
 */
-use super::{
-    cmp::{AdjacencyTable, Node},
-    Graph, Subgraph,
-};
+use crate::{cmp::Edge, store::AdjacencyTable};
+use crate::{Contain, Graph, GraphExt, Node, Subgraph, Weight};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
-pub struct DirectedGraph<N: Node = String, V: Clone + PartialEq = i64> {
-    adjacency_table: AdjacencyTable<N, V>,
+pub struct DirectedGraph<N = String, V = i64>
+where
+    N: Node,
+    V: Weight,
+{
+    store: AdjacencyTable<N, V>,
 }
 
-impl<N: Node, V: Clone + PartialEq> Graph<N, V> for DirectedGraph<N, V> {
+impl<N, V> AsMut<AdjacencyTable<N, V>> for DirectedGraph<N, V>
+where
+    N: Node,
+    V: Weight,
+{
+    fn as_mut(&mut self) -> &mut AdjacencyTable<N, V> {
+        &mut self.store
+    }
+}
+
+impl<N, V> AsRef<AdjacencyTable<N, V>> for DirectedGraph<N, V>
+where
+    N: Node,
+    V: Weight,
+{
+    fn as_ref(&self) -> &AdjacencyTable<N, V> {
+        &self.store
+    }
+}
+
+impl<N, V> Contain<N> for DirectedGraph<N, V>
+where
+    N: Node,
+    V: Weight,
+{
+    fn contains(&self, elem: &N) -> bool {
+        self.store.contains_key(elem)
+    }
+}
+
+impl<N, V> Contain<Edge<N, V>> for DirectedGraph<N, V>
+where
+    N: Node,
+    V: Weight,
+{
+    fn contains(&self, elem: &Edge<N, V>) -> bool {
+        self.edges().contains(elem)
+    }
+}
+
+impl<N, V> Graph<N, V> for DirectedGraph<N, V>
+where
+    N: Node,
+    V: Weight,
+{
+    fn store_mut(&mut self) -> &mut AdjacencyTable<N, V> {
+        &mut self.store
+    }
+    fn store(&self) -> &AdjacencyTable<N, V> {
+        &self.store
+    }
+}
+
+impl<N, V> GraphExt<N, V> for DirectedGraph<N, V>
+where
+    N: Node,
+    V: Weight,
+{
     fn new() -> Self {
         Self {
-            adjacency_table: AdjacencyTable::new(),
+            store: AdjacencyTable::new(),
         }
-    }
-    fn adjacency_table_mut(&mut self) -> &mut AdjacencyTable<N, V> {
-        &mut self.adjacency_table
-    }
-    fn adjacency_table(&self) -> &AdjacencyTable<N, V> {
-        &self.adjacency_table
     }
     fn with_capacity(capacity: usize) -> Self {
         Self {
-            adjacency_table: AdjacencyTable::with_capacity(capacity),
+            store: AdjacencyTable::with_capacity(capacity),
         }
     }
 }
 
-impl<N: Node, V: Clone + PartialEq> Subgraph<N, V> for DirectedGraph<N, V> {}
+impl<N, V> Subgraph<N, V> for DirectedGraph<N, V>
+where
+    N: Node,
+    V: Weight,
+{
+}
 
-impl<N: Node, V: Clone + PartialEq> From<AdjacencyTable<N, V>> for DirectedGraph<N, V> {
-    fn from(adjacency_table: AdjacencyTable<N, V>) -> Self {
-        Self { adjacency_table }
+impl<N, V> From<AdjacencyTable<N, V>> for DirectedGraph<N, V>
+where
+    N: Node,
+    V: Weight,
+{
+    fn from(store: AdjacencyTable<N, V>) -> Self {
+        Self { store }
+    }
+}
+
+impl<N, V> std::ops::Index<N> for DirectedGraph<N, V>
+where
+    N: Node,
+    V: Weight,
+{
+    type Output = Vec<(N, V)>;
+
+    fn index(&self, index: N) -> &Self::Output {
+        self.store.get(&index).unwrap()
+    }
+}
+
+impl<N, V> std::ops::IndexMut<N> for DirectedGraph<N, V>
+where
+    N: Node,
+    V: Weight,
+{
+    fn index_mut(&mut self, index: N) -> &mut Self::Output {
+        self.store.get_mut(&index).unwrap()
     }
 }
 
@@ -65,7 +149,7 @@ mod tests {
             graph.add_edge(i.into());
         }
         for edge in TEST_EDGES {
-            assert!(graph.contains_edge(&Edge::from(edge)));
+            assert!(graph.contains(&Edge::from(edge)));
         }
     }
 
@@ -77,7 +161,7 @@ mod tests {
             graph.add_edge(i.into());
         }
 
-        assert_eq!(graph.neighbours("a").unwrap(), &vec![("b", 5)]);
+        assert_eq!(graph.neighbors("a").unwrap(), &vec![("b", 5)]);
     }
 
     #[test]
@@ -86,9 +170,7 @@ mod tests {
         graph.add_node("a");
         graph.add_node("b");
         graph.add_node("c");
-        assert!(graph.contains_node(&"a"));
-        assert!(graph.contains_node(&"b"));
-        assert!(graph.contains_node(&"c"));
-        assert!(!graph.contains_node(&"d"));
+        assert!(graph.contains_all(["a", "b", "c"]));
+        assert!(graph.contains_some(["a", "b", "c", "d"]));
     }
 }
