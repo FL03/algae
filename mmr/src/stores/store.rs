@@ -57,9 +57,9 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_store_default() {
+    fn test_store() {
         let a = MMRStore::<usize>::default();
         let b = MMRStore::<usize>::new(Default::default());
-        assert_eq!(a, b)
+        assert_eq!(a.data(), b.data())
     }
 }

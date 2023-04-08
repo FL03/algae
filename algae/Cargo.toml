@@ -1,10 +1,10 @@
 [package]
 authors.workspace = true
-categories = []
+categories.workspace = true
 description.workspace = true
 edition.workspace = true
 homepage.workspace = true
-keywords = ["algorithms", "data-structures"]
+keywords.workspace = true
 license.workspace = true
 name = "algae"
 readme.workspace = true

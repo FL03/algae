@@ -14,7 +14,6 @@ pub(crate) mod undirected;
 pub mod search;
 pub mod store;
 
-use cmp::Edge;
 use errors::GraphError;
 use std::{collections::HashSet, ops::IndexMut};
 use store::AdjacencyTable;

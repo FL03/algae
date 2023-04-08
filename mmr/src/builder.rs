@@ -4,7 +4,6 @@
     Description: ... summary ...
 */
 use crate::MerkleMountainRange;
-use decanter::prelude::Hashable;
 
 pub struct MerkleMountainRangeBuilder<T>
 where
