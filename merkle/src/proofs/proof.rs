@@ -4,7 +4,7 @@
    Description: ... Summary ...
 */
 use super::path::proof_path;
-use crate::{MerkleDimension, MerkleTree, MerkleTreeSpec};
+use crate::{MerkleDimension, MerkleTree};
 use decanter::prelude::H256;
 
 pub struct Prover {

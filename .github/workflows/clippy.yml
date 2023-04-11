@@ -2,7 +2,7 @@ name: Clippy
 
 on:
   pull_request:
-    branches-ignore: [ "beta*", "dev*", "next*" ]
+    branches: [ main, master, v*.*.*, ]
   push:
     branches-ignore: [ "beta*", "dev*", "next*" ]
     tags: [ "nightly*",  "v*.*.*" ]

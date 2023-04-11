@@ -12,14 +12,15 @@ repository.workspace = true
 version.workspace = true
 
 [features]
-default = ["core"]
-
-core = [
+default = ["core", "graph", "merkle", "mmr"]
+full = [
+    "core",
+    "graph",
     "merkle", 
     "mmr", 
-    "graph"
 ]
 
+core = []
 graph = ["algae-graph"]
 merkle = ["algae-merkle"]
 mmr = ["algae-mmr"]

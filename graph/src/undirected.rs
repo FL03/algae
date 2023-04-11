@@ -17,6 +17,23 @@ where
     store: AdjacencyTable<N, V>,
 }
 
+impl<N, V> UndirectedGraph<N, V>
+where
+    N: Node,
+    V: Weight,
+{
+    pub fn new() -> Self {
+        Self {
+            store: AdjacencyTable::new(),
+        }
+    }
+    pub fn with_capacity(capacity: usize) -> Self {
+        Self {
+            store: AdjacencyTable::with_capacity(capacity),
+        }
+    }
+}
+
 impl<N, V> AsMut<AdjacencyTable<N, V>> for UndirectedGraph<N, V>
 where
     N: Node,
@@ -87,16 +104,6 @@ where
     N: Node,
     V: Weight,
 {
-    fn new() -> Self {
-        Self {
-            store: AdjacencyTable::new(),
-        }
-    }
-    fn with_capacity(capacity: usize) -> Self {
-        Self {
-            store: AdjacencyTable::with_capacity(capacity),
-        }
-    }
 }
 
 impl<N, V> Subgraph<N, V> for UndirectedGraph<N, V>

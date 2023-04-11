@@ -3,7 +3,8 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: ... Summary ...
 */
-use crate::{create_merkle_tree, MerkleDimension, MerkleShape, MerkleTreeSpec};
+use crate::proofs::merkle_proof;
+use crate::{create_merkle_tree, MerkleDimension, MerkleShape};
 use decanter::prelude::{Hashable, H256};
 use serde::{Deserialize, Serialize};
 
@@ -14,17 +15,29 @@ pub struct MerkleTree {
 }
 
 impl MerkleTree {
-    pub fn new(dim: MerkleDimension, nodes: Vec<H256>) -> Self {
+    pub fn new(dim: MerkleDimension) -> Self {
+        Self {
+            dim,
+            nodes: Vec::new(),
+        }
+    }
+    pub fn new_with_nodes(dim: MerkleDimension, nodes: Vec<H256>) -> Self {
         Self { dim, nodes }
     }
-}
-
-impl MerkleTreeSpec for MerkleTree {
-    fn dim(&self) -> MerkleDimension {
-        self.dim.clone()
+    pub fn dim(&self) -> MerkleDimension {
+        self.dim
     }
-    fn nodes(&self) -> Vec<H256> {
-        self.nodes.clone()
+    pub fn proof(&self, index: usize) -> Vec<H256> {
+        merkle_proof(self.dim(), self.nodes().clone(), index)
+    }
+    pub fn root(&self) -> H256 {
+        self.nodes()[self.dim().size() - 1]
+    }
+    pub fn nodes(&self) -> &Vec<H256> {
+        &self.nodes
+    }
+    pub fn nodes_mut(&mut self) -> &mut Vec<H256> {
+        &mut self.nodes
     }
 }
 
@@ -37,18 +50,18 @@ impl std::fmt::Display for MerkleTree {
 impl<T: Hashable> From<&[T]> for MerkleTree {
     fn from(data: &[T]) -> Self {
         let (dim, nodes) = create_merkle_tree::<T>(data);
-        Self::new(MerkleDimension::from(dim), nodes)
+        Self {
+            dim: MerkleDimension::from(dim),
+            nodes,
+        }
     }
 }
 
 impl From<(Box<dyn MerkleShape>, Vec<H256>)> for MerkleTree {
     fn from(data: (Box<dyn MerkleShape>, Vec<H256>)) -> Self {
-        Self::new(MerkleDimension::from(data.0), data.1)
-    }
-}
-
-impl From<Vec<H256>> for MerkleTree {
-    fn from(data: Vec<H256>) -> Self {
-        Self::from(create_merkle_tree(&data))
+        Self {
+            dim: MerkleDimension::from(data.0),
+            nodes: data.1,
+        }
     }
 }

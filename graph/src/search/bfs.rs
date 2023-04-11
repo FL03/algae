@@ -59,7 +59,7 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{DirectedGraph, Edge, GraphExt};
+    use crate::{DirectedGraph, Edge};
 
     const TEST_EDGES: [(&str, &str, usize); 5] = [
         ("a", "b", 5),
