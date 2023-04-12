@@ -112,7 +112,7 @@ where
     /// [Graph::is_connected] returns true if the graph is connected
     fn is_connected(&self) -> bool {
         let mut visited = HashSet::new();
-        let mut stack = vec![self.nodes().iter().cloned().next().unwrap().clone()];
+        let mut stack = self.nodes().iter().cloned().collect::<Vec<_>>();
 
         while let Some(node) = stack.pop() {
             if !visited.contains(&node) {
