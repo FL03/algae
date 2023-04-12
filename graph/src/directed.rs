@@ -3,8 +3,8 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: ... Summary ...
 */
-use crate::{cmp::Edge, store::AdjacencyTable};
-use crate::{Contain, Graph, GraphExt, Node, Subgraph, Weight};
+use crate::{store::AdjacencyTable, Edge, Node, Weight};
+use crate::{Contain, Graph, GraphExt, Subgraph};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
@@ -14,6 +14,23 @@ where
     V: Weight,
 {
     store: AdjacencyTable<N, V>,
+}
+
+impl<N, V> DirectedGraph<N, V>
+where
+    N: Node,
+    V: Weight,
+{
+    pub fn new() -> Self {
+        Self {
+            store: AdjacencyTable::new(),
+        }
+    }
+    pub fn with_capacity(capacity: usize) -> Self {
+        Self {
+            store: AdjacencyTable::with_capacity(capacity),
+        }
+    }
 }
 
 impl<N, V> AsMut<AdjacencyTable<N, V>> for DirectedGraph<N, V>
@@ -74,16 +91,6 @@ where
     N: Node,
     V: Weight,
 {
-    fn new() -> Self {
-        Self {
-            store: AdjacencyTable::new(),
-        }
-    }
-    fn with_capacity(capacity: usize) -> Self {
-        Self {
-            store: AdjacencyTable::with_capacity(capacity),
-        }
-    }
 }
 
 impl<N, V> Subgraph<N, V> for DirectedGraph<N, V>

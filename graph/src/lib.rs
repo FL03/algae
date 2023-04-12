@@ -8,21 +8,16 @@ pub use self::{cmp::*, directed::*, errors::*, specs::*, undirected::*};
 pub(crate) mod cmp;
 pub(crate) mod directed;
 mod errors;
-pub(crate) mod specs;
+mod specs;
 pub(crate) mod undirected;
 
+pub mod graph;
 pub mod search;
 pub mod store;
 
-use cmp::Edge;
 use errors::GraphError;
 use std::{collections::HashSet, ops::IndexMut};
 use store::AdjacencyTable;
-
-pub enum GraphType {
-    Directed,
-    Undirected,
-}
 
 /// [Graph] describes the basic operations of a graph data-structure
 pub trait Graph<N = String, V = i64>:
@@ -96,7 +91,8 @@ where
         match self.store().get(node) {
             Some(edges) => Ok(edges
                 .iter()
-                .map(|(n, v)| Edge::from((node.clone(), n.clone(), v.clone())))
+                .cloned()
+                .map(|(n, v)| Edge::new(node.clone(), n, v))
                 .collect()),
             None => Err(GraphError::NodeNotInGraph),
         }
@@ -104,10 +100,10 @@ where
     /// [Graph::edges_to] returns all of the edges terminating at the given [Node]
     fn edges_to(&self, node: &N) -> Result<Vec<Edge<N, V>>, GraphError> {
         let mut edges = Vec::new();
-        for (from_node, from_node_neighbours) in self.store().clone() {
-            for (to_node, weight) in from_node_neighbours {
-                if to_node == node.clone() {
-                    edges.push((from_node.clone(), to_node, weight).into());
+        for (origin, neighbours) in self.store().clone() {
+            for (dest, weight) in neighbours {
+                if &dest == node {
+                    edges.push((origin.clone(), dest, weight).into());
                 }
             }
         }
@@ -116,7 +112,7 @@ where
     /// [Graph::is_connected] returns true if the graph is connected
     fn is_connected(&self) -> bool {
         let mut visited = HashSet::new();
-        let mut stack = vec![self.nodes().iter().next().unwrap().clone()];
+        let mut stack = self.nodes().iter().cloned().collect::<Vec<_>>();
 
         while let Some(node) = stack.pop() {
             if !visited.contains(&node) {
@@ -125,8 +121,8 @@ where
                     self.neighbors(node)
                         .unwrap()
                         .iter()
-                        .cloned()
-                        .map(|(n, _)| n),
+                        .map(|(n, _)| n)
+                        .cloned(),
                 );
             }
         }
@@ -156,9 +152,6 @@ where
     N: Node,
     V: Weight,
 {
-    fn new() -> Self;
-    /// [GraphExt::with_capacity] is a method for creating a graph with a set number of nodes
-    fn with_capacity(capacity: usize) -> Self;
 }
 
 pub trait Subgraph<N = String, V = i64>: Graph<N, V>

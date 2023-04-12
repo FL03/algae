@@ -5,4 +5,6 @@
 */
 pub use self::store::*;
 
-pub(crate) mod store;
+mod store;
+
+pub trait Store<T> {}

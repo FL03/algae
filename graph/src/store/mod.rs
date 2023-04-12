@@ -5,27 +5,20 @@
 */
 pub use self::{matrix::*, table::*};
 
-pub(crate) mod matrix;
-pub(crate) mod table;
+mod matrix;
+mod table;
 
-use crate::{cmp::Edge, Contain, Node, Weight};
+use crate::{Contain, Edge, Node};
 use serde::{Deserialize, Serialize};
 use std::ops::IndexMut;
 
-pub struct Entry<N, V>
-where
-    N: Node,
-    V: Weight,
-{
+#[derive(Clone, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+pub struct Entry<N = String, V = ()> {
     key: N,
     value: Vec<(N, V)>,
 }
 
-impl<N, V> Entry<N, V>
-where
-    N: Node,
-    V: Weight,
-{
+impl<N, V> Entry<N, V> {
     pub fn new(key: N, value: Vec<(N, V)>) -> Self {
         Self { key, value }
     }
@@ -42,8 +35,8 @@ where
 
 impl<N, V> Contain<(N, V)> for Entry<N, V>
 where
-    N: Node,
-    V: Weight,
+    N: PartialEq,
+    V: PartialEq,
 {
     fn contains(&self, elem: &(N, V)) -> bool {
         self.value.contains(elem)
@@ -53,7 +46,6 @@ where
 pub trait Store<N, V>: Extend<Edge<N, V>> + IndexMut<N, Output = Vec<(N, V)>>
 where
     N: Node,
-    V: Weight,
 {
     fn clear(&mut self);
     fn contains_key(&self, key: &N) -> bool;
@@ -66,14 +58,4 @@ where
             None
         }
     }
-}
-
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub enum Stores<N, V>
-where
-    N: Node,
-    V: Weight,
-{
-    Matrix(AdjacencyMatrix<N, V>),
-    Table(AdjacencyTable<N, V>),
 }

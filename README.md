@@ -2,8 +2,8 @@
 
 [![crates.io](https://img.shields.io/crates/v/algae.svg)](https://crates.io/crates/algae)
 [![docs.rs](https://docs.rs/algae/badge.svg)](https://docs.rs/algae)
-[![Clippy](https://github.com/FL03/algae/actions/workflows/rust-clippy.yml/badge.svg)](https://github.com/FL03/algae/actions/workflows/rust-clippy.yml)
-[![Rust](https://github.comFL03/algae/actions/workflows/rust.yml/badge.svg)](https://github.com/FL03/algae/actions/workflows/rust.yml)
+[![Clippy](https://github.com/FL03/algae/actions/workflows/clippy.yml/badge.svg)](https://github.com/FL03/algae/actions/workflows/clippy.yml)
+[![Rust](https://github.com/FL03/algae/actions/workflows/rust.yml/badge.svg)](https://github.com/FL03/algae/actions/workflows/rust.yml)
 
 ***
 

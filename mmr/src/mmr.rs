@@ -3,7 +3,7 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: ... summary ...
 */
-use crate::cmp::{MerkleNode, Position};
+use crate::cmp::{Node, Position};
 use crate::{is_node_right, sibling_index, RangeMap};
 use decanter::prelude::{hasher, Hashable, H256};
 use digest::Digest;
@@ -16,7 +16,7 @@ where
     T: ToString,
 {
     data: RangeMap<T>,
-    mmr: Vec<MerkleNode>, // todo convert these to a bitmap
+    mmr: Vec<Node>, // todo convert these to a bitmap
     position: Position,
 }
 
@@ -24,7 +24,7 @@ impl<T> MerkleMountainRange<T>
 where
     T: ToString,
 {
-    pub fn new(mmr: Vec<MerkleNode>, data: RangeMap<T>, position: Position) -> Self {
+    pub fn new(mmr: Vec<Node>, data: RangeMap<T>, position: Position) -> Self {
         Self {
             mmr,
             data,
@@ -40,7 +40,7 @@ where
     /// This function adds a new leaf node to the mmr.
     pub fn add_single<D: Digest>(&mut self, object: T) {
         let node_hash: H256 = hasher(object.to_string()).into();
-        let node = MerkleNode::from(node_hash);
+        let node = Node::from(node_hash);
         self.data.insert(node_hash, object);
         self.mmr.push(node);
         if is_node_right(self.get_last_added_index()) {
@@ -54,7 +54,7 @@ where
         hasher.update(self.mmr[sibling_index(index)].hash);
         hasher.update(self.mmr[index].hash);
         let new_hash: H256 = hasher.finalize().to_vec().into();
-        let new_node = MerkleNode::from(new_hash);
+        let new_node = Node::from(new_hash);
         self.mmr.push(new_node);
         if is_node_right(self.get_last_added_index()) {
             self.add_single_no_leaf::<D>(self.get_last_added_index())

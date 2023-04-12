@@ -3,7 +3,7 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: an adjacency table
 */
-use crate::Node;
+use crate::{Node, Weight};
 use serde::{Deserialize, Serialize};
 use std::collections::{hash_map, HashMap};
 use std::iter::Extend;
@@ -12,11 +12,16 @@ use std::iter::Extend;
 pub struct AdjacencyTable<N, V>
 where
     N: Node,
+    V: Weight,
 {
     store: HashMap<N, Vec<(N, V)>>,
 }
 
-impl<N: Node, V> AdjacencyTable<N, V> {
+impl<N, V> AdjacencyTable<N, V>
+where
+    N: Node,
+    V: Weight,
+{
     pub fn new() -> Self {
         Self {
             store: HashMap::new(),
@@ -71,19 +76,31 @@ impl<N: Node, V> AdjacencyTable<N, V> {
     }
 }
 
-impl<N: Node, V> Extend<(N, Vec<(N, V)>)> for AdjacencyTable<N, V> {
+impl<N, V> Extend<(N, Vec<(N, V)>)> for AdjacencyTable<N, V>
+where
+    N: Node,
+    V: Weight,
+{
     fn extend<T: IntoIterator<Item = (N, Vec<(N, V)>)>>(&mut self, iter: T) {
         self.store.extend(iter)
     }
 }
 
-impl<N: Node, V> From<HashMap<N, Vec<(N, V)>>> for AdjacencyTable<N, V> {
+impl<N, V> From<HashMap<N, Vec<(N, V)>>> for AdjacencyTable<N, V>
+where
+    N: Node,
+    V: Weight,
+{
     fn from(store: HashMap<N, Vec<(N, V)>>) -> Self {
         Self { store }
     }
 }
 
-impl<N: Node, V> FromIterator<(N, Vec<(N, V)>)> for AdjacencyTable<N, V> {
+impl<N, V> FromIterator<(N, Vec<(N, V)>)> for AdjacencyTable<N, V>
+where
+    N: Node,
+    V: Weight,
+{
     fn from_iter<T: IntoIterator<Item = (N, Vec<(N, V)>)>>(iter: T) -> Self {
         let mut map = HashMap::with_hasher(Default::default());
         map.extend(iter);
@@ -91,7 +108,11 @@ impl<N: Node, V> FromIterator<(N, Vec<(N, V)>)> for AdjacencyTable<N, V> {
     }
 }
 
-impl<N: Node, V> IntoIterator for AdjacencyTable<N, V> {
+impl<N, V> IntoIterator for AdjacencyTable<N, V>
+where
+    N: Node,
+    V: Weight,
+{
     type Item = (N, Vec<(N, V)>);
 
     type IntoIter = hash_map::IntoIter<N, Vec<(N, V)>>;
@@ -101,7 +122,11 @@ impl<N: Node, V> IntoIterator for AdjacencyTable<N, V> {
     }
 }
 
-impl<N: Node, V> std::ops::Index<N> for AdjacencyTable<N, V> {
+impl<N, V> std::ops::Index<N> for AdjacencyTable<N, V>
+where
+    N: Node,
+    V: Weight,
+{
     type Output = Vec<(N, V)>;
 
     fn index(&self, index: N) -> &Self::Output {
@@ -109,7 +134,11 @@ impl<N: Node, V> std::ops::Index<N> for AdjacencyTable<N, V> {
     }
 }
 
-impl<N: Node, V> std::ops::IndexMut<N> for AdjacencyTable<N, V> {
+impl<N, V> std::ops::IndexMut<N> for AdjacencyTable<N, V>
+where
+    N: Node,
+    V: Weight,
+{
     fn index_mut(&mut self, index: N) -> &mut Self::Output {
         self.store.get_mut(&index).unwrap()
     }

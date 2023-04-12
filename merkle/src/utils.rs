@@ -6,17 +6,15 @@
 use crate::proofs::proof_path;
 use crate::{MerkleDimension, MerkleShape};
 use decanter::prelude::{hasher, Hashable, H256};
-use serde::Serialize;
 
-///
+/// Combines two hashes into a single hash
 pub fn add_hash(a: &H256, b: &H256) -> H256 {
     let c = [a.as_ref(), b.as_ref()].concat();
     let combined = ring::digest::digest(&ring::digest::SHA256, &c);
     hasher(combined).into()
 }
-
 /// Merges two hashes into a string
-pub fn combine<T: ToString>(a: &T, b: &T) -> String {
+pub fn combine_hash_str<T: ToString>(a: &T, b: &T) -> String {
     format!("{}{}", a.to_string(), b.to_string())
 }
 /// Creates a Merkle tree from a slice of data

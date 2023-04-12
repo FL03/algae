@@ -1,10 +1,10 @@
 [package]
 authors.workspace = true
-categories = []
+categories.workspace = true
 description.workspace = true
 edition.workspace = true
 homepage.workspace = true
-keywords = ["algorithms", "data-structures"]
+keywords.workspace = true
 license.workspace = true
 name = "algae"
 readme.workspace = true
@@ -12,14 +12,15 @@ repository.workspace = true
 version.workspace = true
 
 [features]
-default = ["core"]
-
-core = [
+default = ["core", "graph", "merkle", "mmr"]
+full = [
+    "core",
+    "graph",
     "merkle", 
     "mmr", 
-    "graph"
 ]
 
+core = []
 graph = ["algae-graph"]
 merkle = ["algae-merkle"]
 mmr = ["algae-mmr"]

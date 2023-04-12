@@ -5,13 +5,14 @@ env:
 
 on:
   pull_request:
-    branches-ignore: [ "dev*" ]
-    tags: [ "v*.*.*" ]
+    branches: [ main, master, v*.*.*, ]
   push:
-    branches-ignore: [ "dev*" ]
-    tags: [ "v*.*.*" ]
+    branches-ignore: [ "beta*", "dev*", "next*" ]
+    tags: [ "nightly*",  "v*.*.*" ]
+  release:
+      types: [created]
   schedule:
-    - cron: "30 9 * * *"
+    - cron: "30 9 * * *" # 9:30am UTC
   workflow_dispatch:
     inputs:
       publish:
@@ -23,39 +24,52 @@ on:
 jobs:
   build:
     name: Build and Test
-    runs-on: ubuntu-latest
     strategy:
       matrix:
-        toolchain:
-          - stable
-          - nightly
+        platform: [ ubuntu-latest ]
+        toolchain: [ stable, nightly ]
+    runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v3
-      - name: setup
-        run: rustup default ${{ matrix.toolchain }}
-      - run: cargo build --release -v --workspace
-      - run: cargo test --all --all-features --release -v
+      - name: setup (langspace)
+        run: |
+          rustup update
+          rustup default ${{ matrix.toolchain }}
+      - name: Build
+        run: cargo build --release -v --workspace
+      - name: Cache build
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target/release
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Test
+        run: cargo test --all --release -v
+      - name: Bench
+        if: matrix.toolchain == 'nightly'
+        run: cargo bench --all -v
   features:
-    if: ${{ github.event.inputs.publish }}
-    name: Features
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && github.event_name == 'release' && github.event.action == 'created' || github.event.inputs.publish == 'true'
+    name: Publish (features)
     needs: build
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package:
-          - algae-graph
-          - algae-merkle
-          - algae-mmr
+        feature: [ "graph", "merkle", "mmr" ]
+    env:
+      PACKAGE_NAME: ${{ github.event.repository.name }}-${{ matrix.feature }}
     steps:
       - uses: actions/checkout@v3
-      - name: Publish (${{matrix.package}})
-        run: cargo publish --all-features -v -p ${{ matrix.package }} --token ${{ secrets.CARGO_REGISTRY_TOKEN }}
+      - name: Publish (${{ env.PACKAGE_NAME }})
+        run: cargo publish --all-features -v -p ${{ env.PACKAGE_NAME }} --token ${{ secrets.CARGO_REGISTRY_TOKEN }}
   publish:
-    if: ${{ github.event.inputs.publish }}
-    name: Publish
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') && github.event_name == 'release' && github.event.action == 'created' || github.event.inputs.publish == 'true'
+    name: Publish (sdk)
     needs: features
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Publish (algae)
-        run: cargo publish --all-features -v -p algae --token ${{ secrets.CARGO_REGISTRY_TOKEN }}
+      - name: Publish (${{ github.event.repository.name }})
+        run: cargo publish --all-features -v -p ${{ github.event.repository.name }} --token ${{ secrets.CARGO_REGISTRY_TOKEN }}

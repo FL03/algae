@@ -7,7 +7,7 @@
         def.
             This notation abbreviates a is the hash of A; more formally, (A) maps to the hash (a) by the hashing function H
 */
-use algae_merkle::{is_merkle_valid, MerkleTree, MerkleTreeSpec};
+use algae_merkle::{is_merkle_valid, MerkleTree};
 use decanter::prelude::{Hashable, H256};
 use hex_literal::hex;
 
@@ -42,7 +42,7 @@ fn test_merkle_root() {
     let data: Vec<H256> = gen_merkle_tree_data!();
     let expected =
         (hex!("6b787718210e0b3b608814e04e61fde06d0df794319a12162f287412df3ec920")).into();
-    let a = MerkleTree::from(data);
+    let a = MerkleTree::from(data.as_slice());
     assert_ne!(&a.root(), &expected);
 }
 
@@ -53,8 +53,8 @@ fn test_merkle_root() {
 fn test_merkle_proof() {
     let expected =
         vec![hex!("965b093a75a75895a351786dd7a188515173f6928a8af8c9baa4dcff268a4f0f").into()];
-
-    let a = MerkleTree::from(gen_merkle_tree_data!());
+    let data: Vec<H256> = gen_merkle_tree_data!();
+    let a = MerkleTree::from(data.as_slice());
 
     assert_ne!(a.proof(0), expected)
 }
@@ -65,7 +65,7 @@ fn test_merkle_proof() {
 #[test]
 fn test_is_merkle_valid() {
     let data: Vec<H256> = gen_merkle_tree_data2!();
-    let merkle_tree = MerkleTree::from(data.clone());
+    let merkle_tree = MerkleTree::from(data.as_slice());
     let index = 3;
     let proof = merkle_tree.proof(index);
     log::info!("{:?}", proof);
@@ -81,7 +81,7 @@ fn test_is_merkle_valid() {
 #[test]
 fn test_vrf_tree() {
     let data: Vec<H256> = gen_merkle_tree_data!();
-    let merkle_tree = MerkleTree::from(data.clone());
+    let merkle_tree = MerkleTree::from(data.as_slice());
     let proof = merkle_tree.proof(0);
     assert!(is_merkle_valid(
         &merkle_tree.root(),
