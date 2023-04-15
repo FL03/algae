@@ -8,7 +8,7 @@ pub use self::{matrix::*, table::*};
 mod matrix;
 mod table;
 
-use crate::{Contain, Edge, Node};
+use crate::{Contain, Edge, Node, Weight};
 use serde::{Deserialize, Serialize};
 use std::ops::IndexMut;
 
@@ -46,6 +46,7 @@ where
 pub trait Store<N, V>: Extend<Edge<N, V>> + IndexMut<N, Output = Vec<(N, V)>>
 where
     N: Node,
+    V: Weight,
 {
     fn clear(&mut self);
     fn contains_key(&self, key: &N) -> bool;

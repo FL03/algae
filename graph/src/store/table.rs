@@ -3,7 +3,7 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: an adjacency table
 */
-use crate::{Node, Weight};
+use crate::{Node, Weight, Edge};
 use serde::{Deserialize, Serialize};
 use std::collections::{hash_map, HashMap};
 use std::iter::Extend;
@@ -45,6 +45,15 @@ where
     pub fn insert(&mut self, key: N, val: Vec<(N, V)>) -> Option<Vec<(N, V)>> {
         self.store.insert(key, val)
     }
+    pub fn is_empty(&self) -> bool {
+        self.store.is_empty()
+    }
+    pub fn iter(&self) -> hash_map::Iter<'_, N, Vec<(N, V)>> {
+        self.store.iter()
+    }
+    pub fn iter_mut(&mut self) -> hash_map::IterMut<'_, N, Vec<(N, V)>> {
+        self.store.iter_mut()
+    }
     pub fn get(&self, key: &N) -> Option<&Vec<(N, V)>> {
         self.store.get(key)
     }
@@ -59,6 +68,12 @@ where
     }
     pub fn len(&self) -> usize {
         self.store.len()
+    }
+    pub fn remove(&mut self, key: &N) -> Option<Vec<(N, V)>> {
+        self.store.remove(key)
+    }
+    pub fn reserve(&mut self, additional: usize) {
+        self.store.reserve(additional)
     }
     pub fn table(self) -> HashMap<N, Vec<(N, V)>> {
         self.store

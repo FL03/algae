@@ -129,6 +129,42 @@ where
 
         visited.len() == self.nodes().len()
     }
+    /// [Graph::remove_edge] attempts to remove an edge from the graph
+    fn remove_edge(&mut self, edge: &Edge<N, V>) -> Result<(), GraphError> {
+        match self.store_mut().get_mut(&edge.pair().0) {
+            Some(edges) => {
+                edges.retain(|(n, _)| n != &edge.pair().1);
+                Ok(())
+            }
+            None => Err(GraphError::NodeNotInGraph),
+        }
+    }
+    /// [Graph::remove_edges] attempts to remove several edges from the graph
+    fn remove_edges(&mut self, iter: impl IntoIterator<Item = Edge<N, V>>) -> Result<(), GraphError> {
+        for i in iter {
+            self.remove_edge(&i)?;
+        }
+        Ok(())
+    }
+    /// [Graph::remove_node] attempts to remove a node from the graph
+    fn remove_node(&mut self, node: &N) -> Result<(), GraphError> {
+        if self.contains_node(node) {
+            self.store_mut().remove(node);
+            for (_, edges) in self.store_mut().iter_mut() {
+                edges.retain(|(n, _)| n != node);
+            }
+            Ok(())
+        } else {
+            Err(GraphError::NodeNotInGraph)
+        }
+    }
+    /// [Graph::remove_nodes] attempts to remove several nodes from the graph
+    fn remove_nodes(&mut self, iter: impl IntoIterator<Item = N>) -> Result<(), GraphError> {
+        for i in iter {
+            self.remove_node(&i)?;
+        }
+        Ok(())
+    }
     /// [Graph::store_mut] returns an owned, mutable instance of the [AdjacencyTable]
     fn store_mut(&mut self) -> &mut AdjacencyTable<N, V>;
     /// [Graph::store] returns an owned instance of the [AdjacencyTable]
