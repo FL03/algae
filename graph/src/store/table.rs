@@ -1,9 +1,8 @@
 /*
     Appellation: atable <module>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description: an adjacency table
 */
-use crate::{Node, Weight, Edge};
+use crate::{Node, Weight};
 use serde::{Deserialize, Serialize};
 use std::collections::{hash_map, HashMap};
 use std::iter::Extend;

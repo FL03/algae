@@ -1,8 +1,10 @@
 /*
     Appellation: graphs <library>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description: This library is dedicated to graphs, explicitly implementing generic directed and undirected data-structures while providing the tools to create new ones.
 */
+/// # Graphs
+///
+/// This library is dedicated to graphs, explicitly implementing generic directed and undirected data-structures while providing the tools to create new ones.
 pub use self::{cmp::*, directed::*, errors::*, specs::*, undirected::*};
 
 pub(crate) mod cmp;
@@ -21,7 +23,11 @@ use store::AdjacencyTable;
 
 /// [Graph] describes the basic operations of a graph data-structure
 pub trait Graph<N = String, V = i64>:
-    Clone + Contain<N> + Contain<Edge<N, V>> + IndexMut<N, Output = Vec<(N, V)>>
+    AsMut<AdjacencyTable<N, V>>
+    + Clone
+    + Contain<N>
+    + Contain<Edge<N, V>>
+    + IndexMut<N, Output = Vec<(N, V)>>
 where
     N: Node,
     V: Weight,
@@ -140,7 +146,10 @@ where
         }
     }
     /// [Graph::remove_edges] attempts to remove several edges from the graph
-    fn remove_edges(&mut self, iter: impl IntoIterator<Item = Edge<N, V>>) -> Result<(), GraphError> {
+    fn remove_edges(
+        &mut self,
+        iter: impl IntoIterator<Item = Edge<N, V>>,
+    ) -> Result<(), GraphError> {
         for i in iter {
             self.remove_edge(&i)?;
         }

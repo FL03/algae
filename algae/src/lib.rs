@@ -1,9 +1,10 @@
 /*
    Appellation: algae <library>
    Contrib: FL03 <jo3mccain@icloud.com>
-   Description:
-       Algae is a comprehensive collection of algorithms and data-structures
 */
+/// # Algae
+///
+/// Algae is a comprehensive collection of algorithms and data-structures written in Rust.
 #[cfg(feature = "graph")]
 pub use algae_graph as graph;
 #[cfg(feature = "merkle")]
