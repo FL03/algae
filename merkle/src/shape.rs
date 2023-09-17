@@ -5,39 +5,29 @@
 */
 use serde::{Deserialize, Serialize};
 
-pub trait MerkleShape {
-    fn depth(&self) -> usize;
-    fn leafs(&self) -> usize;
-    fn shape(&self) -> (usize, usize, usize) {
-        (self.depth(), self.leafs(), self.size())
-    }
-    fn size(&self) -> usize;
-}
 
 #[derive(
     Clone, Copy, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
 )]
 pub struct MerkleDimension {
-    pub depth: usize,
-    pub leafs: usize,
-    pub size: usize,
+    depth: usize,
+    leafs: usize,
+    size: usize,
 }
 
 impl MerkleDimension {
     pub fn new(depth: usize, leafs: usize, size: usize) -> Self {
         Self { depth, leafs, size }
     }
-}
 
-impl MerkleShape for MerkleDimension {
-    fn depth(&self) -> usize {
+    pub fn depth(&self) -> usize {
         self.depth
     }
 
-    fn leafs(&self) -> usize {
+    pub fn leafs(&self) -> usize {
         self.leafs
     }
-    fn size(&self) -> usize {
+    pub fn size(&self) -> usize {
         self.size
     }
 }
@@ -48,14 +38,14 @@ impl std::fmt::Display for MerkleDimension {
     }
 }
 
-impl From<Box<dyn MerkleShape>> for MerkleDimension {
-    fn from(data: Box<dyn MerkleShape>) -> Self {
-        Self::from(data.shape())
-    }
-}
-
 impl From<(usize, usize, usize)> for MerkleDimension {
     fn from(data: (usize, usize, usize)) -> Self {
         Self::new(data.0, data.1, data.2)
+    }
+}
+
+impl From<MerkleDimension> for (usize, usize, usize) {
+    fn from(data: MerkleDimension) -> Self {
+        (data.depth, data.leafs, data.size)
     }
 }

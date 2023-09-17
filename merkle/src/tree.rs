@@ -1,17 +1,16 @@
 /*
     Appellation: tree <module>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description: ... Summary ...
 */
 use crate::proofs::merkle_proof;
-use crate::{create_merkle_tree, MerkleDimension, MerkleShape};
+use crate::{create_merkle_tree, MerkleDimension};
 use decanter::prelude::{Hashable, H256};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct MerkleTree {
-    pub dim: MerkleDimension,
-    pub nodes: Vec<H256>,
+    dim: MerkleDimension,
+    nodes: Vec<H256>,
 }
 
 impl MerkleTree {
@@ -47,7 +46,10 @@ impl std::fmt::Display for MerkleTree {
     }
 }
 
-impl<T: Hashable> From<&[T]> for MerkleTree {
+impl<T> From<&[T]> for MerkleTree
+where
+    T: Hashable,
+{
     fn from(data: &[T]) -> Self {
         let (dim, nodes) = create_merkle_tree::<T>(data);
         Self {
@@ -57,11 +59,3 @@ impl<T: Hashable> From<&[T]> for MerkleTree {
     }
 }
 
-impl From<(Box<dyn MerkleShape>, Vec<H256>)> for MerkleTree {
-    fn from(data: (Box<dyn MerkleShape>, Vec<H256>)) -> Self {
-        Self {
-            dim: MerkleDimension::from(data.0),
-            nodes: data.1,
-        }
-    }
-}

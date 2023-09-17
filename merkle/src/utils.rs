@@ -4,7 +4,7 @@
     Description:
 */
 use crate::proofs::proof_path;
-use crate::{MerkleDimension, MerkleShape};
+use crate::MerkleDimension;
 use decanter::prelude::{hasher, Hashable, H256};
 
 /// Combines two hashes into a single hash
@@ -18,7 +18,7 @@ pub fn combine_hash_str<T: ToString>(a: &T, b: &T) -> String {
     format!("{}{}", a.to_string(), b.to_string())
 }
 /// Creates a Merkle tree from a slice of data
-pub fn create_merkle_tree<T>(data: &[T]) -> (Box<dyn MerkleShape>, Vec<H256>)
+pub fn create_merkle_tree<T>(data: &[T]) -> (MerkleDimension, Vec<H256>)
 where
     T: Hashable,
 {
@@ -48,7 +48,7 @@ where
         depth += 1;
     }
     let dim = MerkleDimension::new(depth, data.len(), nodes.len());
-    (Box::new(dim), nodes)
+    (dim, nodes)
 }
 
 /// Takes the hash of the given information to the second degree

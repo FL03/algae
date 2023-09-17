@@ -1,7 +1,6 @@
 /*
     Appellation: nodes <merkle>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description: ... Summary ...
 */
 use crate::{combine_hash_str, merkle_hash, Payload};
 use decanter::prelude::{Hashable, H256};

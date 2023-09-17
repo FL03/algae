@@ -1,8 +1,6 @@
 /*
     Appellation: layers <merkle>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description:
-        Merkle Tree def...
 */
 use crate::Node;
 use itertools::Itertools;
@@ -19,7 +17,7 @@ impl<T> Layer<T>
 where
     T: Default + ToString,
 {
-    pub fn new(data: Vec<Node<T>>) -> Self {
+    pub fn new(data: impl IntoIterator<Item = Node<T>>) -> Self {
         let layer = data.into_iter().batching(|it| match it.next() {
             Some(l) => match it.next() {
                 Some(r) => Some(Node::from((l, r))),

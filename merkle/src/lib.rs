@@ -13,6 +13,15 @@ pub(crate) mod nodes;
 pub(crate) mod payloads;
 pub(crate) mod shape;
 pub(crate) mod tree;
-mod utils;
+pub(crate) mod utils;
 
 pub mod proofs;
+
+pub mod prelude {
+    pub use crate::layers::*;
+    pub use crate::nodes::*;
+    pub use crate::payloads::*;
+    pub use crate::shape::*;
+    pub use crate::tree::*;
+    pub use crate::utils::*;
+}

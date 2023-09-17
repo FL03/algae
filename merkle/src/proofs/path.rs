@@ -1,7 +1,6 @@
 /*
    Appellation: path <proofs> [merkle]
    Contrib: FL03 <jo3mccain@icloud.com>
-   Description: ... Summary ...
 */
 
 pub fn proof_path(index: usize, size: usize) -> Vec<usize> {

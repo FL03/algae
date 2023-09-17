@@ -21,6 +21,7 @@ wasm = [
 ]
 
 [lib]
+bench = true
 crate-type = ["cdylib", "rlib"]
 test = true
 
@@ -39,6 +40,7 @@ strum.workspace = true
 [dev-dependencies]
 hex-literal = "0.4"
 log = "0.4"
+rs_merkle = "1.4"
 vrf = "0.2"
 
 [package.metadata.docs.rs]
