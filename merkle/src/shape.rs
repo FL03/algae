@@ -1,10 +1,28 @@
 /*
    Appellation: shape <merkle>
    Contrib: FL03 <jo3mccain@icloud.com>
-   Description: ... Summary ...
 */
 use serde::{Deserialize, Serialize};
 
+fn get_merkle_tree_size(leafs: usize) -> usize {
+    let mut size = leafs + (leafs % 2);
+    let mut l = leafs;
+    while l > 1 {
+        l = (l as f64 / 2_f64).ceil() as usize;
+        size += l;
+    }
+    size
+}
+
+fn get_merkle_depth(leafs: usize) -> usize {
+    let mut depth = 1;
+    let mut l = leafs;
+    while l > 1 {
+        l = (l as f64 / 2_f64).ceil() as usize;
+        depth += 1;
+    }
+    depth
+}
 
 #[derive(
     Clone, Copy, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize,
@@ -20,6 +38,13 @@ impl MerkleDimension {
         Self { depth, leafs, size }
     }
 
+    pub fn from_leafs(leafs: usize) -> Self {
+        let depth = get_merkle_depth(leafs);
+        let size = get_merkle_tree_size(leafs);
+        
+        Self::new(depth, leafs, size)
+    }
+
     pub fn depth(&self) -> usize {
         self.depth
     }
@@ -27,6 +52,11 @@ impl MerkleDimension {
     pub fn leafs(&self) -> usize {
         self.leafs
     }
+
+    pub fn shape(&self) -> (usize, usize, usize) {
+        (self.depth, self.leafs, self.size)
+    }
+
     pub fn size(&self) -> usize {
         self.size
     }

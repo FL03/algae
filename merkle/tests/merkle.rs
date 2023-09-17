@@ -11,6 +11,30 @@ use algae_merkle::{add_hash, is_merkle_valid, MerkleTree};
 use decanter::prelude::{Hashable, H256};
 use hex_literal::hex;
 
+// lazy_static::lazy_static!(
+//     static ref SAMPLE_DATA: Vec<H256> = hash_leaves();
+// );
+
+fn get_merkle_tree_size(leafs: usize) -> usize {
+    let mut size = leafs + (leafs % 2);
+    let mut l = leafs;
+    while l > 1 {
+        l = (l as f64 / 2_f64).ceil() as usize;
+        size += l;
+    }
+    size
+}
+
+fn get_merkle_depth(leafs: usize) -> usize {
+    let mut depth = 1;
+    let mut l = leafs;
+    while l > 1 {
+        l = (l as f64 / 2_f64).ceil() as usize;
+        depth += 1;
+    }
+    depth
+}
+
 macro_rules! hash_leaves {
     ($leaves:expr) => {
         $leaves
@@ -50,7 +74,7 @@ macro_rules! gen_merkle_tree_data2 {
 fn test_merkle_root() {
     let sample = ["a", "b", "c", "d"];
     let leaves = hash_leaves!(sample);
-
+    let nleafs = leaves.len();
     let exp = {
         let a = add_hash(&leaves[0], &leaves[1]);
         let b = add_hash(&leaves[2], &leaves[3]);
@@ -58,9 +82,19 @@ fn test_merkle_root() {
         // add_hash(&a, &leaves[2])
     };
 
-    let a = MerkleTree::from(leaves.as_slice());
+    let a = MerkleTree::from(sample.as_slice());
 
     assert_eq!(a.root(), exp);
+    assert_eq!(a.dim().shape(), (get_merkle_depth(nleafs), nleafs, get_merkle_tree_size(nleafs)));
+}
+
+#[test]
+fn test_merkle_shape() {
+    let sample = ["a", "b", "c", "d", "e", "f", "g"];
+    let leafs = sample.len();
+    let a = MerkleTree::from(sample.as_slice());
+
+    assert_eq!(a.dim().shape(), (get_merkle_depth(leafs), leafs, get_merkle_tree_size(leafs)));
 }
 
 /*

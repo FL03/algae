@@ -1,5 +1,7 @@
+use std::ops::{Index, IndexMut, Range};
+
 /*
-    Appellation: tree <module>
+    Appellation: merkle <module>
     Contrib: FL03 <jo3mccain@icloud.com>
 */
 use crate::proofs::merkle_proof;
@@ -30,7 +32,7 @@ impl MerkleTree {
         merkle_proof(self.dim(), self.nodes().clone(), index)
     }
     pub fn root(&self) -> H256 {
-        self.nodes()[self.dim().size() - 1]
+        self[self.dim().size() - 1]
     }
     pub fn nodes(&self) -> &Vec<H256> {
         &self.nodes
@@ -38,6 +40,8 @@ impl MerkleTree {
     pub fn nodes_mut(&mut self) -> &mut Vec<H256> {
         &mut self.nodes
     }
+
+    
 }
 
 impl std::fmt::Display for MerkleTree {
@@ -59,3 +63,30 @@ where
     }
 }
 
+impl Index<usize> for MerkleTree {
+    type Output = H256;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.nodes[index]
+    }
+}
+
+impl IndexMut<usize> for MerkleTree {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        &mut self.nodes[index]
+    }
+}
+
+impl Index<Range<usize>> for MerkleTree {
+    type Output = [H256];
+
+    fn index(&self, index: Range<usize>) -> &Self::Output {
+        &self.nodes[index]
+    }
+}
+
+impl IndexMut<Range<usize>> for MerkleTree {
+    fn index_mut(&mut self, index: Range<usize>) -> &mut Self::Output {
+        &mut self.nodes[index]
+    }
+}

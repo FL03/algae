@@ -39,6 +39,7 @@ strum.workspace = true
 
 [dev-dependencies]
 hex-literal = "0.4"
+lazy_static = "1.4"
 log = "0.4"
 rs_merkle = "1.4"
 vrf = "0.2"
