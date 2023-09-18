@@ -41,7 +41,7 @@ impl MerkleDimension {
     pub fn from_leafs(leafs: usize) -> Self {
         let depth = get_merkle_depth(leafs);
         let size = get_merkle_tree_size(leafs);
-        
+
         Self::new(depth, leafs, size)
     }
 

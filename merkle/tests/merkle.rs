@@ -85,7 +85,14 @@ fn test_merkle_root() {
     let a = MerkleTree::from(sample.as_slice());
 
     assert_eq!(a.root(), exp);
-    assert_eq!(a.dim().shape(), (get_merkle_depth(nleafs), nleafs, get_merkle_tree_size(nleafs)));
+    assert_eq!(
+        a.dim().shape(),
+        (
+            get_merkle_depth(nleafs),
+            nleafs,
+            get_merkle_tree_size(nleafs)
+        )
+    );
 }
 
 #[test]
@@ -94,7 +101,10 @@ fn test_merkle_shape() {
     let leafs = sample.len();
     let a = MerkleTree::from(sample.as_slice());
 
-    assert_eq!(a.dim().shape(), (get_merkle_depth(leafs), leafs, get_merkle_tree_size(leafs)));
+    assert_eq!(
+        a.dim().shape(),
+        (get_merkle_depth(leafs), leafs, get_merkle_tree_size(leafs))
+    );
 }
 
 /*

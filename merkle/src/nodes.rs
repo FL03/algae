@@ -10,7 +10,7 @@ use std::string::ToString;
 #[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct Node<T = String>
 where
-    T: Default + ToString,
+    T: Hashable,
 {
     pub data: Payload<T>,
     pub hash: H256,
@@ -18,7 +18,7 @@ where
 
 impl<T> Node<T>
 where
-    T: Default + ToString,
+    T: Hashable,
 {
     pub fn new(data: Payload<T>, hash: H256) -> Self {
         Self { data, hash }
@@ -27,7 +27,7 @@ where
 
 impl<T> Hashable for Node<T>
 where
-    T: Default + ToString,
+    T: Hashable,
 {
     fn hash(&self) -> H256 {
         merkle_hash(self.data.to_string())
@@ -36,7 +36,7 @@ where
 
 impl<T> From<(Node<T>, Node<T>)> for Node<T>
 where
-    T: Default + ToString,
+    T: Hashable,
 {
     fn from(data: (Node<T>, Node<T>)) -> Self {
         let hash = merkle_hash(combine_hash_str(&data.0.hash, &data.1.hash));
@@ -47,7 +47,7 @@ where
 
 impl<T> std::fmt::Display for Node<T>
 where
-    T: Default + ToString,
+    T: Hashable,
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let msg = serde_json::json!({

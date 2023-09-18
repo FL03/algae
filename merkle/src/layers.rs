@@ -3,19 +3,19 @@
     Contrib: FL03 <jo3mccain@icloud.com>
 */
 use crate::Node;
+use decanter::prelude::Hashable;
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
-use std::string::ToString;
 
 // pub fn build_new_merkle_layer<T: ToString>(left: MerkleNode<T>, right: MerkleNode)
 #[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
 pub struct Layer<T = String>(Vec<Node<T>>)
 where
-    T: Default + ToString;
+    T: Hashable;
 
 impl<T> Layer<T>
 where
-    T: Default + ToString,
+    T: Hashable,
 {
     pub fn new(data: impl IntoIterator<Item = Node<T>>) -> Self {
         let layer = data.into_iter().batching(|it| match it.next() {
@@ -35,7 +35,7 @@ where
 
 impl<T> From<Vec<Node<T>>> for Layer<T>
 where
-    T: Default + ToString,
+    T: Hashable,
 {
     fn from(data: Vec<Node<T>>) -> Self {
         Self::new(data)
@@ -44,7 +44,7 @@ where
 
 impl<T> From<(Node<T>, Node<T>)> for Layer<T>
 where
-    T: Default + ToString,
+    T: Hashable,
 {
     fn from(data: (Node<T>, Node<T>)) -> Self {
         Self::new(vec![data.0, data.1])

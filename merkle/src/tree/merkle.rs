@@ -1,5 +1,3 @@
-use std::ops::{Index, IndexMut, Range};
-
 /*
     Appellation: merkle <module>
     Contrib: FL03 <jo3mccain@icloud.com>
@@ -8,6 +6,7 @@ use crate::proofs::merkle_proof;
 use crate::{create_merkle_tree, MerkleDimension};
 use decanter::prelude::{Hashable, H256};
 use serde::{Deserialize, Serialize};
+use std::ops::{Index, IndexMut, Range};
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct MerkleTree {
@@ -40,8 +39,6 @@ impl MerkleTree {
     pub fn nodes_mut(&mut self) -> &mut Vec<H256> {
         &mut self.nodes
     }
-
-    
 }
 
 impl std::fmt::Display for MerkleTree {

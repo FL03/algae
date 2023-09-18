@@ -2,9 +2,9 @@
    Appellation: algae <library>
    Contrib: FL03 <jo3mccain@icloud.com>
 */
-/// # Algae
-///
-/// Algae is a comprehensive collection of algorithms and data-structures written in Rust.
+//! # Algae
+//!
+//! Algae is a comprehensive collection of algorithms and data-structures written in Rust.
 #[cfg(feature = "graph")]
 pub use algae_graph as graph;
 #[cfg(feature = "merkle")]
@@ -16,9 +16,10 @@ pub mod list;
 
 pub mod prelude {
     #[cfg(feature = "graph")]
-    pub use super::graph::*;
+    pub use super::graph;
+    // pub use super::graph::*;
     #[cfg(feature = "merkle")]
-    pub use super::merkle::*;
+    pub use super::merkle::prelude::*;
     #[cfg(feature = "mmr")]
     pub use super::mmr::*;
 }
