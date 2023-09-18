@@ -1,5 +1,5 @@
 /*
-    Appellation: singly <module>
+    Appellation: store <module>
     Contrib: FL03 <jo3mccain@icloud.com>
 */
 use super::{IntoIter, Iter, IterMut};

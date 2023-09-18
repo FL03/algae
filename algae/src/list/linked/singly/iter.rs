@@ -2,8 +2,7 @@
     Appellation: singly <module>
     Contrib: FL03 <jo3mccain@icloud.com>
 */
-// use super::SinglyLinkedList;
-use super::singly::{Node, SinglyLinkedList};
+use super::{Node, SinglyLinkedList};
 
 pub struct IntoIter<T>(SinglyLinkedList<T>);
 

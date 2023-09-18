@@ -2,11 +2,11 @@
     Appellation: linked <module>
     Contrib: FL03 <jo3mccain@icloud.com>
 */
-pub use self::{iter::*, singly::SinglyLinkedList, utils::*};
+pub use self::{singly::SinglyLinkedList, utils::*};
 
-pub(crate) mod iter;
 
 pub mod singly;
+pub mod stack;
 
 pub(crate) mod utils {}
 
