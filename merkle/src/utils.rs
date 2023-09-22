@@ -14,17 +14,17 @@ pub fn add_hash(a: &H256, b: &H256) -> H256 {
 }
 
 pub fn concat_and_hash(left: &H256, right: Option<&H256>) -> H256 {
-        let mut concatenated: Vec<u8> = (*left).0.to_vec();
+    let mut concatenated: Vec<u8> = (*left).0.to_vec();
 
-        match right {
-            Some(right_node) => {
-                let mut right_node_clone: Vec<u8> = (*right_node).0.to_vec();
-                concatenated.append(&mut right_node_clone);
-                hasher(&concatenated).into()
-            }
-            None => *left,
+    match right {
+        Some(right_node) => {
+            let mut right_node_clone: Vec<u8> = (*right_node).0.to_vec();
+            concatenated.append(&mut right_node_clone);
+            hasher(&concatenated).into()
         }
+        None => *left,
     }
+}
 /// Merges two hashes into a string
 pub fn combine_hash_str<T: ToString>(a: &T, b: &T) -> String {
     format!("{}{}", a.to_string(), b.to_string())
