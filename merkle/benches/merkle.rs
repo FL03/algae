@@ -22,9 +22,7 @@ fn bench_merkle_proofs(b: &mut Bencher) {
 }
 
 #[derive(Clone)]
-pub struct BSha256Algorithm {
-
-}
+pub struct BSha256Algorithm;
 
 impl Hasher for BSha256Algorithm {
     type Hash = [u8; 32];
