@@ -4,7 +4,6 @@
 */
 pub use self::{singly::SinglyLinkedList, utils::*};
 
-
 pub mod singly;
 pub mod stack;
 

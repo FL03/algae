@@ -13,11 +13,11 @@ version.workspace = true
 
 [features]
 default = [
-    "ring/default"
+
 ]
+
 wasm = [
-    "decanter/wasm",
-    "ring/wasm32_c"
+
 ]
 
 [lib]
@@ -27,11 +27,10 @@ test = true
 
 [dependencies]
 anyhow.workspace = true
-blake3 ={ features = [], version = "1" }
+blake3 = { features = [], version = "1" }
 decanter.workspace = true
 hex = "0.4"
 itertools.workspace = true
-ring = { features = ["wasm32_c"], version = "0.16" }
 serde.workspace = true
 serde_json.workspace = true
 smart-default.workspace = true
@@ -50,4 +49,4 @@ rustc-args = ["--cfg", "docsrs"]
 
 [target.wasm32-unknown-unknown.dependencies]
 
-[target.wasm32-wasi.dependencies]
+[target.wasm32-wasi.dependencies.dependencies]

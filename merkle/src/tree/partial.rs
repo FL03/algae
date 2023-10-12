@@ -4,6 +4,8 @@
 */
 use crate::Layer;
 
+pub struct MerkleLayer {}
+
 pub struct PartialTree {
     layers: Vec<Layer>,
 }

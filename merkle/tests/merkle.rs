@@ -95,7 +95,13 @@ fn test_merkle_root() {
     };
 
     let a = MerkleTree::from(sample.as_slice());
-    let b = rs_merkle::MerkleTree::<BSha256>::from_leaves(sample.iter().map(|i| BSha256::hash(i.as_bytes())).collect::<Vec<[u8; 32]>>().as_slice());
+    let b = rs_merkle::MerkleTree::<BSha256>::from_leaves(
+        sample
+            .iter()
+            .map(|i| BSha256::hash(i.as_bytes()))
+            .collect::<Vec<[u8; 32]>>()
+            .as_slice(),
+    );
 
     assert_eq!(a.root(), exp);
     assert_eq!(a.root().0, b.root().expect("No Root"));

@@ -7,11 +7,11 @@ use crate::MerkleDimension;
 use decanter::prelude::{hasher, Hashable, H256};
 
 /// Combines two hashes into a single hash
-pub fn add_hash(a: &H256, b: &H256) -> H256 {
-    let c = [a.as_ref(), b.as_ref()].concat();
-    let combined = ring::digest::digest(&ring::digest::SHA256, &c);
-    hasher(combined).into()
-}
+// pub fn add_hash(a: &H256, b: &H256) -> H256 {
+//     let c = [a.as_ref(), b.as_ref()].concat();
+//     let combined = ring::digest::digest(&ring::digest::SHA256, &c);
+//     hasher(combined).into()
+// }
 
 pub fn concat_and_hash(left: &H256, right: Option<&H256>) -> H256 {
     let mut concatenated: Vec<u8> = (*left).0.to_vec();
