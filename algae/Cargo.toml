@@ -12,18 +12,36 @@ repository.workspace = true
 version.workspace = true
 
 [features]
-default = ["core", "graph", "merkle", "mmr"]
+default = [
+    "core",
+    "ds",
+    "math", 
+]
 full = [
     "core",
-    "graph",
-    "merkle", 
-    "mmr", 
+    "ds",
+    "math", 
 ]
 
 core = []
-graph = ["algae-graph"]
-merkle = ["algae-merkle"]
-mmr = ["algae-mmr"]
+ds = [
+    "graph",
+    "merkle",
+    "mmr",
+]
+
+graph = [
+    "algae-graph"
+]
+math = [
+    "algae-math"
+]
+merkle = [
+    "algae-merkle"
+]
+mmr = [
+    "algae-mmr"
+]
 
 wasm = []
 
@@ -35,7 +53,9 @@ test = true
 [build-dependencies]
 
 [dependencies]
+
 algae-graph = { features = [], optional = true, path = "../graph", version = "0.1.20" }
+algae-math = { features = [], optional = true, path = "../math/math", version = "0.1.20" }
 algae-merkle = { features = [], optional = true, path = "../merkle", version = "0.1.20" }
 algae-mmr = { features = [], optional = true, path = "../mmr", version = "0.1.20" }
 
