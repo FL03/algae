@@ -1,3 +1,20 @@
+# Artifacts
+
+### Cache
+**/.artifacts/cache/
+**/.docker/cache/
+
+### Data
+**/.artifacts/data/
+**/.docker/data/
+
+### Logs
+**/.artifacts/logs/
+**/.docker/logs/
+
+*.log
+*.log.*
+
 # Config
 **/config.*
 **/*.config.*
@@ -5,27 +22,46 @@
 **/*.env
 **/*.env.*
 
-# Directories
-**/__pycache__/
-**/__sapper__/
+### Exceptions
+!**/default.config.*
+!**/*.env.example
+!**/*.config.js
+!**/*.config.cjs
 
-**/.DS_STORE/
-**/.artifacts/data/
-**/.docker/data/
+# Development
+
+### IDEs
+**/.atom/
 **/.idea/
-**/.pytest_cache/
-**/.svelte-kit/
 **/.vscode/
 
+# Languages
+
+### Node
 **/build/
 **/debug/
 **/dist/
 **/env/
 **/node_modules/
-**/target/
+
+### Python
+**/__pycache__/
 **/venv/
 
-# File Extensions
+*.pyc
+*.pyo
+
+### Rust
+**/target/
+
+**/Cargo.lock
+
+*.bk
+*.bk.*
+
+# Misc
+
+### File Extensions
 **/*.bk
 **/*.bk.*
 
@@ -50,9 +86,3 @@
 
 **/*.zip
 **/*.zip.*
-
-# Exceptions
-!**/default.config.*
-!**/*.env.example
-!**/*.config.js
-!**/*.config.cjs

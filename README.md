@@ -9,16 +9,21 @@
 
 Welcome to algae, a collection of optimized data-structures and algorithms intended for use within blockchain environments.
 
-## Developers
+## Getting Started
 
-### Getting Started
+### Build from the source
 
+#### _Clone the repository_
+
+```bash
     git clone https://github.com/FL03/algae
+```
 
-#### Testing
+#### _Build the project_
 
+```bash
     cargo build --release
-    cargo test --all-features --release
+```
 
 ## Contributors
 

@@ -2,7 +2,7 @@
 #![feature(test)]
 
 extern crate test;
-use algae::graph::{DirectedGraph, Edge, Graph,};
+use algae_graph::prelude::{DirectedGraph, Edge, Graph};
 use test::Bencher;
 
 const TEST_EDGES: [(&str, &str, usize); 5] = [

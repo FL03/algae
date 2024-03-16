@@ -1,7 +1,13 @@
 /*
     Appellation: linked <module>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description: ... Summary ...
 */
+pub use self::{singly::SinglyLinkedList, utils::*};
 
-pub mod persistant;
+pub mod singly;
+pub mod stack;
+
+pub(crate) mod utils {}
+
+#[cfg(test)]
+mod tests {}

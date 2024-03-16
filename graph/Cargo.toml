@@ -16,16 +16,27 @@ default = []
 
 wasm = []
 
+serde = [
+    "dep:serde",
+    "serde-ext"
+]
+
+serde-ext = [
+    "dep:serde_json"
+]
+
 [lib]
+bench = true
 crate-type = ["cdylib", "rlib"]
+doctest = true
+test = true
 
 [build-dependencies]
 
 [dependencies]
-decanter.workspace = true
 itertools.workspace = true
-serde.workspace = true
-serde_json.workspace = true
+serde = { optional = true, features = ["derive"], version = "1" }
+serde_json = { optional = true, version = "1" }
 smart-default.workspace = true
 strum.workspace = true
 

@@ -1,14 +1,12 @@
 /*
     Appellation: mmr <module>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description: ... summary ...
 */
 use crate::cmp::{Node, Position};
 use crate::{is_node_right, sibling_index, RangeMap};
 use decanter::prelude::{hasher, Hashable, H256};
 use digest::Digest;
 use serde::{Deserialize, Serialize};
-use std::convert::From;
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, Hashable, PartialEq, Serialize)]
 pub struct MerkleMountainRange<T = String>

@@ -1,24 +1,36 @@
 /*
-    Appellation: generate <utils>
+    Appellation: utils <mod>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description:
 */
 use crate::proofs::proof_path;
-use crate::{MerkleDimension, MerkleShape};
+use crate::MerkleDimension;
 use decanter::prelude::{hasher, Hashable, H256};
 
 /// Combines two hashes into a single hash
-pub fn add_hash(a: &H256, b: &H256) -> H256 {
-    let c = [a.as_ref(), b.as_ref()].concat();
-    let combined = ring::digest::digest(&ring::digest::SHA256, &c);
-    hasher(combined).into()
+// pub fn add_hash(a: &H256, b: &H256) -> H256 {
+//     let c = [a.as_ref(), b.as_ref()].concat();
+//     let combined = ring::digest::digest(&ring::digest::SHA256, &c);
+//     hasher(combined).into()
+// }
+
+pub fn concat_and_hash(left: &H256, right: Option<&H256>) -> H256 {
+    let mut concatenated: Vec<u8> = (*left).0.to_vec();
+
+    match right {
+        Some(right_node) => {
+            let mut right_node_clone: Vec<u8> = (*right_node).0.to_vec();
+            concatenated.append(&mut right_node_clone);
+            hasher(&concatenated).into()
+        }
+        None => *left,
+    }
 }
 /// Merges two hashes into a string
 pub fn combine_hash_str<T: ToString>(a: &T, b: &T) -> String {
     format!("{}{}", a.to_string(), b.to_string())
 }
 /// Creates a Merkle tree from a slice of data
-pub fn create_merkle_tree<T>(data: &[T]) -> (Box<dyn MerkleShape>, Vec<H256>)
+pub fn create_merkle_tree<T>(data: &[T]) -> (MerkleDimension, Vec<H256>)
 where
     T: Hashable,
 {
@@ -39,7 +51,7 @@ where
         }
         let mut temp = Vec::new();
         for i in 0..length / 2 {
-            let h: H256 = add_hash(&last_level[2 * i], &last_level[2 * i + 1]);
+            let h: H256 = concat_and_hash(&last_level[2 * i], Some(&last_level[2 * i + 1]));
             temp.push(h);
             nodes.push(h);
         }
@@ -48,7 +60,7 @@ where
         depth += 1;
     }
     let dim = MerkleDimension::new(depth, data.len(), nodes.len());
-    (Box::new(dim), nodes)
+    (dim, nodes)
 }
 
 /// Takes the hash of the given information to the second degree
@@ -70,9 +82,9 @@ pub fn is_merkle_valid(
     let proof_index = proof_path(index, leaf_size);
     for i in 0..proof.len() {
         if proof_index[i] % 2 == 0 {
-            h = add_hash(&proof[i], &h);
+            h = concat_and_hash(&proof[i], Some(&h));
         } else {
-            h = add_hash(&h, &proof[i]);
+            h = concat_and_hash(&h, Some(&proof[i]));
         }
     }
     *root == h

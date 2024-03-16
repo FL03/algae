@@ -5,10 +5,11 @@
 */
 use crate::{cmp::Edge, store::AdjacencyTable};
 use crate::{Contain, Graph, GraphExt, Node, Subgraph, Weight};
-
+#[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Eq, PartialEq)]
+#[cfg_attr(feature = "serde", derive(Deserialize, Serialize))]
 pub struct UndirectedGraph<N = String, V = i64>
 where
     N: Node,

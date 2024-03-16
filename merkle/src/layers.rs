@@ -1,25 +1,25 @@
 /*
     Appellation: layers <merkle>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description:
-        Merkle Tree def...
 */
 use crate::Node;
+use decanter::prelude::Hashable;
 use itertools::Itertools;
+#[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
-use std::string::ToString;
 
 // pub fn build_new_merkle_layer<T: ToString>(left: MerkleNode<T>, right: MerkleNode)
-#[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]
+#[derive(Clone, Debug, Eq, Hash, PartialEq, PartialOrd, Ord)]
+#[cfg_attr(feature = "serde", derive(Deserialize, Serialize))]
 pub struct Layer<T = String>(Vec<Node<T>>)
 where
-    T: Default + ToString;
+    T: Hashable;
 
 impl<T> Layer<T>
 where
-    T: Default + ToString,
+    T: Hashable,
 {
-    pub fn new(data: Vec<Node<T>>) -> Self {
+    pub fn new(data: impl IntoIterator<Item = Node<T>>) -> Self {
         let layer = data.into_iter().batching(|it| match it.next() {
             Some(l) => match it.next() {
                 Some(r) => Some(Node::from((l, r))),
@@ -37,7 +37,7 @@ where
 
 impl<T> From<Vec<Node<T>>> for Layer<T>
 where
-    T: Default + ToString,
+    T: Hashable,
 {
     fn from(data: Vec<Node<T>>) -> Self {
         Self::new(data)
@@ -46,7 +46,7 @@ where
 
 impl<T> From<(Node<T>, Node<T>)> for Layer<T>
 where
-    T: Default + ToString,
+    T: Hashable,
 {
     fn from(data: (Node<T>, Node<T>)) -> Self {
         Self::new(vec![data.0, data.1])

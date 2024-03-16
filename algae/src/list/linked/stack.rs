@@ -1,48 +1,42 @@
 /*
-    Appellation: persistant <module>
+    Appellation: stack <module>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description: ... Summary ...
 */
 use std::rc::Rc;
 
 type Link<T> = Option<Rc<Node<T>>>;
+
+pub struct Stack<T> {
+    head: Link<T>,
+}
 
 struct Node<T> {
     elem: T,
     next: Link<T>,
 }
 
-impl<T> Node<T> {
-    pub fn new(elem: T, next: Link<T>) -> Self {
-        Self { elem, next }
-    }
-    pub fn data(&self) -> &T {
-        &self.elem
-    }
-    pub fn link(&self) -> &Link<T> {
-        &self.next
-    }
-}
-
-/// Singly-Linked, Persistant List
-pub struct SLPList<T> {
-    head: Link<T>,
-}
-
-impl<T> SLPList<T> {
+impl<T> Stack<T> {
     pub fn new() -> Self {
-        Self::from(None)
-    }
-    pub fn prepend(&self, elem: T) -> Self {
-        SLPList::from(Some(Rc::new(Node::new(elem, self.head.clone()))))
+        Stack { head: None }
     }
 
-    pub fn tail(&self) -> Self {
-        SLPList::from(self.head.as_ref().and_then(|node| node.link().clone()))
+    pub fn prepend(&self, elem: T) -> Stack<T> {
+        Stack {
+            head: Some(Rc::new(Node {
+                elem: elem,
+                next: self.head.clone(),
+            })),
+        }
+    }
+
+    pub fn tail(&self) -> Stack<T> {
+        Stack {
+            head: self.head.as_ref().and_then(|node| node.next.clone()),
+        }
     }
 
     pub fn head(&self) -> Option<&T> {
-        self.head.as_ref().map(|node| node.data())
+        self.head.as_ref().map(|node| &node.elem)
     }
 
     pub fn iter(&self) -> Iter<'_, T> {
@@ -52,19 +46,7 @@ impl<T> SLPList<T> {
     }
 }
 
-impl<T> From<Link<T>> for SLPList<T> {
-    fn from(head: Link<T>) -> SLPList<T> {
-        SLPList { head }
-    }
-}
-
-impl<T> Default for SLPList<T> {
-    fn default() -> Self {
-        Self::from(None)
-    }
-}
-
-impl<T> Drop for SLPList<T> {
+impl<T> Drop for Stack<T> {
     fn drop(&mut self) {
         let mut head = self.head.take();
         while let Some(node) = head {
@@ -94,11 +76,11 @@ impl<'a, T> Iterator for Iter<'a, T> {
 
 #[cfg(test)]
 mod test {
-    use super::*;
+    use super::Stack;
 
     #[test]
-    fn test_linked_list() {
-        let list = SLPList::default();
+    fn basics() {
+        let list = Stack::new();
         assert_eq!(list.head(), None);
 
         let list = list.prepend(1).prepend(2).prepend(3);
@@ -119,8 +101,8 @@ mod test {
     }
 
     #[test]
-    fn test_linked_list_iter() {
-        let list = SLPList::default().prepend(1).prepend(2).prepend(3);
+    fn iter() {
+        let list = Stack::new().prepend(1).prepend(2).prepend(3);
 
         let mut iter = list.iter();
         assert_eq!(iter.next(), Some(&3));

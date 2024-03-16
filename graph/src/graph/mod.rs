@@ -3,9 +3,10 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: This module implements an abstract graph data structure
 */
-use crate::store::Entry;
+use crate::cmp::entry::Entry;
+#[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
-use strum::{Display, EnumString, EnumVariantNames};
+use strum::{Display, EnumCount, EnumIs, EnumIter, EnumString, VariantNames};
 
 pub trait GraphStore<N, V>: Default {
     fn capacity(&self) -> usize;
@@ -19,19 +20,25 @@ pub trait GraphStore<N, V>: Default {
     Copy,
     Debug,
     Default,
-    Deserialize,
     Display,
+    EnumCount,
+    EnumIs,
+    EnumIter,
     EnumString,
-    EnumVariantNames,
     Eq,
     Hash,
     Ord,
     PartialEq,
     PartialOrd,
-    Serialize,
+    VariantNames,
 )]
 #[repr(u8)]
 #[strum(serialize_all = "snake_case")]
+#[cfg_attr(
+    feature = "serde",
+    derive(Deserialize, Serialize),
+    serde(rename_all = "lowercase", untagged)
+)]
 pub enum GraphType {
     Directed,
     #[default]

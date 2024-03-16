@@ -1,27 +1,33 @@
 /*
     Appellation: graphs <library>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description: This library is dedicated to graphs, explicitly implementing generic directed and undirected data-structures while providing the tools to create new ones.
 */
-pub use self::{cmp::*, directed::*, errors::*, specs::*, undirected::*};
+/// # Graphs
+///
+/// This library is dedicated to graphs, explicitly implementing generic directed and undirected data-structures while providing the tools to create new ones.
+pub use self::{directed::*, errors::*, specs::*, undirected::*};
 
-pub(crate) mod cmp;
 pub(crate) mod directed;
 mod errors;
 mod specs;
 pub(crate) mod undirected;
 
+pub mod cmp;
 pub mod graph;
 pub mod search;
 pub mod store;
 
-use errors::GraphError;
+use cmp::Edge;
 use std::{collections::HashSet, ops::IndexMut};
 use store::AdjacencyTable;
 
 /// [Graph] describes the basic operations of a graph data-structure
 pub trait Graph<N = String, V = i64>:
-    Clone + Contain<N> + Contain<Edge<N, V>> + IndexMut<N, Output = Vec<(N, V)>>
+    AsMut<AdjacencyTable<N, V>>
+    + Clone
+    + Contain<N>
+    + Contain<Edge<N, V>>
+    + IndexMut<N, Output = Vec<(N, V)>>
 where
     N: Node,
     V: Weight,
@@ -129,6 +135,45 @@ where
 
         visited.len() == self.nodes().len()
     }
+    /// [Graph::remove_edge] attempts to remove an edge from the graph
+    fn remove_edge(&mut self, edge: &Edge<N, V>) -> Result<(), GraphError> {
+        match self.store_mut().get_mut(&edge.pair().0) {
+            Some(edges) => {
+                edges.retain(|(n, _)| n != &edge.pair().1);
+                Ok(())
+            }
+            None => Err(GraphError::NodeNotInGraph),
+        }
+    }
+    /// [Graph::remove_edges] attempts to remove several edges from the graph
+    fn remove_edges(
+        &mut self,
+        iter: impl IntoIterator<Item = Edge<N, V>>,
+    ) -> Result<(), GraphError> {
+        for i in iter {
+            self.remove_edge(&i)?;
+        }
+        Ok(())
+    }
+    /// [Graph::remove_node] attempts to remove a node from the graph
+    fn remove_node(&mut self, node: &N) -> Result<(), GraphError> {
+        if self.contains_node(node) {
+            self.store_mut().remove(node);
+            for (_, edges) in self.store_mut().iter_mut() {
+                edges.retain(|(n, _)| n != node);
+            }
+            Ok(())
+        } else {
+            Err(GraphError::NodeNotInGraph)
+        }
+    }
+    /// [Graph::remove_nodes] attempts to remove several nodes from the graph
+    fn remove_nodes(&mut self, iter: impl IntoIterator<Item = N>) -> Result<(), GraphError> {
+        for i in iter {
+            self.remove_node(&i)?;
+        }
+        Ok(())
+    }
     /// [Graph::store_mut] returns an owned, mutable instance of the [AdjacencyTable]
     fn store_mut(&mut self) -> &mut AdjacencyTable<N, V>;
     /// [Graph::store] returns an owned instance of the [AdjacencyTable]
@@ -162,4 +207,11 @@ where
     fn is_subgraph(&self, graph: impl Graph<N, V>) -> bool {
         self.nodes().is_subset(&graph.nodes())
     }
+}
+
+pub mod prelude {
+    pub use crate::cmp::prelude::*;
+    pub use crate::directed::*;
+    pub use crate::errors::*;
+    pub use crate::{Contain, Graph, Node, Subgraph, Weight};
 }

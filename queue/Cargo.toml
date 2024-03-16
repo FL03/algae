@@ -1,0 +1,39 @@
+[package]
+authors.workspace = true
+categories.workspace = true
+description.workspace = true
+edition.workspace = true
+homepage.workspace = true
+keywords.workspace = true
+license.workspace = true
+name = "algae-queue"
+readme.workspace = true
+repository.workspace = true
+version.workspace = true
+
+[features]
+default = []
+
+serde = [
+    "dep:serde",
+    "serde-ext"
+]
+
+serde-ext = [
+    "dep:serde_json"
+]
+
+[dependencies]
+serde = { optional = true, features = ["derive"], version = "1" }
+serde_json = { optional = true, version = "1" }
+
+
+[dev-dependencies]
+
+[package.metadata.docs.rs]
+all-features = true
+rustc-args = ["--cfg", "docsrs"]
+
+[target.wasm32-unknown-unknown]
+
+[target.wasm32-wasi]

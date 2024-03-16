@@ -1,17 +1,19 @@
 /*
-    Appellation: tree <module>
+    Appellation: merkle <module>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description: ... Summary ...
 */
 use crate::proofs::merkle_proof;
-use crate::{create_merkle_tree, MerkleDimension, MerkleShape};
+use crate::{create_merkle_tree, MerkleDimension};
 use decanter::prelude::{Hashable, H256};
+#[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
+use std::ops::{Index, IndexMut, Range};
 
-#[derive(Clone, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "serde", derive(Deserialize, Serialize))]
 pub struct MerkleTree {
-    pub dim: MerkleDimension,
-    pub nodes: Vec<H256>,
+    dim: MerkleDimension,
+    nodes: Vec<H256>,
 }
 
 impl MerkleTree {
@@ -31,7 +33,7 @@ impl MerkleTree {
         merkle_proof(self.dim(), self.nodes().clone(), index)
     }
     pub fn root(&self) -> H256 {
-        self.nodes()[self.dim().size() - 1]
+        self[self.dim().size() - 1]
     }
     pub fn nodes(&self) -> &Vec<H256> {
         &self.nodes
@@ -47,7 +49,10 @@ impl std::fmt::Display for MerkleTree {
     }
 }
 
-impl<T: Hashable> From<&[T]> for MerkleTree {
+impl<T> From<&[T]> for MerkleTree
+where
+    T: Hashable,
+{
     fn from(data: &[T]) -> Self {
         let (dim, nodes) = create_merkle_tree::<T>(data);
         Self {
@@ -57,11 +62,30 @@ impl<T: Hashable> From<&[T]> for MerkleTree {
     }
 }
 
-impl From<(Box<dyn MerkleShape>, Vec<H256>)> for MerkleTree {
-    fn from(data: (Box<dyn MerkleShape>, Vec<H256>)) -> Self {
-        Self {
-            dim: MerkleDimension::from(data.0),
-            nodes: data.1,
-        }
+impl Index<usize> for MerkleTree {
+    type Output = H256;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.nodes[index]
+    }
+}
+
+impl IndexMut<usize> for MerkleTree {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        &mut self.nodes[index]
+    }
+}
+
+impl Index<Range<usize>> for MerkleTree {
+    type Output = [H256];
+
+    fn index(&self, index: Range<usize>) -> &Self::Output {
+        &self.nodes[index]
+    }
+}
+
+impl IndexMut<Range<usize>> for MerkleTree {
+    fn index_mut(&mut self, index: Range<usize>) -> &mut Self::Output {
+        &mut self.nodes[index]
     }
 }

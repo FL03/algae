@@ -1,9 +1,23 @@
 /*
    Appellation: proofs <merkle>
    Contrib: FL03 <jo3mccain@icloud.com>
-   Description: ... Summary ...
 */
+//! # Merkle Proofs
+//!
+//! ## Overview
+//!
+//! Merkle proofs are a way to prove that a given piece of data is part of a Merkle tree.
+//!
 pub use self::{path::*, proof::*};
 
 pub(crate) mod path;
 pub(crate) mod proof;
+
+use decanter::prelude::H256;
+
+pub trait MerkleProof {
+    fn proof(&self) -> Vec<H256>;
+}
+
+#[cfg(test)]
+mod tests {}
