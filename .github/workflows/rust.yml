@@ -8,23 +8,22 @@ env:
   CARGO_TERM_COLOR: always
 
 on:
-  pull_request:
-    branches: [ "main", "v*.*.*" ]
   push:
-    branches: [ "main" ]
-    tags: [ "nightly*",  "v*.*.*" ]
+    branches: [ main ]
+    tags: [ nightly*, v*.*.*]
   release:
+    types: [ created ]
   repository_dispatch:
     types: [ rust ]
   schedule:
-    - cron: "30 21 * * *" # 9:30pm UTC
+    - cron: 30 21 * * 0 # Every Sunday at 9:30PM UTC
   workflow_dispatch:
 
 permissions: write-all
 
 jobs:
   build:
-    name: Build and Test
+    name: Build
     strategy:
       matrix:
         platform: [ ubuntu-latest ]
@@ -41,7 +40,6 @@ jobs:
         if: matrix.toolchain == 'nightly'
         run: rustup target add ${{ matrix.target }}
       - name: Build
-
         run: cargo build -r -v --workspace
       - name: Cache build
         uses: actions/cache@v3
@@ -51,38 +49,32 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
             target/release
-      - name: Test
-        run: cargo test --all-features -r -v --workspace
-      - name: Bench
-        if: matrix.toolchain == 'nightly'
-        run: cargo bench --all -v
-  nightly:
-    name: Nightly
+  test:
+    name: Test
+    needs: build
     strategy:
       matrix:
         platform: [ ubuntu-latest ]
         target: [ wasm32-unknown-unknown, wasm32-wasi ]
+        toolchain: [ stable, nightly ]
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
       - name: setup (langspace)
         run: |
-          rustup toolchain install nightly
-          rustup default nightly
           rustup update
-      - name: Set target (${{ matrix.target }})
-        run: rustup target add ${{ matrix.target }}
-      - name: Build
-        run: cargo build -r -v --workspace --target ${{ matrix.target }}
-      - name: Cache build
-        uses: actions/cache@v3
-        with:
-          key: ${{ matrix.target }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            target/release
+          rustup default ${{ matrix.toolchain }}
       - name: Test
-        run: cargo test --all-features -r -v --workspace --target ${{ matrix.target }}
+        run: cargo test --all-features -r -v --workspace
+  benchmark:
+    name: Bench
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: setup (langspace)
+        run: |
+          rustup update
+          rustup default nightly
       - name: Bench
-        run: cargo bench --all -v --target ${{ matrix.target }}
+        run: cargo bench --features full -v --workspace

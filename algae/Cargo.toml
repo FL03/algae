@@ -13,45 +13,63 @@ version.workspace = true
 
 [features]
 default = [
-    "core",
-    "ds",
-]
-full = [
-    "core",
     "ds",
 ]
 
-core = []
+full = [
+    "ds",
+    "serde",
+]
+
 ds = [
     "graph",
     "merkle",
     "mmr",
+    "queue",
 ]
 
 graph = [
-    "algae-graph"
+    "dep:algae-graph"
 ]
 merkle = [
-    "algae-merkle"
+    "dep:algae-merkle"
 ]
 mmr = [
-    "algae-mmr"
+    "dep:algae-mmr"
+]
+
+queue = [
+    "dep:algae-queue"
 ]
 
 wasm = []
 
+serde = [
+    "algae-core/serde",
+    "algae-graph/serde",
+    "algae-merkle/serde",
+    "algae-queue/serde",
+]
+
 [lib]
 bench = false
 crate-type = ["cdylib", "rlib"]
+doctest = true
 test = true
+
+[[example]]
+name = "graph"
+required-features = ["graph"]
+
 
 [build-dependencies]
 
 [dependencies]
-
-algae-graph = { features = [], optional = true, path = "../graph", version = "0.1.20" }
-algae-merkle = { features = [], optional = true, path = "../merkle", version = "0.1.20" }
-algae-mmr = { features = [], optional = true, path = "../mmr", version = "0.1.20" }
+algae-core = { path = "../core", version = "0.1.20" }
+algae-graph = { optional = true, path = "../graph", version = "0.1.20" }
+algae-merkle = { optional = true, path = "../merkle", version = "0.1.20" }
+algae-mmr = { optional = true, path = "../mmr", version = "0.1.20" }
+algae-queue = { optional = true, path = "../queue", version = "0.1.20" }
 
 [dev-dependencies]
 

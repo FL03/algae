@@ -4,10 +4,11 @@
 */
 use crate::{combine_hash_str, merkle_hash, Payload};
 use decanter::prelude::{Hashable, H256};
+#[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
-use std::string::ToString;
 
-#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "serde", derive(Deserialize, Serialize))]
 pub struct Node<T = String>
 where
     T: Hashable,
@@ -47,13 +48,9 @@ where
 
 impl<T> std::fmt::Display for Node<T>
 where
-    T: Hashable,
+    T: Hashable + ToString,
 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let msg = serde_json::json!({
-            "data": self.data.to_string(),
-            "hash": self.hash,
-        });
-        write!(f, "{}", msg)
+        write!(f, "data: {}, hash: {}", self.data.to_string(), self.hash)
     }
 }

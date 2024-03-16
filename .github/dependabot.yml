@@ -13,6 +13,10 @@ updates:
     schedule:
       interval: daily
   - package-ecosystem: cargo
+    directory: /core
+    schedule:
+      interval: daily
+  - package-ecosystem: cargo
     directory: /graph
     schedule:
       interval: daily
@@ -22,5 +26,9 @@ updates:
       interval: daily
   - package-ecosystem: cargo
     directory: /mmr
+    schedule:
+      interval: daily
+  - package-ecosystem: cargo
+    directory: /queue
     schedule:
       interval: daily

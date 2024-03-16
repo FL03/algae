@@ -5,19 +5,19 @@
 /// # Graphs
 ///
 /// This library is dedicated to graphs, explicitly implementing generic directed and undirected data-structures while providing the tools to create new ones.
-pub use self::{cmp::*, directed::*, errors::*, specs::*, undirected::*};
+pub use self::{directed::*, errors::*, specs::*, undirected::*};
 
-pub(crate) mod cmp;
 pub(crate) mod directed;
 mod errors;
 mod specs;
 pub(crate) mod undirected;
 
+pub mod cmp;
 pub mod graph;
 pub mod search;
 pub mod store;
 
-use errors::GraphError;
+use cmp::Edge;
 use std::{collections::HashSet, ops::IndexMut};
 use store::AdjacencyTable;
 
@@ -207,4 +207,11 @@ where
     fn is_subgraph(&self, graph: impl Graph<N, V>) -> bool {
         self.nodes().is_subset(&graph.nodes())
     }
+}
+
+pub mod prelude {
+    pub use crate::cmp::prelude::*;
+    pub use crate::directed::*;
+    pub use crate::errors::*;
+    pub use crate::{Contain, Graph, Node, Subgraph, Weight};
 }

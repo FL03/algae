@@ -6,15 +6,13 @@ edition.workspace = true
 homepage.workspace = true
 keywords.workspace = true
 license.workspace = true
-name = "algae-graph"
+name = "algae-core"
 readme.workspace = true
 repository.workspace = true
 version.workspace = true
 
 [features]
 default = []
-
-wasm = []
 
 serde = [
     "dep:serde",
@@ -25,20 +23,10 @@ serde-ext = [
     "dep:serde_json"
 ]
 
-[lib]
-bench = true
-crate-type = ["cdylib", "rlib"]
-doctest = true
-test = true
-
-[build-dependencies]
-
 [dependencies]
-itertools.workspace = true
 serde = { optional = true, features = ["derive"], version = "1" }
 serde_json = { optional = true, version = "1" }
-smart-default.workspace = true
-strum.workspace = true
+
 
 [dev-dependencies]
 

@@ -3,13 +3,18 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: an edge consists of two nodes and an optional edge value
 */
+//! # Edge
+//!
+//!
 use super::Pair;
 use crate::{Node, Weight};
+#[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
 pub trait Related<N: Node, V> {}
 
-#[derive(Clone, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "serde", derive(Deserialize, Serialize))]
 pub struct Edge<N = String, V = i64>
 where
     N: Node,

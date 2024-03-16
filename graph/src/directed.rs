@@ -1,13 +1,14 @@
 /*
     Appellation: directed <module>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description: ... Summary ...
 */
 use crate::{store::AdjacencyTable, Edge, Node, Weight};
 use crate::{Contain, Graph, GraphExt, Subgraph};
+#[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Eq, PartialEq)]
+#[cfg_attr(feature = "serde", derive(Deserialize, Serialize))]
 pub struct DirectedGraph<N = String, V = i64>
 where
     N: Node,
@@ -135,7 +136,6 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::cmp::Edge;
 
     const TEST_EDGES: [(&str, &str, usize); 3] = [("a", "b", 5), ("c", "a", 7), ("b", "c", 10)];
 

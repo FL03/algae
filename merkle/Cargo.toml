@@ -20,6 +20,15 @@ wasm = [
 
 ]
 
+serde = [
+    "dep:serde",
+    "serde-ext"
+]
+
+serde-ext = [
+    "dep:serde_json"
+]
+
 [lib]
 bench = true
 crate-type = ["cdylib", "rlib"]
@@ -28,11 +37,11 @@ test = true
 [dependencies]
 anyhow.workspace = true
 blake3 = { features = [], version = "1" }
-decanter.workspace = true
+decanter = { features = ["derive"], version = "0.1.6" }
 hex = "0.4"
 itertools.workspace = true
-serde.workspace = true
-serde_json.workspace = true
+serde = { optional = true, features = ["derive"], version = "1" }
+serde_json = { optional = true, version = "1" }
 smart-default.workspace = true
 strum.workspace = true
 
@@ -47,6 +56,6 @@ vrf = "0.2"
 all-features = true
 rustc-args = ["--cfg", "docsrs"]
 
-[target.wasm32-unknown-unknown.dependencies]
+[target.wasm32-unknown-unknown]
 
-[target.wasm32-wasi.dependencies.dependencies]
+[target.wasm32-wasi]
