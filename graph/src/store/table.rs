@@ -3,11 +3,12 @@
     Contrib: FL03 <jo3mccain@icloud.com>
 */
 use crate::{Node, Weight};
+#[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 use std::collections::{hash_map, HashMap};
-use std::iter::Extend;
 
-#[derive(Clone, Debug, Default, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Eq, PartialEq)]
+#[cfg_attr(feature = "serde", derive(Deserialize, Serialize))]
 pub struct AdjacencyTable<N, V>
 where
     N: Node,

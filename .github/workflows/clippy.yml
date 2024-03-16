@@ -1,26 +1,31 @@
 name: Clippy
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
-  pull_request:
-    branches: [ main, master, v*.*.*, ]
   push:
-    branches-ignore: [ "beta*", "dev*", "next*" ]
-    tags: [ "nightly*",  "v*.*.*" ]
+    branches: [ main ]
+    tags: [ nightly*, v*.*.*]
   release:
+  repository_dispatch:
+    types: [ clippy ]
   schedule:
-    - cron: "30 9 * * *" # 9:30am UTC
+    - cron: 30 21 * * 0 # Every Sunday at 9:30PM UTC
   workflow_dispatch:
 
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+  
 jobs:
   clippy:
     name: Clippy
-    permissions:
-      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
-      contents: read
-      security-events: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af #@v1
         with:
@@ -28,16 +33,16 @@ jobs:
           toolchain: stable
           components: clippy
           override: true
-      - name: Setup
+      - name: Setup (langspace)
         run: cargo install clippy-sarif sarif-fmt
-      - name: clippy
+      - name: Analyze
         run:
           cargo clippy
           --all-features
           --message-format=json | clippy-sarif | tee rust-clippy-results.sarif | sarif-fmt
         continue-on-error: true
-      - name: Upload analysis results to GitHub
-        uses: github/codeql-action/upload-sarif@v2
+      - name: Upload results
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: rust-clippy-results.sarif
           wait-for-processing: true

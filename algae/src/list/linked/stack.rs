@@ -10,7 +10,6 @@ pub struct Stack<T> {
     head: Link<T>,
 }
 
-
 struct Node<T> {
     elem: T,
     next: Link<T>,
@@ -22,14 +21,18 @@ impl<T> Stack<T> {
     }
 
     pub fn prepend(&self, elem: T) -> Stack<T> {
-        Stack { head: Some(Rc::new(Node {
-            elem: elem,
-            next: self.head.clone(),
-        }))}
+        Stack {
+            head: Some(Rc::new(Node {
+                elem: elem,
+                next: self.head.clone(),
+            })),
+        }
     }
 
     pub fn tail(&self) -> Stack<T> {
-        Stack { head: self.head.as_ref().and_then(|node| node.next.clone()) }
+        Stack {
+            head: self.head.as_ref().and_then(|node| node.next.clone()),
+        }
     }
 
     pub fn head(&self) -> Option<&T> {
@@ -37,7 +40,9 @@ impl<T> Stack<T> {
     }
 
     pub fn iter(&self) -> Iter<'_, T> {
-        Iter { next: self.head.as_deref() }
+        Iter {
+            next: self.head.as_deref(),
+        }
     }
 }
 

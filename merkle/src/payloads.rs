@@ -4,13 +4,12 @@
 */
 use crate::Node;
 use decanter::prelude::Hashable;
+#[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
-use std::string::ToString;
 use strum::Display;
 
-#[derive(
-    Clone, Debug, Deserialize, Display, Eq, Hash, Hashable, Ord, PartialEq, PartialOrd, Serialize,
-)]
+#[derive(Clone, Debug, Display, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "serde", derive(Deserialize, Hashable, Serialize))]
 pub enum Payload<T = String>
 where
     T: Hashable,

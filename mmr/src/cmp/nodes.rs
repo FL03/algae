@@ -1,12 +1,9 @@
 /*
     Appellation: cmps <module>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description: ... summary ...
 */
-
 use decanter::prelude::{Hashable, H256};
 use serde::{Deserialize, Serialize};
-use std::convert::From;
 
 #[derive(Clone, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct Node {

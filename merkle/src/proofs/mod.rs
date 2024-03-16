@@ -8,7 +8,7 @@
 //!
 //! Merkle proofs are a way to prove that a given piece of data is part of a Merkle tree.
 //!
-pub use self::{path::*, proof::*, utils::*};
+pub use self::{path::*, proof::*};
 
 pub(crate) mod path;
 pub(crate) mod proof;
@@ -19,4 +19,5 @@ pub trait MerkleProof {
     fn proof(&self) -> Vec<H256>;
 }
 
-pub(crate) mod utils {}
+#[cfg(test)]
+mod tests {}

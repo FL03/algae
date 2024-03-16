@@ -1,10 +1,9 @@
 /*
     Appellation: bfs <module>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description: ... Summary ...
 */
 use super::Searcher;
-use crate::{Contain, Graph, Node, Weight};
+use crate::prelude::{Contain, Graph, Node, Weight};
 use std::collections::{HashSet, VecDeque};
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
@@ -59,7 +58,8 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{DirectedGraph, Edge};
+    use crate::cmp::Edge;
+    use crate::DirectedGraph;
 
     const TEST_EDGES: [(&str, &str, usize); 5] = [
         ("a", "b", 5),

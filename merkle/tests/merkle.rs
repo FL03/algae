@@ -7,13 +7,25 @@
         def.
             This notation abbreviates a is the hash of A; more formally, (A) maps to the hash (a) by the hashing function H
 */
-use algae_merkle::{add_hash, is_merkle_valid, MerkleTree};
+use algae_merkle::{concat_and_hash, is_merkle_valid, MerkleTree};
 use decanter::prelude::{Hashable, H256};
 use hex_literal::hex;
+use rs_merkle::Hasher;
 
 // lazy_static::lazy_static!(
 //     static ref SAMPLE_DATA: Vec<H256> = hash_leaves();
 // );
+
+#[derive(Clone)]
+pub struct BSha256;
+
+impl Hasher for BSha256 {
+    type Hash = [u8; 32];
+
+    fn hash(data: &[u8]) -> Self::Hash {
+        blake3::hash(data).into()
+    }
+}
 
 fn get_merkle_tree_size(leafs: usize) -> usize {
     let mut size = leafs + (leafs % 2);
@@ -76,15 +88,23 @@ fn test_merkle_root() {
     let leaves = hash_leaves!(sample);
     let nleafs = leaves.len();
     let exp = {
-        let a = add_hash(&leaves[0], &leaves[1]);
-        let b = add_hash(&leaves[2], &leaves[3]);
-        add_hash(&a, &b)
+        let a = concat_and_hash(&leaves[0], Some(&leaves[1]));
+        let b = concat_and_hash(&leaves[2], Some(&leaves[3]));
+        concat_and_hash(&a, Some(&b))
         // add_hash(&a, &leaves[2])
     };
 
     let a = MerkleTree::from(sample.as_slice());
+    let b = rs_merkle::MerkleTree::<BSha256>::from_leaves(
+        sample
+            .iter()
+            .map(|i| BSha256::hash(i.as_bytes()))
+            .collect::<Vec<[u8; 32]>>()
+            .as_slice(),
+    );
 
     assert_eq!(a.root(), exp);
+    assert_eq!(a.root().0, b.root().expect("No Root"));
     assert_eq!(
         a.dim().shape(),
         (
@@ -115,7 +135,7 @@ fn test_merkle_proof() {
     let sample = ["a", "b", "c", "d"];
     let leaves = hash_leaves!(sample);
 
-    let exp = vec![leaves[1], add_hash(&leaves[2], &leaves[3])];
+    let exp = vec![leaves[1], concat_and_hash(&leaves[2], Some(&leaves[3]))];
 
     let a = MerkleTree::from(leaves.as_slice());
 

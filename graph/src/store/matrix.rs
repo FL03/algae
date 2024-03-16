@@ -1,13 +1,15 @@
 /*
     Appellation: atable <module>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description: an adjacency table
 */
+//! # Adjacency Table
 use crate::Node;
+#[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
-use std::iter::Extend;
+use std::ops::{Index, IndexMut};
 
-#[derive(Clone, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "serde", derive(Deserialize, Serialize))]
 pub struct AdjacencyMatrix<N = String, V = i64>
 where
     N: Node,
@@ -76,7 +78,7 @@ impl<N: Node, V: Clone + PartialEq> Extend<(N, Vec<(N, V)>)> for AdjacencyMatrix
     }
 }
 
-impl<N, V> std::ops::Index<N> for AdjacencyMatrix<N, V>
+impl<N, V> Index<N> for AdjacencyMatrix<N, V>
 where
     N: Node,
     V: Clone + PartialEq,
@@ -88,7 +90,19 @@ where
     }
 }
 
-impl<N, V> std::ops::IndexMut<N> for AdjacencyMatrix<N, V>
+impl<N, V> Index<&N> for AdjacencyMatrix<N, V>
+where
+    N: Node,
+    V: Clone + PartialEq,
+{
+    type Output = Vec<(N, V)>;
+
+    fn index(&self, index: &N) -> &Self::Output {
+        self.get(index).unwrap()
+    }
+}
+
+impl<N, V> IndexMut<N> for AdjacencyMatrix<N, V>
 where
     N: Node,
     V: Clone + PartialEq,

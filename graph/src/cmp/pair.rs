@@ -3,10 +3,13 @@
     Contrib: FL03 <jo3mccain@icloud.com>
     Description: a pair can either be scalar or vector; if vector, than direction matters
 */
+//! # Pair
 use crate::Node;
+#[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "serde", derive(Deserialize, Serialize))]
 pub struct Pair<T>(pub T, pub T)
 where
     T: Node;

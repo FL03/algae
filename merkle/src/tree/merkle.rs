@@ -5,10 +5,12 @@
 use crate::proofs::merkle_proof;
 use crate::{create_merkle_tree, MerkleDimension};
 use decanter::prelude::{Hashable, H256};
+#[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 use std::ops::{Index, IndexMut, Range};
 
-#[derive(Clone, Debug, Default, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "serde", derive(Deserialize, Serialize))]
 pub struct MerkleTree {
     dim: MerkleDimension,
     nodes: Vec<H256>,
