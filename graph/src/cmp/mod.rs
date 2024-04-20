@@ -13,7 +13,21 @@ pub(crate) mod pair;
 
 pub mod entry;
 
+pub trait GraphIndex {}
+
+pub trait GraphEntry {
+    type Key: GraphIndex;
+    type Value;
+
+    fn key(&self) -> &Self::Key;
+
+    fn value(&self) -> &Self::Value;
+
+    fn value_mut(&mut self) -> &mut Self::Value;
+}
+
 pub(crate) mod prelude {
+    pub use super::{GraphEntry, GraphIndex};
     pub use super::edge::*;
     pub use super::entry::*;
     pub use super::pair::*;

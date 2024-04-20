@@ -2,19 +2,21 @@
     Appellation: graphs <library>
     Contrib: FL03 <jo3mccain@icloud.com>
 */
-/// # Graphs
-///
-/// This library is dedicated to graphs, explicitly implementing generic directed and undirected data-structures while providing the tools to create new ones.
-pub use self::{directed::*, errors::*, specs::*, undirected::*};
+//! # Graph
+//!
+#[cfg(not(feature = "std"))]
+extern crate alloc;
+
+pub use self::{directed::*, errors::GraphError, specs::*, undirected::*};
 
 pub(crate) mod directed;
-mod errors;
-mod specs;
+pub(crate) mod specs;
 pub(crate) mod undirected;
 
+pub mod algo;
 pub mod cmp;
+pub mod errors;
 pub mod graph;
-pub mod search;
 pub mod store;
 
 use cmp::Edge;
@@ -210,8 +212,10 @@ where
 }
 
 pub mod prelude {
+    pub use crate::{Graph, GraphExt, Subgraph};
+    pub use crate::algo::prelude::*;
     pub use crate::cmp::prelude::*;
     pub use crate::directed::*;
     pub use crate::errors::*;
-    pub use crate::{Contain, Graph, Node, Subgraph, Weight};
+    pub use crate::specs::*;
 }

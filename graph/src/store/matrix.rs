@@ -4,12 +4,10 @@
 */
 //! # Adjacency Table
 use crate::Node;
-#[cfg(feature = "serde")]
-use serde::{Deserialize, Serialize};
-use std::ops::{Index, IndexMut};
+use core::ops::{Index, IndexMut};
 
 #[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "serde", derive(Deserialize, Serialize))]
+#[cfg_attr(feature = "serde", derive(serde::Deserialize, serde::Serialize))]
 pub struct AdjacencyMatrix<N = String, V = i64>
 where
     N: Node,

@@ -177,8 +177,8 @@ mod tests {
         graph.add_node("a");
         graph.add_node("b");
         graph.add_node("c");
-        assert!(graph.contains_all(["a", "b", "c"]));
-        assert!(graph.contains_some(["a", "b", "c", "d"]));
+        assert!(graph.all(["a", "b", "c"]));
+        assert!(graph.any(["a", "b", "c", "d"]));
         assert!(graph.remove_node(&"a").is_ok());
     }
 }

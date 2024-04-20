@@ -4,8 +4,6 @@
     Description: This module implements an abstract graph data structure
 */
 use crate::cmp::entry::Entry;
-#[cfg(feature = "serde")]
-use serde::{Deserialize, Serialize};
 use strum::{Display, EnumCount, EnumIs, EnumIter, EnumString, VariantNames};
 
 pub trait GraphStore<N, V>: Default {
@@ -36,7 +34,7 @@ pub trait GraphStore<N, V>: Default {
 #[strum(serialize_all = "snake_case")]
 #[cfg_attr(
     feature = "serde",
-    derive(Deserialize, Serialize),
+    derive(serde::Deserialize, serde::Serialize),
     serde(rename_all = "lowercase", untagged)
 )]
 pub enum GraphType {

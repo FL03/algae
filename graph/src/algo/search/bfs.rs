@@ -7,6 +7,7 @@ use crate::prelude::{Contain, Graph, Node, Weight};
 use std::collections::{HashSet, VecDeque};
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
+#[cfg_attr(feature = "serde", derive(serde::Deserialize, serde::Serialize))]
 pub struct BreadthFirstSearch<N: Node> {
     queue: VecDeque<N>,
     visited: HashSet<N>,
@@ -77,6 +78,6 @@ mod tests {
         }
         let mut bfs = BreadthFirstSearch::new();
         bfs.search(graph, "a");
-        assert!(bfs.contains_all(["b", "c", "a"]));
+        assert!(bfs.all(["b", "c", "a"]));
     }
 }

@@ -1,15 +1,13 @@
 /*
     Appellation: undirected <module>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description: ... Summary ...
 */
-use crate::{cmp::Edge, store::AdjacencyTable};
-use crate::{Contain, Graph, GraphExt, Node, Subgraph, Weight};
-#[cfg(feature = "serde")]
-use serde::{Deserialize, Serialize};
+use crate::cmp::Edge;
+use crate::prelude::{Contain, Graph, GraphExt, Node, Subgraph, Weight};
+use crate::store::AdjacencyTable;
 
 #[derive(Clone, Debug, Default, Eq, PartialEq)]
-#[cfg_attr(feature = "serde", derive(Deserialize, Serialize))]
+#[cfg_attr(feature = "serde", derive(serde::Deserialize, serde::Serialize))]
 pub struct UndirectedGraph<N = String, V = i64>
 where
     N: Node,
@@ -169,7 +167,7 @@ mod tests {
             graph.add_edge(i.into());
         }
         // assert that the graph contains all the edges
-        assert!(graph.contains_all(EXPECTED.into_iter().map(Edge::from).collect::<Vec<_>>()));
+        assert!(graph.all(EXPECTED.into_iter().map(Edge::from).collect::<Vec<_>>()));
         // assert that the graph can be indexed
         assert_eq!(graph["a"], vec![("b", 5), ("c", 7)]);
     }

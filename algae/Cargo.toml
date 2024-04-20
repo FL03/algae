@@ -14,11 +14,13 @@ version.workspace = true
 [features]
 default = [
     "ds",
+    "std",
 ]
 
 full = [
     "ds",
     "serde",
+    "std",
 ]
 
 ds = [
@@ -42,7 +44,6 @@ queue = [
     "dep:algae-queue"
 ]
 
-wasm = []
 
 serde = [
     "algae-core/serde",
@@ -50,6 +51,14 @@ serde = [
     "algae-merkle/serde",
     "algae-queue/serde",
 ]
+
+std = [
+    "algae-core/std",
+    "algae-graph/std",
+]
+
+wasm = []
+
 
 [lib]
 bench = false

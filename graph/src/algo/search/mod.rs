@@ -1,12 +1,11 @@
 /*
     Appellation: search <module>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description: ... Summary ...
 */
 pub use self::{bfs::BreadthFirstSearch, dfs::DepthFirstSearch};
 
-mod bfs;
-mod dfs;
+pub(crate) mod bfs;
+pub(crate) mod dfs;
 
 use crate::{Contain, Graph, Node, Weight};
 

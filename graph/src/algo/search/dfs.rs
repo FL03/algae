@@ -1,12 +1,12 @@
 /*
     Appellation: dfs <module>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description: ... Summary ...
 */
 use super::Searcher;
 use crate::{Contain, Graph, Node, Weight};
 
 #[derive(Clone, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "serde", derive(serde::Deserialize, serde::Serialize))]
 pub struct DepthFirstSearch<N: Node> {
     stack: Vec<N>,
     visited: Vec<N>,
@@ -77,6 +77,6 @@ mod tests {
         //
         dfs.search(graph, "a");
         //
-        assert!(dfs.contains_all(["b", "c", "a"]));
+        assert!(dfs.all(["b", "c", "a"]));
     }
 }
