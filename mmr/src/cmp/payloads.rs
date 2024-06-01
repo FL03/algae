@@ -53,17 +53,12 @@ where
     }
 }
 
-impl<T> std::fmt::Display for Payload<T>
+impl<T> core::fmt::Display for Payload<T>
 where
-    T: ToString,
+    T: serde::Serialize,
 {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let data = self
-            .data
-            .iter()
-            .map(|(k, v)| (k.to_string(), v.to_string()))
-            .collect::<HashMap<String, String>>();
-        write!(f, "{}", serde_json::to_value(data).unwrap())
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
     }
 }
 
@@ -89,7 +84,7 @@ where
     }
 }
 
-impl<T> std::ops::Index<H256> for Payload<T>
+impl<T> core::ops::Index<H256> for Payload<T>
 where
     T: ToString,
 {
@@ -100,7 +95,7 @@ where
     }
 }
 
-impl<T> std::ops::IndexMut<H256> for Payload<T>
+impl<T> core::ops::IndexMut<H256> for Payload<T>
 where
     T: ToString,
 {

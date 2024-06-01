@@ -1,14 +1,13 @@
 /*
     Appellation: payloads <module>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description: ... summary ...
 */
 use decanter::prelude::Hashable;
-use serde::{Deserialize, Serialize};
 
 #[derive(
-    Clone, Debug, Default, Deserialize, Eq, Hash, Hashable, Ord, PartialEq, PartialOrd, Serialize,
+    Clone, Debug, Default, Eq, Hash, Hashable, Ord, PartialEq, PartialOrd,
 )]
+#[cfg_attr(feature = "serde", derive(serde::Deserialize, serde::Serialize))]
 pub struct Position {
     pub height: usize,
     pub index: usize,
@@ -18,9 +17,11 @@ impl Position {
     pub fn new(height: usize, index: usize) -> Self {
         Self { height, index }
     }
+
     pub fn height(&self) -> usize {
         self.height
     }
+
     pub fn index(&self) -> usize {
         self.index
     }
@@ -32,8 +33,8 @@ impl From<(usize, usize)> for Position {
     }
 }
 
-impl std::fmt::Display for Position {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", serde_json::to_string(&self).unwrap())
+impl core::fmt::Display for Position {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        write!(f, "({}, {})", self.index(), self.height())
     }
 }

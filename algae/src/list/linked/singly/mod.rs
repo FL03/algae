@@ -2,12 +2,15 @@
     Appellation: singly <module>
     Contrib: FL03 <jo3mccain@icloud.com>
 */
-pub use self::{iter::*, store::*, utils::*};
+#[doc(inline)]
+pub use self::{iter::*, list::*};
 
 pub(crate) mod iter;
-pub(crate) mod store;
+pub(crate) mod list;
 
-pub(crate) mod utils {}
+pub(crate) mod prelude {
+    pub use super::list::SinglyLinkedList;
+}
 
 #[cfg(test)]
 mod tests {}

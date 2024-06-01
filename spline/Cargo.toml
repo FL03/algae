@@ -1,42 +1,47 @@
 [package]
 authors.workspace = true
+build = "build.rs"
 categories.workspace = true
 description.workspace = true
 edition.workspace = true
 homepage.workspace = true
 keywords.workspace = true
 license.workspace = true
-name = "algae-graph"
+name = "algae-spline"
 readme.workspace = true
 repository.workspace = true
 version.workspace = true
 
 [features]
 default = [
-    "std"
+    "std",
 ]
 
 full = [
     "default",
-    "serde",
+    "serde"
+]
+
+# ******** [FF] Dependencies ********
+alloc = [
+    "num/alloc",
 ]
 
 serde = [
     "dep:serde",
-    "dep:serde_json"
+    "num/serde",
 ]
 
+# ******** [FF] Environments ********
 std = [
+    "alloc",
+    "num/std",
     "serde?/std",
-    "strum/std",
+    "strum/std"
 ]
-
-wasm = []
-
-wasi = []
 
 [lib]
-bench = true
+bench = false
 crate-type = ["cdylib", "rlib"]
 doctest = true
 test = true
@@ -44,23 +49,11 @@ test = true
 [build-dependencies]
 
 [dependencies]
-itertools.workspace = true
-serde_json = { optional = true, version = "1" }
-smart-default.workspace = true
-strum.workspace = true
+num.workspace = true
+strum = { default-features = false, features = ["derive"], version = "0.26" }
 
 [dependencies.serde]
 default-features = false
-optional = true
 features = ["derive"]
+optional = true
 version = "1"
-
-[dev-dependencies]
-
-[package.metadata.docs.rs]
-all-features = true
-rustc-args = ["--cfg", "docsrs"]
-
-[target.wasm32-unknown-unknown]
-
-[target.wasm32-wasi]

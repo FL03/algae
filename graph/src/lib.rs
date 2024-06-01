@@ -212,10 +212,10 @@ where
 }
 
 pub mod prelude {
-    pub use crate::{Graph, GraphExt, Subgraph};
     pub use crate::algo::prelude::*;
     pub use crate::cmp::prelude::*;
     pub use crate::directed::*;
     pub use crate::errors::*;
     pub use crate::specs::*;
+    pub use crate::{Graph, GraphExt, Subgraph};
 }

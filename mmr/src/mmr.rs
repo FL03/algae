@@ -6,9 +6,9 @@ use crate::cmp::{Node, Position};
 use crate::{is_node_right, sibling_index, RangeMap};
 use decanter::prelude::{hasher, Hashable, H256};
 use digest::Digest;
-use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, Default, Deserialize, Eq, Hashable, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Eq, Hashable, PartialEq,)]
+#[cfg_attr(feature = "serde", derive(serde::Deserialize, serde::Serialize))]
 pub struct MerkleMountainRange<T = String>
 where
     T: ToString,

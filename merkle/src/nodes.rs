@@ -4,11 +4,9 @@
 */
 use crate::{combine_hash_str, merkle_hash, Payload};
 use decanter::prelude::{Hashable, H256};
-#[cfg(feature = "serde")]
-use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "serde", derive(Deserialize, Serialize))]
+#[cfg_attr(feature = "serde", derive(serde::Deserialize, serde::Serialize))]
 pub struct Node<T = String>
 where
     T: Hashable,

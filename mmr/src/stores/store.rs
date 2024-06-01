@@ -1,12 +1,11 @@
 /*
     Appellation: store <module>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description: ... summary ...
 */
 use decanter::prelude::{Hashable, H256};
-use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, Default, Deserialize, Eq, Hash, Hashable, PartialEq, Serialize)]
+#[derive(Clone, Debug, Default, Eq, Hash, Hashable, PartialEq)]
+#[cfg_attr(feature = "serde", derive(serde::Deserialize, serde::Serialize))]
 pub struct MMRStore<T = String>
 where
     T: ToString,

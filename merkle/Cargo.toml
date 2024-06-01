@@ -22,10 +22,6 @@ wasm = [
 
 serde = [
     "dep:serde",
-    "serde-ext"
-]
-
-serde-ext = [
     "dep:serde_json"
 ]
 

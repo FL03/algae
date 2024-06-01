@@ -1,7 +1,6 @@
 /*
-   Appellation: algae-mmr <library>
-   Contrib: FL03 <jo3mccain@icloud.com>
-   Description:
+    Appellation: algae-mmr <library>
+    Contrib: FL03 <jo3mccain@icloud.com>
 */
 pub use self::{builder::*, mmr::*, primitives::*, utils::*};
 
@@ -13,3 +12,7 @@ mod utils;
 pub mod cmp;
 pub mod proofs;
 pub mod stores;
+
+pub mod prelude {
+    pub use super::mmr::MerkleMountainRange;
+}

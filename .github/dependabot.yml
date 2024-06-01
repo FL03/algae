@@ -3,32 +3,32 @@ updates:
   - package-ecosystem: cargo
     directory: /
     schedule:
-      interval: daily
+      interval: weekly
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: daily
+      interval: weekly
   - package-ecosystem: cargo
     directory: /algae
     schedule:
-      interval: daily
+      interval: weekly
   - package-ecosystem: cargo
     directory: /core
     schedule:
-      interval: daily
+      interval: weekly
   - package-ecosystem: cargo
     directory: /graph
     schedule:
-      interval: daily
+      interval: weekly
   - package-ecosystem: cargo
     directory: /merkle
     schedule:
-      interval: daily
+      interval: weekly
   - package-ecosystem: cargo
     directory: /mmr
     schedule:
-      interval: daily
+      interval: weekly
   - package-ecosystem: cargo
-    directory: /queue
+    directory: /spline
     schedule:
-      interval: daily
+      interval: weekly

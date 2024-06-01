@@ -1,7 +1,6 @@
 /*
     Appellation: utils <module>
     Contrib: FL03 <jo3mccain@icloud.com>
-    Description:
 */
 
 /// This function takes in the index and calculates if the node is the right child node or not.

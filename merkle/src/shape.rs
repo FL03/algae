@@ -1,9 +1,7 @@
 /*
-   Appellation: shape <merkle>
-   Contrib: FL03 <jo3mccain@icloud.com>
+    Appellation: shape <module>
+    Contrib: FL03 <jo3mccain@icloud.com>
 */
-#[cfg(feature = "serde")]
-use serde::{Deserialize, Serialize};
 
 fn get_merkle_tree_size(leafs: usize) -> usize {
     let mut size = leafs + (leafs % 2);
@@ -26,7 +24,7 @@ fn get_merkle_depth(leafs: usize) -> usize {
 }
 
 #[derive(Clone, Copy, Debug, Default, Eq, Hash, Ord, PartialEq, PartialOrd)]
-#[cfg_attr(feature = "serde", derive(Deserialize, Serialize))]
+#[cfg_attr(feature = "serde", derive(serde::Deserialize, serde::Serialize))]
 pub struct MerkleDimension {
     depth: usize,
     leafs: usize,

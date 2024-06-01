@@ -5,12 +5,10 @@
 use crate::Node;
 use decanter::prelude::Hashable;
 use itertools::Itertools;
-#[cfg(feature = "serde")]
-use serde::{Deserialize, Serialize};
 
 // pub fn build_new_merkle_layer<T: ToString>(left: MerkleNode<T>, right: MerkleNode)
 #[derive(Clone, Debug, Eq, Hash, PartialEq, PartialOrd, Ord)]
-#[cfg_attr(feature = "serde", derive(Deserialize, Serialize))]
+#[cfg_attr(feature = "serde", derive(serde::Deserialize, serde::Serialize))]
 pub struct Layer<T = String>(Vec<Node<T>>)
 where
     T: Hashable;
@@ -34,7 +32,9 @@ where
         &self.0
     }
 }
-
+/*
+    ************* Implementations *************
+*/
 impl<T> From<Vec<Node<T>>> for Layer<T>
 where
     T: Hashable,

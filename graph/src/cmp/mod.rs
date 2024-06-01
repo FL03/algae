@@ -27,10 +27,10 @@ pub trait GraphEntry {
 }
 
 pub(crate) mod prelude {
-    pub use super::{GraphEntry, GraphIndex};
     pub use super::edge::*;
     pub use super::entry::*;
     pub use super::pair::*;
+    pub use super::{GraphEntry, GraphIndex};
 }
 
 #[cfg(test)]

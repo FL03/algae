@@ -1,24 +1,10 @@
-[workspace.package]
-authors = ["FL03 <jo3mccain@icloud.com> (https://gitlab.com/FL03)", "Scattered-Systems (https://gitlab.com/scsys)"]
-categories = []
-description = "Algae is a collection of core algorithms and data-structures, written in Rust"
-edition = "2021"
-homepage = "https://github.com/scattered-systems/algae/wiki"
-keywords = ["algorithms", "data-structures"]
-license = "Apache-2.0"
-readme = "README.md"
-repository = "https://github.com/scattered-systems/algae"
-version = "0.1.20"
-
-[workspace.dependencies]
-anyhow = "1"
-itertools = "0.12"
-smart-default = "0.7"
-strum = { features = ["derive"], version = "0.26" }
-
 [workspace]
 default-members = [
     "algae"
+]
+
+exclude = [
+    "mmr",
 ]
 
 members = [
@@ -26,11 +12,31 @@ members = [
     "core",
     "graph",
     "merkle",
-    "mmr", 
-    "queue",
+    "spline",
 ]
 
 resolver = "2"
+
+[workspace.dependencies]
+anyhow = "1"
+itertools = "0.13"
+lazy_static = "1"
+num = { default-features = false, version = "0.4" }
+paste = "1"
+smart-default = "0.7"
+strum = { default-features = false, features = ["derive"], version = "0.26" }
+
+[workspace.package]
+authors = ["FL03 <jo3mccain@icloud.com>"]
+categories = []
+description = "Algae is a collection of core algorithms and data-structures, written in Rust"
+edition = "2021"
+homepage = "https://github.com/scattered-systems/algae/wiki"
+keywords = ["algorithms", "data-structures"]
+license = "Apache-2.0"
+readme = "README.md"
+repository = "https://github.com/FL03/algae"
+version = "0.1.20"
 
 [profile.dev]
 codegen-units = 256

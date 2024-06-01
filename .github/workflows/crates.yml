@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        feature: [ graph, merkle, mmr, queue ]
+        feature: [ graph, merkle, spline ]
     env:
       PACKAGE_NAME: ${{ github.event.repository.name }}-${{ matrix.feature }}
     steps:

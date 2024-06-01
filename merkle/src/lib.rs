@@ -1,9 +1,8 @@
-/*
-   Appellation: algae-merkle <library>
-   Creator: FL03 <jo3mccain@icloud.com>
-*/
+
+
 #[cfg(test)]
 extern crate hex_literal;
+
 #[doc(inline)]
 pub use self::{layers::*, nodes::*, payloads::*, shape::*, tree::*, utils::*};
 
