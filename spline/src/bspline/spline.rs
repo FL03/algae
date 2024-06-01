@@ -16,7 +16,7 @@ impl<C, K> BSpline<C, K> {
             return Err(SplineError::NotEnoughPoints);
         }
         if knots.len() != ctrls.len() + degree + 1 {
-            return Err(SplineError::NotEnoughPoints);
+            return Err(SplineError::not_enough_knots(knots.len(), ctrls.len() + degree + 1));
         }
         let spline = Self {
             ctrls,

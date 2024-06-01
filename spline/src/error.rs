@@ -27,8 +27,6 @@ macro_rules! error_kind {
             strum::Display,
             strum::EnumCount,
             strum::EnumIs,
-            strum::EnumIter,
-            strum::EnumString,
             strum::VariantNames,
         )]
         #[cfg_attr(
@@ -43,7 +41,7 @@ macro_rules! error_kind {
 
 error_kind! {
     pub enum SplineError {
-        ShapeError,
+        Shape(ShapeError),
         TooFewKnots,
         NotEnoughPoints,
     }
@@ -52,13 +50,33 @@ error_kind! {
 error_kind! {
     pub enum ShapeError {
         DegreeMismatch,
-        NotEnoughtKnots {
-            expected: usize,
-            found: usize,
+        NotEnoughKnots {
+            exp: usize,
+            res: usize,
         },
         NotEnoughPoints,
     }
 }
 
+impl SplineError {
+    pub fn not_enough_knots(exp: usize, res: usize) -> Self {
+        let err = ShapeError::NotEnoughKnots {
+            exp,
+            res,
+        };
+        Self::Shape(err)
+    
+    }
+    pub fn shape_error(err: ShapeError) -> Self {
+        Self::Shape(err)
+    }
+}
+
 #[cfg(feature = "std")]
 impl std::error::Error for SplineError {}
+
+impl From<ShapeError> for SplineError {
+    fn from(err: ShapeError) -> Self {
+        Self::shape_error(err)
+    }
+}
