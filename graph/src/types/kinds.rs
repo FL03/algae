@@ -1,13 +1,13 @@
+/*
+    Appellation: kinds <module>
+    Contrib: FL03 <jo3mccain@icloud.com>
+*/
 
 
-pub enum Directed {}
-
-pub enum Undirected {}
-
-macro_rules! graph_ty {
-    (pub enum $name:ident) => {
+macro_rules! uninit {
+    (@impl $vis:vis enum $name:ident) => {
         #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
-        pub enum $name {}
+        $vis enum $name {}
 
         impl $name {
             pub fn phantom() -> ::core::marker::PhantomData::<Self> {
@@ -15,4 +15,15 @@ macro_rules! graph_ty {
             }
         }
     };
+
+    ($($vis:vis $name:ident),* $(,)?) => {
+        $(
+            uninit!(@impl $vis enum $name);
+        )*
+    };
+}
+
+uninit! {
+    pub Directed, 
+    pub Undirected,
 }
