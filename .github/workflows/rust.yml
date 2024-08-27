@@ -1,16 +1,15 @@
-name: Rust
+name: rust
 
-concurrency: 
-  cancel-in-progress: false
-  group: ${{ github.event.repository.name }}-rust
+concurrency:
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.ref }}
 
 env:
   CARGO_TERM_COLOR: always
 
 on:
-  push:
+  pull_request:
     branches: [ main ]
-    tags: [ nightly*, v*.*.*]
   release:
     types: [ created ]
   repository_dispatch:
@@ -22,39 +21,36 @@ on:
 permissions: write-all
 
 jobs:
-  build:
-    name: Build
+  workspace:
+    name: Workspace
     strategy:
       matrix:
         platform: [ ubuntu-latest ]
-        target: [ wasm32-unknown-unknown, wasm32-wasi ]
         toolchain: [ stable, nightly ]
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
-      - name: setup (rustup)
-        run: rustup default ${{ matrix.toolchain }} && rustup update
-      - name: target (${{ matrix.target }})
+      - name: rustup
+        run: |
+          rustup default ${{ matrix.toolchain }}
+          rustup update
+      - name: build
+        run: cargo build --all-features -r -v --workspace
+      - name: test
+        run: cargo test --all-features -r -v --workspace
+      - name: benchmark
         if: matrix.toolchain == 'nightly'
-        run: rustup target add ${{ matrix.target }}
-      - name: cargo (build)
-        run: cargo build --features full -r -v --workspace
+        run: cargo bench --features full -v --workspace
       - name: cache
         uses: actions/cache@v4
         with:
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-${{ matrix.toolchain }}-${{ hashFiles('**/Cargo.lock') }}
           path: |
             ~/.cargo/registry
             ~/.cargo/git
+            target/debug
             target/release
-      - name: cargo (test)
-        run: cargo test --all-features -r -v --workspace
-  benchmark:
-    name: Bench
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: rustup default nightly && rustup update
-      - name: cargo (bench)
-        run: cargo bench --features full -v --workspace
+          restore-keys: |
+            ${{ runner.os }}-cargo-${{ matrix.toolchain }}-
+            ${{ runner.os }}-cargo-
+            ${{ runner.os }}-

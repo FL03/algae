@@ -1,7 +1,10 @@
 /*
+    Appellation: merkle <test>
+    Contrib: FL03 <jo3mccain@icloud.com>
+*/
+/*
     TODO: Update the hashes to match the Blake3 Hash Digests
 */
-#[cfg(test)]
 /*
     Map(A -> a)
         def.

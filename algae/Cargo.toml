@@ -42,10 +42,6 @@ merkle = [
 #     "dep:algae-mmr"
 # ]
 
-spline = [
-    "dep:algae-spline",
-]
-
 serde = [
     "algae-core/serde",
     "algae-graph?/serde",
@@ -98,12 +94,6 @@ version = "0.1.20"
 # optional = true
 # path = "../mmr"
 # version = "0.1.20"
-
-[dependencies.algae-spline]
-default-features = false
-optional = true
-path = "../spline"
-version = "0.1.20"
 
 [package.metadata.docs.rs]
 all-features = true
