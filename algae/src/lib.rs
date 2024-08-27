@@ -13,8 +13,6 @@ pub use algae_graph as graph;
 pub use algae_merkle as merkle;
 // #[cfg(feature = "mmr")]
 // pub use algae_mmr as mmr;
-#[cfg(feature = "spline")]
-pub use algae_spline as spline;
 
 pub mod list;
 
@@ -26,8 +24,6 @@ pub mod prelude {
     pub use algae_merkle::prelude::*;
     // #[cfg(feature = "mmr")]
     // pub use algae_mmr::*;
-    #[cfg(feature = "spline")]
-    pub use algae_spline::prelude::*;
 
     pub use crate::list::*;
 }
